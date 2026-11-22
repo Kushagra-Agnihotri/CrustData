@@ -95,6 +95,7 @@ POS = [
                                                    ("Managed backup - October", "month", 1, 50000, 18)], None, "csv"),
     ("PO-4479", "V6", "2026-11-01", "2026-11-15", [("Caustic soda flakes", "kg", 6000, 50, 18)], ([6000], "2026-11-15"), "csv"),
     ("PO-4480", "V7", "2026-10-01", "2026-10-29", [("Freight - Pune to Delhi FTL", "trips", 50, 30000, 18)], ([50], "2026-10-29"), "tally_csv"),
+    ("PO-4481", "V7", "2026-11-02", "2026-11-10", [("Freight - Pune to Mumbai LTL", "trips", 4, 12000, 18)], ([4], "2026-11-10"), "csv"),
 ]
 
 CUSTOMERS = [  # (id, name, domain, on_time_rate, crustdata id, healthy?)
@@ -310,7 +311,8 @@ def build_cases():
         inv("case10", "V4", "B", "INV-0077", "2026-11-06", "PO-4472", [("Machined flanges DN100", 100, 950, 18)], file="case10_precision_bad_gstin.txt",
             gstin=bad_gstin),
         None,  # case11 Sharma Traders (messy text)
-        inv("case12", "V2", "A", "ACM/1123", "2026-11-14", "PO-4476", po_lines("PO-4476"), file="case12_acme_tape.txt"),
+        # case12 uses V7 (no other HOLD/BLOCK case touches it), so the only reason is the injected timeout
+        inv("case12", "V7", "A", "IL/FRT/2026/0467", "2026-11-14", "PO-4481", po_lines("PO-4481"), file="case12_infra_freight.txt"),
         inv("case13", "V1", "B", "SGP/26-27/171", "2026-10-13", "PO-4473", po_lines("PO-4473"), file="case13_shree_ganesh_boxes.txt"),
         inv("case14", "V6", "C", "ICL-77812", "2026-11-16", "PO-4479", po_lines("PO-4479"), file="case14_indus_chemicals.txt"),
         inv("case15", "V7", "A", "IL/FRT/2026/0451", "2026-10-30", "PO-4480", po_lines("PO-4480"), file="case15_infra_logistics.txt"),
@@ -379,7 +381,7 @@ EXPECTED = {
     "case09": {"decision": "HOLD", "must_include": ["OVER_BILLED"], "label": "Billed qty 120 > PO qty 100"},
     "case10": {"decision": "BLOCK", "must_include": ["INVALID_GSTIN"], "label": "GSTIN fails checksum"},
     "case11": {"decision": "HOLD", "must_include": ["UNVERIFIABLE_VENDOR"], "label": "Sharma Traders: no GSTIN, no PO → I can't verify"},
-    "case12": {"decision": "HOLD", "must_include": ["SOURCE_UNAVAILABLE"], "inject_fault": ["crustdata", "ifsc"],
+    "case12": {"decision": "HOLD", "must_include": ["SOURCE_UNAVAILABLE"], "only": True, "inject_fault": ["crustdata", "ifsc"],
                "label": "Crustdata + IFSC timeout injected"},
     "case13": {"decision": "PAY_ELIGIBLE", "tier": 0, "paid_in_full": True, "label": "MSME micro, accepted 40 days ago → Tier 0"},
     "case14": {"decision": "PAY_ELIGIBLE", "tier": 1, "paid_in_full": True, "label": "2/10 net 30 within discount window → Tier 1"},

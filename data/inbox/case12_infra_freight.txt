@@ -1,0 +1,24 @@
+TAX INVOICE
+
+Supplier: Infra Logistics Pvt Ltd
+GSTIN: 07AAECI6612L1ZF
+Address: New Delhi, Delhi
+Email: accounts@infralogistics.in
+
+Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)
+
+Invoice No.: IL/FRT/2026/0467
+Invoice Date: 14 Nov 2026
+PO Number: PO-4481
+
+#  | Item | Qty | Rate | GST % | Amount
+1  | Freight - Pune to Mumbai LTL | 4 | 12,000.00 | 18 | 48,000.00
+
+Sub-total: 48,000.00
+IGST @18%: 8,640.00
+Grand Total: Rs. 56,640.00
+
+Terms: Payment as per PO terms
+Bank: A/c No 10293847561 | IFSC SBIN0000691 | Beneficiary: Infra Logistics Pvt Ltd
+
+This is a computer generated invoice.

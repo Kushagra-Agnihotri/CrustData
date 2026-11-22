@@ -75,6 +75,7 @@
     "must_include": [
       "SOURCE_UNAVAILABLE"
     ],
+    "only": true,
     "inject_fault": [
       "crustdata",
       "ifsc"

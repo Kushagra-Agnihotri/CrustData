@@ -10,7 +10,7 @@ from __future__ import annotations
 import datetime as dt
 
 from app import config, sources
-from app.db import j, q, q1
+from app.db import j, q, q1, unj
 from app.ledger import add_fact
 from app.validators import gstin_checksum_ok, gstin_format_ok
 
@@ -20,10 +20,13 @@ PRIORITY_WEIGHTS = {"critical_supplier": 0.25, "relationship_years": 0.15, "clea
                     "on_time_delivery": 0.20, "low_dispute_rate": 0.10, "msme_small_supplier": 0.10}
 
 
-def _sig(signal, value, weight, note, fact_ids=None, verified=True):
-    return {"signal": signal, "value": round(value, 3), "weight": weight,
-            "contribution": round(value * weight, 3), "note": note,
-            "fact_ids": fact_ids or [], "verified": verified}
+def _sig(signal, value, weight, note, fact_ids=None, verified=True, unavailable=False):
+    r = {"signal": signal, "value": round(value, 3), "weight": weight,
+         "contribution": round(value * weight, 3), "note": note,
+         "fact_ids": fact_ids or [], "verified": verified}
+    if unavailable:  # a source outage, not an answer: the score is provisional and is recomputed next time
+        r["unavailable"] = True
+    return r
 
 
 def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[dict]]:
@@ -48,7 +51,7 @@ def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[
                                       sources.source_type("crustdata", res), res.source_ref, "[0].matches",
                                       res.retrieved_at, res.raw_response_id))
     except sources.SourceUnavailable as e:
-        rows.append(_sig("identity", 0, TRUST_WEIGHTS["identity"], f"can't verify: {e}", verified=False))
+        rows.append(_sig("identity", 0, TRUST_WEIGHTS["identity"], f"can't verify: {e}", verified=False, unavailable=True))
     if not any(r["signal"] == "identity" for r in rows):
         v = 1.0 if (identity_ok and company) else (0.5 if identity_ok or company else 0.0)
         note = ("GSTIN checksum ✓, PAN ✓, company found in Crustdata" if v == 1 else
@@ -84,7 +87,7 @@ def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[
                 rows.append(_sig("domain_consistency", 1.0 if same else 0.0, TRUST_WEIGHTS["domain_consistency"],
                                  f"vendor master domain {vendor['domain']} {'==' if same else '≠'} official {off}", [f_dom]))
         except sources.SourceUnavailable as e:
-            rows.append(_sig("company_age", 0, TRUST_WEIGHTS["company_age"], f"can't verify: {e}", verified=False))
+            rows.append(_sig("company_age", 0, TRUST_WEIGHTS["company_age"], f"can't verify: {e}", verified=False, unavailable=True))
     # bank stability (internal record)
     cur = q1(conn, "SELECT * FROM vendor_bank_accounts WHERE vendor_id=? AND status='current'", (vid,))
     pend = q1(conn, "SELECT COUNT(*) n FROM vendor_bank_accounts WHERE vendor_id=? AND status IN ('pending_verification','rejected')", (vid,))["n"]
@@ -104,7 +107,7 @@ def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[
         note = "no adverse news found" if not hits else "; ".join(f"{h['title']} ({h['date']})" for h in hits)
         rows.append(_sig("no_adverse_news", 0.0 if hits else 1.0, TRUST_WEIGHTS["no_adverse_news"], note, [f_n]))
     except sources.SourceUnavailable as e:
-        rows.append(_sig("no_adverse_news", 0, TRUST_WEIGHTS["no_adverse_news"], f"can't verify: {e}", verified=False))
+        rows.append(_sig("no_adverse_news", 0, TRUST_WEIGHTS["no_adverse_news"], f"can't verify: {e}", verified=False, unavailable=True))
     # fill in signals we could not compute
     have = {r["signal"] for r in rows}
     for s, w in TRUST_WEIGHTS.items():
@@ -149,7 +152,8 @@ def compute_priority(conn, vendor: dict) -> tuple[float, list[dict]]:
 
 def ensure_scores(conn, ctx, vendor_id: str) -> dict:
     v = q1(conn, "SELECT * FROM vendors WHERE id=?", (vendor_id,))
-    if v["trust_score"] is None:
+    provisional = any(r.get("unavailable") for r in unj(v["trust_breakdown"], []))
+    if v["trust_score"] is None or provisional:
         compute_trust(conn, ctx, v)
     if v["priority_score"] is None:
         compute_priority(conn, v)

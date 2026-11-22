@@ -17,6 +17,9 @@ ROOT = Path(__file__).resolve().parent.parent
 TMP = Path(tempfile.gettempdir()) / "payables_desk_tests"
 TMP.mkdir(exist_ok=True)
 os.environ["DB_PATH"] = str(TMP / "golden.db")
+# The golden set is deterministic: use the built-in parser unless explicitly asked to test the LLM.
+if os.environ.get("TEST_WITH_LLM") != "1":
+    os.environ["GEMINI_API_KEY"] = ""
 sys.path.insert(0, str(ROOT))
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -65,6 +68,10 @@ def check(conn):
         for c in e.get("must_include", []):
             if c not in codes(inv):
                 problems.append(f"missing {c}")
+        if e.get("only"):
+            extra = sorted(set(codes(inv)) - set(e.get("must_include", [])))
+            if extra:
+                problems.append(f"unexpected {', '.join(extra)}")
         alloc = tiers.get(inv["id"])
         if "tier" in e:
             if not alloc:
