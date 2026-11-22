@@ -118,16 +118,33 @@ def _context_reasons(inv, vendor) -> list[dict]:
     return rs
 
 
-def plan(conn, overrides: dict | None = None) -> dict:
-    """Pure computation — returns the proposed allocation without writing."""
+def plan(conn, overrides: dict | None = None, spend_cap: int | None = None, vendor_filter: dict | None = None) -> dict:
+    """Pure computation — returns the proposed allocation without writing.
+
+    spend_cap (paise): from the customer's request; spendable = min(computed spendable, cap). Tier 0 still
+    raises the cash-crisis alert if the cap is below what's legally due.
+    vendor_filter: {include_ids, exclude_ids, msme_only} from the request — it can only narrow the run.
+    """
     overrides = overrides or {}
+    vf = vendor_filter or {}
     cash = cash_position(conn)
+    cash["computed_spendable"] = cash["spendable"]
+    cash["spend_cap"] = spend_cap
+    if spend_cap is not None and spend_cap < cash["spendable"]:
+        cash["spendable"] = max(0, int(spend_cap))
+    filtered_out = []
     invs = q(conn, "SELECT i.*, v.legal_name vendor_name FROM invoices i JOIN vendors v ON v.id=i.vendor_id "
                    "WHERE i.state IN ('ELIGIBLE','SCHEDULED','PARTIALLY_PAID') AND i.outstanding > 0 ORDER BY i.rowid")
     rows = []
     for inv in invs:
         v = q1(conn, "SELECT * FROM vendors WHERE id=?", (inv["vendor_id"],))
         if v["status"] != "active":
+            continue
+        why_out = ("left out by your request" if v["id"] in (vf.get("exclude_ids") or [])
+                   else "not in the vendors your request named" if vf.get("include_ids") and v["id"] not in vf["include_ids"]
+                   else "not an MSME vendor (your request: only MSME)" if vf.get("msme_only") and v["msme_category"] == "none" else None)
+        if why_out:
+            filtered_out.append((inv, v, why_out))
             continue
         # outstanding net of instalments already approved/in flight in other runs
         inflight = q1(conn, "SELECT COALESCE(SUM(amount+discount_amount),0) s, COUNT(*) n FROM instalments WHERE invoice_id=? AND status IN ('APPROVED','INTENT_WRITTEN','SUBMITTED')", (inv["id"],))
@@ -143,8 +160,13 @@ def plan(conn, overrides: dict | None = None) -> dict:
     t0_total = sum(r["inv"]["outstanding"] for r in t0)
     crisis = t0_total > remaining
     if crisis:
+        capped = spend_cap is not None and spend_cap < cash["computed_spendable"]
         alerts.append({"level": "error", "text": f"Cash crisis: {inr(t0_total - remaining)} short for legally-due / critical payments "
-                       f"({inr(t0_total)} due vs {inr(remaining)} spendable). Nothing auto-allocated — decide manually."})
+                       f"({inr(t0_total)} due vs {inr(remaining)} spendable"
+                       + (f", capped by your request at {inr(spend_cap)}; the bank could cover {inr(cash['computed_spendable'])}" if capped else "")
+                       + "). Nothing auto-allocated — decide manually."})
+    if spend_cap is not None and spend_cap < cash["computed_spendable"]:
+        alerts.append({"level": "info", "text": f"Spend capped by your request at {inr(spend_cap)} (cash alone would allow {inr(cash['computed_spendable'])})."})
     order = sorted(rows, key=lambda r: (r["cls"]["tier"], -(r["vendor"]["priority_score"] or 0), r["cls"]["due_date"]))
     for r in order:
         inv, tier, iid = r["inv"], r["cls"]["tier"], r["inv"]["id"]
@@ -229,8 +251,15 @@ def plan(conn, overrides: dict | None = None) -> dict:
             alerts.append({"level": "warning", "text": f"MSME deadline in {(dl - config.RUN_DATE).days} days: {v['legal_name']} {inv['invoice_no_raw']}"})
         if r["cls"]["tier"] == 1:
             alerts.append({"level": "info", "text": f"Discount window open: {v['legal_name']} — {r['cls']['reasons'][-1]['text']}"})
+    for inv, v, why in filtered_out:
+        dl = _d(inv["msme_deadline"])
+        deferred.append({"invoice_id": inv["id"], "vendor": v["legal_name"], "invoice_no": inv["invoice_no_raw"], "total": inv["total"],
+                         "outstanding": inv["outstanding"], "tier": None, "min": _min_instalment(inv), "why": why, "reasons": []})
+        if dl and dl <= config.RUN_DATE + dt.timedelta(days=config.HORIZON_DAYS):
+            alerts.append({"level": "warning", "text": f"{v['legal_name']} {inv['invoice_no_raw']} is left out by your request, but its MSME legal deadline is {_fmt_date(dl)}"})
     return {"cash": cash, "proposals": proposals, "deferred": deferred, "alerts": alerts, "crisis": crisis,
-            "allocated": sum(p["amount"] for p in proposals), "unallocated": remaining}
+            "allocated": sum(p["amount"] for p in proposals), "unallocated": remaining,
+            "spend_cap": spend_cap, "vendor_filter": vf}
 
 
 def current_run(conn) -> dict | None:
@@ -238,9 +267,21 @@ def current_run(conn) -> dict | None:
               (config.RUN_DATE.isoformat(),))
 
 
-def propose_run(conn, overrides: dict | None = None, actor="planner") -> str:
-    """Persist the plan as PROPOSED instalments (replacing any previous proposal for this run)."""
-    p = plan(conn, overrides)
+_KEEP = object()
+
+
+def propose_run(conn, overrides: dict | None = None, actor="planner", spend_cap=_KEEP, vendor_filter=_KEEP) -> str:
+    """Persist the plan as PROPOSED instalments (replacing any previous proposal for this run).
+
+    spend_cap / vendor_filter default to whatever the current proposal used (so an approver's
+    "recompute with my changes" keeps the request's cap); pass None to clear them.
+    """
+    prev = unj((current_run(conn) or {}).get("summary"), {}) or {}
+    if spend_cap is _KEEP:
+        spend_cap = prev.get("spend_cap")
+    if vendor_filter is _KEEP:
+        vendor_filter = prev.get("vendor_filter")
+    p = plan(conn, overrides, spend_cap=spend_cap, vendor_filter=vendor_filter)
     with tx(conn):
         run = current_run(conn)
         if run and run["status"] not in ("DRAFT", "PROPOSED"):
@@ -262,12 +303,13 @@ def propose_run(conn, overrides: dict | None = None, actor="planner") -> str:
                          (new_id(), new_id().replace("-", ""), pr["invoice_id"], rid, pr["instalment_no"], pr["amount"], pr["discount"], pr["tier"],
                           j(pr["justification"]), pr["amount"], 1 if pr["override"] else 0))
             conn.execute("UPDATE invoices SET state='SCHEDULED' WHERE id=? AND state='ELIGIBLE'", (pr["invoice_id"],))
-        summary = {k: p[k] for k in ("deferred", "alerts", "crisis", "allocated", "unallocated")}
+        summary = {k: p[k] for k in ("deferred", "alerts", "crisis", "allocated", "unallocated", "spend_cap", "vendor_filter")}
         summary["cash"] = c
         conn.execute("UPDATE payment_runs SET status='PROPOSED', bank_balance=?, safety_buffer=?, expected_receipts=?, spendable=?, summary=? WHERE id=?",
                      (c["bank_balance"], c["safety_buffer"], c["expected_receipts"], c["spendable"], j(summary), rid))
         add_event(conn, "payment_run", rid, run["status"] if run else None, "PROPOSED", actor,
-                  {"allocated": p["allocated"], "instalments": len(p["proposals"]), "overrides": list((overrides or {}).keys())})
+                  {"allocated": p["allocated"], "instalments": len(p["proposals"]), "overrides": list((overrides or {}).keys()),
+                   "spend_cap": spend_cap, "vendor_filter": vendor_filter})
     return rid
 
 
