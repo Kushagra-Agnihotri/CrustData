@@ -45,9 +45,28 @@ def facts_by_ids(conn, ids) -> list[dict]:
     return q(conn, f"SELECT * FROM facts WHERE id IN ({marks})", ids)
 
 
+def ist(ts) -> str:
+    """'2026-11-22T10:42:11.066Z' → '22 Nov 16:12 IST'."""
+    import datetime as dt
+    try:
+        d = dt.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+        return (d + dt.timedelta(hours=5, minutes=30)).strftime("%d %b %H:%M IST")
+    except ValueError:
+        return str(ts)[:16]
+
+
 def render_fact(f: dict):
     src = f["source_type"]
-    live = "🌐 live" if src in ("crustdata", "ifsc_api", "crustdata_web") else ("🧪 mock fixture" if src.endswith("_mock") else "📄 record")
+    if src in ("crustdata", "ifsc_api", "crustdata_web"):
+        live = f"🌐 live, recorded {ist(f['retrieved_at'])}" if f.get("recorded") else f"🌐 live {ist(f['retrieved_at'])}"
+    elif src == "penny_drop_mock":
+        live = "🧪 penny drop (mock provider)"
+    elif src.endswith("_mock"):
+        live = "🧪 mock fixture"
+    elif src == "human":
+        live = "👤 person"
+    else:
+        live = "📄 record"
     val = unj(f["value"], f["value"])
     if isinstance(val, (list, dict)):
         import json
@@ -71,5 +90,5 @@ def render_reasons(conn, reasons: list[dict], key_prefix: str):
                                  if r["severity"] != "OK" and "can't verify" in r["message"].lower() else ""), unsafe_allow_html=True)
 
 
-__all__ = ["st", "page", "db", "q", "unj", "inr", "config", "render_reasons", "render_fact", "facts_by_ids",
+__all__ = ["st", "page", "db", "q", "unj", "inr", "config", "render_reasons", "render_fact", "facts_by_ids", "ist",
            "DECISION_BADGE", "TIER_BADGE", "SEV_ICON"]

@@ -191,10 +191,16 @@ def extract(path: Path) -> dict:
     if src["doc_kind"] == "other":
         raise ValueError("email is neither an invoice nor a bank-change request")
     usage, method = {}, "rules"
+    d = None
     if config.GEMINI_API_KEY:
-        d, usage = gemini_extract(src["text"])
-        method = f"llm:{config.LLM_MODEL}"
-    else:
+        try:
+            d, usage = gemini_extract(src["text"])
+            method = f"llm:{config.LLM_MODEL}"
+            if not d.get("total") or not d.get("lines"):
+                raise ValueError("model returned no total/lines")
+        except Exception as e:  # network, quota, bad JSON → fall back to the deterministic parser
+            d, method = None, f"rules (Gemini fallback: {type(e).__name__})"
+    if d is None:
         d = parse_invoice_text(src["text"])
     for k, v in base.items():
         if v and not d.get(k):
