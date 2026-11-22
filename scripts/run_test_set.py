@@ -7,6 +7,7 @@ Runs every case from a CLEAN database and prints a pass/fail table.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import sys
@@ -14,7 +15,8 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-TMP = Path(tempfile.gettempdir()) / "payables_desk_tests"
+# one test dir per checkout, so parallel worktrees don't lock each other's DB
+TMP = Path(tempfile.gettempdir()) / f"payables_desk_tests_{hashlib.sha1(str(ROOT).encode()).hexdigest()[:8]}"
 TMP.mkdir(exist_ok=True)
 os.environ["DB_PATH"] = str(TMP / "golden.db")
 # The golden set is deterministic: use the built-in parser unless explicitly asked to test the LLM.
@@ -68,6 +70,8 @@ def check(conn):
         for c in e.get("must_include", []):
             if c not in codes(inv):
                 problems.append(f"missing {c}")
+        if e.get("first") and codes(inv)[:1] != [e["first"]]:
+            problems.append(f"first reason {codes(inv)[:1]} ≠ {e['first']}")
         if e.get("only"):
             extra = sorted(set(codes(inv)) - set(e.get("must_include", [])))
             if extra:

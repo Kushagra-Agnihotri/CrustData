@@ -11,6 +11,7 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+import hashlib
 import tempfile
 from pathlib import Path
 
@@ -23,7 +24,7 @@ def _worker(env):
 
 
 def run(quiet=False) -> tuple[bool, str]:
-    db = Path(tempfile.gettempdir()) / "payables_desk_tests" / "crash_demo.db"
+    db = Path(tempfile.gettempdir()) / f"payables_desk_tests_{hashlib.sha1(str(ROOT).encode()).hexdigest()[:8]}" / "crash_demo.db"
     db.parent.mkdir(exist_ok=True)
     env = dict(os.environ, DB_PATH=str(db), PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
     os.environ["DB_PATH"] = str(db)

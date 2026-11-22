@@ -373,7 +373,7 @@ EXPECTED = {
     "case02": {"decision": "PAY_ELIGIBLE", "tier": 0, "label": "Clean invoice via email; critical supplier overdue"},
     "case03": {"decision": "PAY_ELIGIBLE", "tier": 2, "label": "Clean invoice; MSME trader (45-day rule n/a)"},
     "case04": {"decision": "PAY_ELIGIBLE", "tier": 2, "label": "Clean invoice; MSME small, deadline not near"},
-    "case05": {"decision": "HOLD", "must_include": ["DUPLICATE_INVOICE"], "label": "Re-issue of #2 as INV/42 vs INV-0042"},
+    "case05": {"decision": "HOLD", "must_include": ["DUPLICATE_INVOICE"], "first": "DUPLICATE_INVOICE", "label": "Re-issue of #2 as INV/42 vs INV-0042"},
     "case06": {"decision": "HOLD", "must_include": ["POSSIBLE_DUPLICATE"], "label": "Same vendor + amount, new number, 3 days later"},
     "case07": {"decision": "BLOCK", "must_include": ["BANK_CHANGE_FRAUD", "SENDER_DOMAIN_MISMATCH", "SENDER_NOT_VERIFIED_AT_VENDOR"],
                "label": "Polite bank-change email from lookalike domain"},
