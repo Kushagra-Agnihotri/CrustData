@@ -1,0 +1,718 @@
+{
+ "crust:identify:aartiindustries.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "aartiindustries.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "aartiindustries.com",
+    "match_type": "domain",
+    "matches": []
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:38:59.031015Z",
+  "credits": 0.0
+ },
+ "crust:identify:allcargologistics.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "allcargologistics.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "allcargologistics.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 1613,
+       "basic_info": {
+        "name": "Allcargo Logistics",
+        "crustdata_company_id": 1613,
+        "primary_domain": "allcargologistics.com",
+        "all_domains": [
+         "allcargologistics.com",
+         "allcargogati.com",
+         "gati.com"
+        ],
+        "website": "https://www.allcargologistics.com/",
+        "professional_network_url": "https://www.linkedin.com/company/allcargologistics",
+        "professional_network_id": "63646",
+        "profile_name": "Allcargo Logistics",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/aa2b3ddacbb750b1308893a383404b76a1f4d6bf79046e48173bd1373bbcec0d.jpg",
+        "description": "Allcargo Logistics is one of India’s premier Express Logistics and Supply Chain Management companies, committed to delighting customers with seamless, end-to-end logistics solutions backed by future-ready digital tools and technology.With a legacy of over three decades, we bring deep expertise across surface and air express, consultative logistics, providing integrated logistics solutions for retail, MSME, and enterprise customers. Backed by a truly national reach, we serve 100% of India’s PIN codes, enabling businesses to grow with speed, confidence, and reliability.As part of the Allcargo Group, we are uniquely positioned to offer integrated capabilities across International Supply Chain, CFS-ICD operations, Logistics Parks, and more—ensuring a comprehensive, connected logistics ecosystem.Driven by a digital-first approach, we leverage advanced systems including enterprise-wide ERP platforms, digital payment solutions, and the Genie WhatsApp chatbot to deliver swift, safe, and on-time services—every single time.Guided by our core value of caring for the environment and society, we uphold global ESG benchmarks and remain committed to building a sustainable, future-ready logistics landscape.",
+        "company_type": "Public Company",
+        "year_founded": 1993,
+        "employee_count_range": "1001-5000",
+        "markets": [
+         "NSE"
+        ],
+        "industries": [
+         "Transportation, Logistics, Supply Chain and Storage"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:40:06.120182Z",
+  "credits": 0.2
+ },
+ "crust:identify:bharatforge.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "bharatforge.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "bharatforge.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 646,
+       "basic_info": {
+        "name": "Bharat Forge Ltd",
+        "crustdata_company_id": 646,
+        "primary_domain": "bharatforge.com",
+        "all_domains": [
+         "bharatforge.com"
+        ],
+        "website": "http://www.bharatforge.com",
+        "professional_network_url": "https://www.linkedin.com/company/bharat-forge-ltd",
+        "professional_network_id": "54381",
+        "profile_name": "Bharat Forge Ltd",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/d3687d4e46e4d4b2704658838244ace0fe50fdd67bbce41285f4a2d585b3844b.jpg",
+        "description": "Bharat Forge Limited (BFL), a Pune-based Indian multinational, is a technology driven global leader in providing high performance, innovative safety critical components and solutions for several sectors including automotive, power, oil and gas, construction & mining, rail, marine, defence and aerospace. BFL has global manufacturing footprint with presence across five countries, with the largest repository of metallurgical knowledge and offers full-service supply capability to its geographically dispersed marquee customers from concept to product design, engineering, manufacturing, testing and validation. To learn more, visit www.bharatforge.comBuilding on its strong foundation, Bharat Forge is entering the next phase of growth through its BFL 2.0 journey. The focus is on expanding scale, increasing automation, using digital technologies, and strengthening engineering capabilities. By building world-class technologies in India, Bharat Forge supports the Aatmanirbhar Bharat vision and contributes to the goal of Viksit Bharat 2047, while continuing to serve global industries as a trusted partner.",
+        "company_type": "Public Company",
+        "year_founded": 1961,
+        "employee_count_range": "10001+",
+        "markets": [
+         "NBO"
+        ],
+        "industries": [
+         "Industrial Machinery Manufacturing",
+         "Machinery Manufacturing",
+         "Manufacturing"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:39:01.161258Z",
+  "credits": 0.2
+ },
+ "crust:identify:bluedart.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "bluedart.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "bluedart.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 736,
+       "basic_info": {
+        "name": "Blue Dart",
+        "crustdata_company_id": 736,
+        "primary_domain": "bluedart.com",
+        "all_domains": [
+         "bluedart.com"
+        ],
+        "website": "http://www.bluedart.com",
+        "professional_network_url": "https://www.linkedin.com/company/bluedart",
+        "professional_network_id": "98212",
+        "profile_name": "Blue Dart",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/0201b22cb836304f2bb4a1342df0584d426b4a8025510c4636ce8426d5eae8b5.jpg",
+        "description": "Blue Dart Express Ltd., South Asia's premier express air, integrated transportation & distribution company, offers secure and reliable delivery of consignments to over 56,000+ locations in India. Blue Dart is a provider of choice for its stakeholders due to its customer centric approach and aims to further strengthen this partnership. As part of DHL Group’s DHL eCommerce division, Blue Dart accesses the largest and most comprehensive express and logistics network worldwide, covering over 220 countries and territories, and offers an entire spectrum of distribution services including air express, freight forwarding, supply chain solutions, customs clearance etc.The Blue Dart team drives market leadership through its motivated people, dedicated air and ground capacity, cutting-edge technology, wide range of innovative, vertical specific products and value-added services to deliver unmatched standards of service quality to its customers. Blue Dart's market leadership is further validated by its position as the nation’s most innovative and awarded express logistics company for exhibiting reliability, superior brand experience and sustainability which include recognition as one of ‘India's Best Companies to Work For’ by The Great Place to Work® Institute, India, ranked amongst ‘Best Multinational Workplaces in Asia’ by The Great Place to Work® Institute, Asia, voted a ‘Superbrand’ and ‘Reader’s Digest Most Trusted Brand’, listed as one of Fortune 500’s ‘India's Largest Corporations’ and Forbes ‘India's Super 50 Companies’ to name a few. Blue Dart’s Diversity and Inclusion initiatives have also led to it being recognized as one of India’s ‘Best Workplaces for Women’ in 2021 and ‘Best Organizations for Women’ in 2022 by the Economic Times.Blue Dart fulfils its social responsibility of climate protection (GoGreen), disaster management (GoHelp) and education (GoTeach) through its GoPrograms.",
+        "company_type": "Public Company",
+        "year_founded": 1983,
+        "employee_count_range": "10001+",
+        "markets": [
+         "NSE"
+        ],
+        "industries": [
+         "Transportation, Logistics, Supply Chain and Storage"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:38:04.745071Z",
+  "credits": 0.2
+ },
+ "crust:identify:byjus.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "byjus.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "byjus.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 5705,
+       "basic_info": {
+        "name": "BYJU'S",
+        "crustdata_company_id": 5705,
+        "primary_domain": "byjus.com",
+        "all_domains": [
+         "byjus.com"
+        ],
+        "website": "https://www.byjus.com",
+        "professional_network_url": "https://www.linkedin.com/company/byjus",
+        "professional_network_id": "2395365",
+        "profile_name": "BYJU'S",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/33e05162e686e72f851543596b8c9b6d11b0bdba5d4f342206f126e916b2e6d0.jpg",
+        "description": "BYJU’S is a global ed-tech company, providing highly adaptive, engaging and effective learning solutions to more than 150 million students around the world. Founded in India in 2011, BYJU’S mission is to make high-quality learning accessible to students everywhere.The BYJU’S family of brands includes Disney-BYJU’S Early Learn, BYJU’S Future School, Epic!, Osmo, Tynker, Toppr and WhiteHat Jr, along with our beloved flagship product BYJU’S – The Learning App. Together, BYJU’S solutions support Pre-K – 12 education and a wide range of competitive exams. BYJU’S delivers a world-class learning experience with tools that sit at the cross-section of mobile, interactive content and personalized learning methodologies. BYJU’S geography-agnostic solutions and 12,000+ teachers make learning engaging, with visual and contextual programs that adapt to the unique learning style, skill level and pace of each student. In addition, we have innovative partnerships with some of the world’s leading companies, including Disney and Google, to drive engagement and help even more students become active and lifelong learners. BYJU’S is backed by blue-chip investors including the Chan Zuckerberg Initiative, Sequoia Capital, Bond Capital, Silver Lake, BlackRock, Sands Capital Management, Alkeon Capital Management, Sofina, Verlinvest, Tencent, Prosus (previously Naspers Ventures), CPPIB, General Atlantic, Tiger Global, Qatar Investment Authority, Owl Ventures, Lightspeed Venture Partners, Times Internet, Aarin Capital and IFC. Since 2017, we have completed more than 15 acquisitions, including companies in the U.S., UK, Austria, India and Singapore. A 2021 Time 100 Most Influential Company, BYJU’S is headquartered in India, with operations in more than 21 countries globally and learning programs in multiple languages. For additional information, please visit www.byjus.com.",
+        "company_type": "Privately Held",
+        "year_founded": 2011,
+        "employee_count_range": "10001+",
+        "markets": [
+         "PRIVATE"
+        ],
+        "industries": [
+         "E-Learning Providers",
+         "Education"
+        ]
+       },
+       "social_profiles": null
+      }
+     },
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 6459390,
+       "basic_info": {
+        "name": "BYJU'S Support",
+        "crustdata_company_id": 6459390,
+        "primary_domain": "byjus.com",
+        "all_domains": [
+         "byjus.com"
+        ],
+        "website": "https://byjus.com/",
+        "professional_network_url": "https://www.linkedin.com/company/byju-s-support",
+        "professional_network_id": "75858357",
+        "profile_name": "BYJU'S Support",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/4a8c641bb8b2850afcbabd9736d8daaac956154fdf140b7db480dce1f8d72b65.jpg",
+        "description": "BYJU’S is India's largest ed-tech company and the creator of India’s most loved school learning app which offers highly adaptive, engaging and effective learning programs for students in LKG, UKG, classes 1 -12 (K-12) and competitive exams like JEE, NEET and IAS.  BYJU'S Support is a dedicated page to help users address queries about BYJU'S. Tag the page in a comment or post to let us know your question and our team of experts will promptly help you with a resolution!",
+        "company_type": "Privately Held",
+        "year_founded": null,
+        "employee_count_range": "1001-5000",
+        "markets": [],
+        "industries": [
+         "E-Learning Providers",
+         "Education"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:40:10.659606Z",
+  "credits": 0.2
+ },
+ "crust:identify:deepakfertilisers.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "deepakfertilisers.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "deepakfertilisers.com",
+    "match_type": "domain",
+    "matches": []
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:38:06.565668Z",
+  "credits": 0.0
+ },
+ "crust:identify:gati.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "gati.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "gati.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 887040,
+       "basic_info": {
+        "name": "GATI-KWE",
+        "crustdata_company_id": 887040,
+        "primary_domain": "gatikwe.com",
+        "all_domains": [
+         "allcargologistics.com",
+         "allcargogati.com",
+         "gatikwe.com",
+         "gati.com"
+        ],
+        "website": "http://www.gatikwe.com",
+        "professional_network_url": "https://www.linkedin.com/company/gati-kwe",
+        "professional_network_id": "3160079",
+        "profile_name": "GATI-KWE",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/2d96322503945effd91576a1a35068fc95b133749023177cbb86371ed5d84560.jpg",
+        "description": "Gati-Kintetsu Express Private Limited (Gati-KWE) is a joint venture company between Gati – India’s pioneer and leader in Express Distribution and Supply Chain Solutions and Kintetsu World Express Japan’s leading logistics provider. Following the joint venture Gati-KWE today offers an unmatched service offering that brings in local experience with global expertise. Gati-KWE is a 5500 people strong company with an annual turnover of Rs 15273 million.An intrinsic network that spans the length and breadth of India – Gati-KWE has a reach of more than 99% of districts in India. A large fleet of more than 5000 vehicles and an assured space across 32 airline sectors ensures that your shipments are delivered in the right time at the right place.Gati-KWE today is the most preferred Express Distribution and Supply Chain Solutions provider because of the ability to handle every distribution need. Gati-KWE offers services that are customized to the requirements, be it a Premium service – for time critical shipments or an Express Service for cost effective and direct express route connectivity. Taking a step forward, Gati-KWE's Supply Chain Solution division offers an integrated Supply Chain services to businesses across industry verticals. Be it flexible point-to-point distribution solutions or complex end-to-end integrated logistics solutions or supply chain management, Gati-KWE does it all with great effectiveness and reliability, and enjoys the trust of a large customer base.",
+        "company_type": "Privately Held",
+        "year_founded": 2012,
+        "employee_count_range": "1001-5000",
+        "markets": [
+         "PRIVATE"
+        ],
+        "industries": [
+         "Transportation, Logistics, Supply Chain and Storage"
+        ]
+       },
+       "social_profiles": null
+      }
+     },
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 1613,
+       "basic_info": {
+        "name": "Allcargo Logistics",
+        "crustdata_company_id": 1613,
+        "primary_domain": "allcargologistics.com",
+        "all_domains": [
+         "allcargologistics.com",
+         "allcargogati.com",
+         "gati.com"
+        ],
+        "website": "https://www.allcargologistics.com/",
+        "professional_network_url": "https://www.linkedin.com/company/allcargologistics",
+        "professional_network_id": "63646",
+        "profile_name": "Allcargo Logistics",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/aa2b3ddacbb750b1308893a383404b76a1f4d6bf79046e48173bd1373bbcec0d.jpg",
+        "description": "Allcargo Logistics is one of India’s premier Express Logistics and Supply Chain Management companies, committed to delighting customers with seamless, end-to-end logistics solutions backed by future-ready digital tools and technology.With a legacy of over three decades, we bring deep expertise across surface and air express, consultative logistics, providing integrated logistics solutions for retail, MSME, and enterprise customers. Backed by a truly national reach, we serve 100% of India’s PIN codes, enabling businesses to grow with speed, confidence, and reliability.As part of the Allcargo Group, we are uniquely positioned to offer integrated capabilities across International Supply Chain, CFS-ICD operations, Logistics Parks, and more—ensuring a comprehensive, connected logistics ecosystem.Driven by a digital-first approach, we leverage advanced systems including enterprise-wide ERP platforms, digital payment solutions, and the Genie WhatsApp chatbot to deliver swift, safe, and on-time services—every single time.Guided by our core value of caring for the environment and society, we uphold global ESG benchmarks and remain committed to building a sustainable, future-ready logistics landscape.",
+        "company_type": "Public Company",
+        "year_founded": 1993,
+        "employee_count_range": "1001-5000",
+        "markets": [
+         "NSE"
+        ],
+        "industries": [
+         "Transportation, Logistics, Supply Chain and Storage"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:40:08.244524Z",
+  "credits": 0.2
+ },
+ "crust:identify:havells.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "havells.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "havells.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 1898,
+       "basic_info": {
+        "name": "Havells India Ltd",
+        "crustdata_company_id": 1898,
+        "primary_domain": "havells.com",
+        "all_domains": [
+         "standardelectricals.com",
+         "havells.com"
+        ],
+        "website": "http://www.havells.com",
+        "professional_network_url": "https://www.linkedin.com/company/havells-india-ltd",
+        "professional_network_id": "81758",
+        "profile_name": "Havells India Ltd",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/c063101ca7e94749c2e2ddda73d26736b21b05fcedb58657672f12ba8fe24af9.jpg",
+        "description": "Havells India Limited is a leading FMEG company with a strong global presence, manufacturing a wide range of electrical products for residential, commercial, and industrial use. Key brands include Havells, Havells Studio, Lloyd, Havells Crabtree, Standard Electricals and REO.With a focus on innovation and customer satisfaction, Havells boasts a robust distribution network, exclusive brand showrooms, and a strong emphasis on service. The company prioritizes sustainability, with a focus on renewable energy, waste reduction, and environmental conservation.Havells is committed to social responsibility, with initiatives in education, sanitation, and community development. Recognized for its sustainability efforts, Havells has been ranked in the Dow Jones Sustainability Index and maintains an 'A' rating in the MSCI ESG Rating.Learn more about Havells on the following channels: Facebook I Youtube I Twitter I Instagram I",
+        "company_type": "Public Company",
+        "year_founded": 1958,
+        "employee_count_range": "5001-10000",
+        "markets": [
+         "NSE"
+        ],
+        "industries": [
+         "Appliances, Electrical, and Electronics Manufacturing",
+         "Manufacturing"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:39:03.422413Z",
+  "credits": 0.2
+ },
+ "crust:identify:infosys.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "infosys.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "infosys.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 2199,
+       "basic_info": {
+        "name": "Infosys",
+        "crustdata_company_id": 2199,
+        "primary_domain": "infosys.com",
+        "all_domains": [
+         "infosys.com",
+         "infy.com"
+        ],
+        "website": "https://www.infosys.com",
+        "professional_network_url": "https://www.linkedin.com/company/infosys",
+        "professional_network_id": "1283",
+        "profile_name": "Infosys",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/90026645acac7ae47b542367e368a6533bc49a7f7e98c0a62774a433a4d49b05.jpg",
+        "description": "Infosys is a global leader in next-generation digital services and consulting. We enable clients in more than 50 countries to navigate their digital transformation. With over three decades of experience in managing the systems and workings of global enterprises, we expertly steer our clients through their digital journey. We do it by enabling the enterprise with an AI-powered core that helps prioritize the execution of change. We also empower the business with agile digital at scale to deliver unprecedented levels of performance and customer delight. Our always-on learning agenda drives their continuous improvement through building and transferring digital skills, expertise, and ideas from our innovation ecosystem.Visit www.infosys.com to see how Infosys (NYSE: INFY) can help your enterprise navigate your next.",
+        "company_type": "Public Company",
+        "year_founded": 1981,
+        "employee_count_range": "10001+",
+        "markets": [
+         "NYSE"
+        ],
+        "industries": [
+         "IT Services and IT Consulting",
+         "Professional Services"
+        ]
+       },
+       "social_profiles": null
+      }
+     },
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 1109573,
+       "basic_info": {
+        "name": "Infosys Consulting",
+        "crustdata_company_id": 1109573,
+        "primary_domain": "infosys.com",
+        "all_domains": [
+         "infosys.com"
+        ],
+        "website": "http://www.infosys.com/consulting/",
+        "professional_network_url": "https://www.linkedin.com/company/infosysconsulting",
+        "professional_network_id": "17758",
+        "profile_name": "Infosys Consulting",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/9e952b6ee52ba5620481edfc58a5a3c6f9cb1c404b7a0f299a9fa66dde1f3165.jpg",
+        "description": "Infosys Consulting is a global management consulting firm helping some of the world’s most recognizable brands transform and innovate. Our consultants are industry experts that lead complex change agendas driven by disruptive technology.  With offices in 20 countries and backed by the power of the global Infosys brand, our teams help the C-suite navigate today’s digital landscape to win market share and create shareholder value for lasting competitive advantage.  To see our ideas in action, or to join a new type of consulting firm, visit us at www.InfosysConsultingInsights.com.",
+        "company_type": "Public Company",
+        "year_founded": 2004,
+        "employee_count_range": "1001-5000",
+        "markets": [
+         "PRIVATE"
+        ],
+        "industries": [
+         "Business Consulting and Services",
+         "Professional Services"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:37:58.787433Z",
+  "credits": 0.2
+ },
+ "crust:identify:tcpl.in": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "tcpl.in"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "tcpl.in",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 5056,
+       "basic_info": {
+        "name": "TCPL Packaging",
+        "crustdata_company_id": 5056,
+        "primary_domain": "tcpl.in",
+        "all_domains": [
+         "tcpl.in"
+        ],
+        "website": "http://www.tcpl.in",
+        "professional_network_url": "https://www.linkedin.com/company/tcpl-packaging-limited",
+        "professional_network_id": "2896494",
+        "profile_name": "TCPL Packaging",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/006543a3b7be8917c6e61323836d699d4a61b8d2bf552d907d79fbf865f21b40.jpg",
+        "description": "TCPL Packaging Limited is one of India’s largest manufacturers of folded cartons and one of the largest converters of paperboard in the country. TCPL is also an innovative player in the Indian flexible packaging industry. TCPL's paperboard division manufactures folding cartons, printed blanks & outers, litho lamination, plastic cartons, blister packs, and shelf ready packaging. TCPL also produces printed cork-tipping paper, laminates, sleeves and wrap-around labels. TCPL caters to clients in tobacco, liquor, food & beverage, consumer goods, pharmaceutical, and other industries. TCPL is headquartered in Mumbai and maintains marketing offices across India to cater to customers across the country and around the world.TCPL operates independent manufacturing units spread across India: Silvassa, Haridwar, Goa, Greater Noida and Assam.",
+        "company_type": "Public Company",
+        "year_founded": 1987,
+        "employee_count_range": "1001-5000",
+        "markets": [
+         "BSE"
+        ],
+        "industries": [
+         "Packaging and Containers Manufacturing",
+         "Plastics and Rubber Product Manufacturing",
+         "Manufacturing"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:39:07.556207Z",
+  "credits": 0.2
+ },
+ "crust:identify:tcs.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "tcs.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "tcs.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 5057,
+       "basic_info": {
+        "name": "Tata Consultancy Services",
+        "crustdata_company_id": 5057,
+        "primary_domain": "tcs.com",
+        "all_domains": [
+         "tcs.com"
+        ],
+        "website": "https://www.tcs.com/",
+        "professional_network_url": "https://www.linkedin.com/company/tata-consultancy-services",
+        "professional_network_id": "1353",
+        "profile_name": "Tata Consultancy Services",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/84edc3caccf11df97ebe6630a91ca474be9e3aaa118457faacc795bdf301174e.jpg",
+        "description": "Tata Consultancy Services (TCS) is the technology partner of choice for industry-leading organizations worldwide. Since its inception in 1968, TCS has upheld the highest standards of innovation, engineering excellence, and customer service.It has set an aspiration to become the world's largest AI-led technology services company and is enabling its clients to transform themselves across the full AI stack, from infrastructure to intelligence.Rooted in the heritage of the Tata Group, TCS is focused on creating long term value for its clients, its investors, its employees, and the community at large. With a highly skilled workforce spread across 56 countries and 194 service delivery centers across the world, the company has been recognized as a top employer in six continents. With the ability to rapidly apply and scale new technologies, the company has built long-term partnerships with its clients. Many of these relationships have endured into decades and navigated every technology cycle, from mainframes in the 1970s to artificial intelligence today.TCS sponsors 14 of the world’s most prestigious marathons and endurance events, including the TCS New York City Marathon, TCS London Marathon, Tata Mumbai Marathon, and TCS Sydney Marathon with a focus on promoting health, sustainability, and community empowerment.Caution against fraudulent job offers: TCS doesn’t charge any fee throughout the recruitment process. Refer here: https://www.tcs.com/careers/india/recruitment-fraud-alert",
+        "company_type": "Public Company",
+        "year_founded": 1968,
+        "employee_count_range": "10001+",
+        "markets": [
+         "BSE"
+        ],
+        "industries": [
+         "IT Services and IT Consulting",
+         "Professional Services"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:37:56.760800Z",
+  "credits": 0.2
+ },
+ "crust:identify:uflexltd.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "uflexltd.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "uflexltd.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 5267,
+       "basic_info": {
+        "name": "UFLEX Limited",
+        "crustdata_company_id": 5267,
+        "primary_domain": "uflexltd.com",
+        "all_domains": [
+         "flexfilm.com",
+         "uflexltd.com"
+        ],
+        "website": "https://www.uflexltd.com",
+        "professional_network_url": "https://www.linkedin.com/company/uflexltd",
+        "professional_network_id": "30188466",
+        "profile_name": "UFLEX Limited",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/b35f7e671c018bad0ed83266a14db9df4a26c21ed41851bd3ff6230b2753caf2.jpg",
+        "description": "UFlex is India’s largest multinational flexible packaging and solutions company. Since its inception in 1985, UFlex has grown from strength to strength and has built a strong presence across all verticals of the packaging value chain - packaging films, chemicals, aseptic packaging, flexible packaging, holography, engineering, and printing cylinders. With a 12,000+ strong multicultural workforce across global regions that works toward developing innovative, value-added, and sustainable packaging solutions, the company has earned an irreproachable reputation for defining the contours of the ‘Packaging Industry’ in India and overseas. It provides end-to-end solutions to numerous Fortune 500 clients across various sectors such as FMCG, consumer product goods, pharmaceuticals, building materials, automobiles, and more, in more than 150 countries. Headquartered in Noida, the National Capital Region, India, UFlex enjoys a global reach with advanced manufacturing facilities in India, UAE, Mexico, Egypt, USA, Poland, CIS, Nigeria, and Hungary. A winner of various marquee global awards for product excellence, innovation, and sustainability, UFlex is the first company in the world to earn recognition at the Davos Recycle Forum in 1995 for conceptualizing the recycling of mixed plastic waste.",
+        "company_type": "Public Company",
+        "year_founded": 1985,
+        "employee_count_range": "10001+",
+        "markets": [
+         "NSE"
+        ],
+        "industries": [
+         "Packaging and Containers Manufacturing",
+         "Plastics and Rubber Product Manufacturing",
+         "Manufacturing"
+        ]
+       },
+       "social_profiles": null
+      }
+     },
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 1132067,
+       "basic_info": {
+        "name": "UFLEX Group",
+        "crustdata_company_id": 1132067,
+        "primary_domain": "uflexltd.com",
+        "all_domains": [
+         "uflexltd.com"
+        ],
+        "website": "https://www.uflexltd.com",
+        "professional_network_url": "https://www.linkedin.com/company/uflexforu",
+        "professional_network_id": "1030739",
+        "profile_name": "UFLEX Group",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/571125e2bab7e1b0718ed77354cbf0ae9f7486fdb617880bf05e44e6b0cddd70.jpg",
+        "description": "After Pioneering the growth of the flexible packaging industry in India, Uflex has gained an unchallenged identity. Since its inception in the year 1988 it has turned into a multi billion company that values quality and customer satisfaction amongst other priorities with motive Uflex with you always. With consumers spread across the world, Uflex enjoys a global reach touching millions of homes every day from morning till evening. Uflex has state of the art manufacturing facilities not only in India but also in overseas i.e Dubai, Mexico, USA, Poland & Egypt. Uflex facility enjoys ISO 9001 and ISO 14001 certifications and has FDA and BGA approvals for their products. It is also a part of the D&B Global Database and winner of various prestigious national and international awards like the top exporter of BOPET and BOPP films, and the Worldstar award for packaging excellence. FPA, AIMCAL and the DUPONT Awards in 2004-2005 are the latest in this series.With a vision to ‘Progress with Distinction’, Uflex is privileged to contribute to the society by producing a variety of Eco friendly value added flexible packaging material, sophisticated products including films like BOPET, BOPP and CPP; Holographic/ Metalized products, printing inks & adhesive, rotogravure cylinders, thereby providing world class flexible packaging solutions to its customers globally at competitive prices. Besides it specializes in the manufacturing of a wide variety of packaging machines like Vertical Form-Fill-Seal Machines, Horizontal Wrapping Machines, Special Purpose Machines, and High Speed Pouch Making Machines etc.",
+        "company_type": "Privately Held",
+        "year_founded": 1985,
+        "employee_count_range": "5001-10000",
+        "markets": [],
+        "industries": [
+         "Packaging and Containers Manufacturing",
+         "Plastics and Rubber Product Manufacturing",
+         "Manufacturing"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:39:05.679715Z",
+  "credits": 0.2
+ },
+ "crust:identify:wipro.com": {
+  "endpoint": "POST /company/identify",
+  "request": {
+   "domains": [
+    "wipro.com"
+   ]
+  },
+  "status": 200,
+  "response": [
+   {
+    "matched_on": "wipro.com",
+    "match_type": "domain",
+    "matches": [
+     {
+      "confidence_score": 1.0,
+      "company_data": {
+       "crustdata_company_id": 5619,
+       "basic_info": {
+        "name": "Wipro",
+        "crustdata_company_id": 5619,
+        "primary_domain": "wipro.com",
+        "all_domains": [
+         "wipro.com"
+        ],
+        "website": "http://www.wipro.com",
+        "professional_network_url": "https://www.linkedin.com/company/wipro",
+        "professional_network_id": "1318",
+        "profile_name": "Wipro",
+        "logo_permalink": "https://crustdata-media.s3.us-east-2.amazonaws.com/company/ad6a30aa0f0ef76f0edb4a9688dc646173e2ae7cd347fb1bdccf1967b53421f7.jpg",
+        "description": "Wipro Limited (NYSE: WIT, BSE: 507685, NSE: WIPRO) is a leading AI-powered technology services and consulting company focused on building innovative solutions that address clients’ most complex digital transformation needs. Leveraging our consulting-led approach and the Wipro IntelligenceTM unified suite of AI-powered platforms, solutions and transformative offerings, we help clients realize their boldest ambitions to build intelligent and sustainable businesses. The Wipro Innovation Network – part of the Wipro IntelligenceTM suite – underpins our commitment to client-centric co-innovation and co-creation by bringing together capabilities from the innovation labs and partner labs, academia, and global tech communities. With over 240,000 employees and business partners across 65 countries, we deliver on the promise of helping our customers, colleagues, and communities thrive in an ever-changing world. For additional information, visit us at www.wipro.com.",
+        "company_type": "Public Company",
+        "year_founded": 1945,
+        "employee_count_range": "10001+",
+        "markets": [
+         "PRIVATE"
+        ],
+        "industries": [
+         "IT Services and IT Consulting",
+         "Professional Services"
+        ]
+       },
+       "social_profiles": null
+      }
+     }
+    ]
+   }
+  ],
+  "retrieved_at": "2026-11-22T11:38:02.180220Z",
+  "credits": 0.2
+ }
+}
