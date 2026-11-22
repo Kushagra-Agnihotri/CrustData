@@ -10,7 +10,7 @@ from __future__ import annotations
 import datetime as dt
 
 from app import config, sources
-from app.db import j, q, q1
+from app.db import j, q, q1, unj
 from app.ledger import add_fact
 from app.validators import gstin_checksum_ok, gstin_format_ok
 
@@ -20,10 +20,13 @@ PRIORITY_WEIGHTS = {"critical_supplier": 0.25, "relationship_years": 0.15, "clea
                     "on_time_delivery": 0.20, "low_dispute_rate": 0.10, "msme_small_supplier": 0.10}
 
 
-def _sig(signal, value, weight, note, fact_ids=None, verified=True):
-    return {"signal": signal, "value": round(value, 3), "weight": weight,
-            "contribution": round(value * weight, 3), "note": note,
-            "fact_ids": fact_ids or [], "verified": verified}
+def _sig(signal, value, weight, note, fact_ids=None, verified=True, unavailable=False):
+    r = {"signal": signal, "value": round(value, 3), "weight": weight,
+         "contribution": round(value * weight, 3), "note": note,
+         "fact_ids": fact_ids or [], "verified": verified}
+    if unavailable:  # a source outage, not an answer: the score is provisional and is recomputed next time
+        r["unavailable"] = True
+    return r
 
 
 def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[dict]]:
@@ -48,7 +51,7 @@ def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[
                                       sources.source_type("crustdata", res), res.source_ref, "[0].matches",
                                       res.retrieved_at, res.raw_response_id))
     except sources.SourceUnavailable as e:
-        rows.append(_sig("identity", 0, TRUST_WEIGHTS["identity"], f"can't verify: {e}", verified=False))
+        rows.append(_sig("identity", 0, TRUST_WEIGHTS["identity"], f"can't verify: {e}", verified=False, unavailable=True))
     if not any(r["signal"] == "identity" for r in rows):
         v = 1.0 if (identity_ok and company) else (0.5 if identity_ok or company else 0.0)
         note = ("GSTIN checksum ✓, PAN ✓, company found in Crustdata" if v == 1 else
@@ -61,30 +64,39 @@ def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[
             er = sources.company_enrich(conn, ctx, company["crustdata_company_id"])
             enrich = er.data
             if enrich:
-                yf = enrich.get("basic_info", {}).get("year_founded")
-                ts = enrich.get("headcount", {}).get("timeseries", [])
-                f_age = add_fact(conn, "vendor", vid, "year_founded", yf, sources.source_type("crustdata", er),
-                                 er.source_ref, "basic_info.year_founded", er.retrieved_at, er.raw_response_id)
-                f_hc = add_fact(conn, "vendor", vid, "headcount_timeseries", ts, sources.source_type("crustdata", er),
-                                er.source_ref, "headcount.timeseries", er.retrieved_at, er.raw_response_id)
-                f_dom = add_fact(conn, "vendor", vid, "official_domain", enrich.get("basic_info", {}).get("primary_domain"),
-                                 sources.source_type("crustdata", er), er.source_ref, "basic_info.primary_domain",
+                P = sources.ENRICH_PATH
+                bi = enrich.get("basic_info") or {}
+                hc = enrich.get("headcount") or {}
+                yf = bi.get("year_founded")
+                total = hc.get("total")
+                yoy = (hc.get("growth_percent") or {}).get("yoy")
+                st = sources.source_type("crustdata", er)
+                f_age = add_fact(conn, "vendor", vid, "year_founded", yf, st,
+                                 er.source_ref, f"{P}.basic_info.year_founded", er.retrieved_at, er.raw_response_id)
+                f_hc = add_fact(conn, "vendor", vid, "headcount", {"total": total, "growth_percent_yoy": yoy}, st,
+                                er.source_ref, f"{P}.headcount.total + headcount.growth_percent.yoy", er.retrieved_at, er.raw_response_id)
+                f_dom = add_fact(conn, "vendor", vid, "official_domain", bi.get("primary_domain"),
+                                 st, er.source_ref, f"{P}.basic_info.primary_domain",
                                  er.retrieved_at, er.raw_response_id)
+                loc = enrich.get("locations") or {}
+                if loc.get("headquarters") or loc.get("state"):
+                    add_fact(conn, "vendor", vid, "hq_location", {k: loc.get(k) for k in ("headquarters", "state", "country")},
+                             st, er.source_ref, f"{P}.locations.headquarters", er.retrieved_at, er.raw_response_id)
                 if yf:
                     age = config.RUN_DATE.year - int(yf)
                     rows.append(_sig("company_age", min(1.0, max(0.0, age / 10)), TRUST_WEIGHTS["company_age"],
                                      f"founded {yf} ({age} years)", [f_age]))
-                if len(ts) >= 2 and ts[0]["value"]:
-                    chg = ts[-1]["value"] / ts[0]["value"] - 1
+                if yoy is not None:
+                    chg = float(yoy) / 100
                     val = 1.0 if chg >= 0 else max(0.0, 1 + chg / 0.3)
                     rows.append(_sig("headcount_stability", val, TRUST_WEIGHTS["headcount_stability"],
-                                     f"headcount {ts[0]['value']} → {ts[-1]['value']} ({chg:+.0%} in 12 mo)", [f_hc]))
-                off = (enrich.get("basic_info", {}).get("primary_domain") or "").lower()
+                                     f"headcount {total} ({chg:+.0%} in 12 mo)", [f_hc]))
+                off = (bi.get("primary_domain") or "").lower()
                 same = off == (vendor["domain"] or "").lower()
                 rows.append(_sig("domain_consistency", 1.0 if same else 0.0, TRUST_WEIGHTS["domain_consistency"],
                                  f"vendor master domain {vendor['domain']} {'==' if same else '≠'} official {off}", [f_dom]))
         except sources.SourceUnavailable as e:
-            rows.append(_sig("company_age", 0, TRUST_WEIGHTS["company_age"], f"can't verify: {e}", verified=False))
+            rows.append(_sig("company_age", 0, TRUST_WEIGHTS["company_age"], f"can't verify: {e}", verified=False, unavailable=True))
     # bank stability (internal record)
     cur = q1(conn, "SELECT * FROM vendor_bank_accounts WHERE vendor_id=? AND status='current'", (vid,))
     pend = q1(conn, "SELECT COUNT(*) n FROM vendor_bank_accounts WHERE vendor_id=? AND status IN ('pending_verification','rejected')", (vid,))["n"]
@@ -98,13 +110,14 @@ def compute_trust(conn, ctx: sources.RunCtx, vendor: dict) -> tuple[float, list[
     # adverse news
     try:
         nr = sources.adverse_news(conn, ctx, vendor["legal_name"])
-        hits = (nr.data or {}).get("results", [])
-        f_n = add_fact(conn, "vendor", vid, "adverse_news", hits, sources.source_type("crustdata_web", nr),
-                       nr.source_ref, "results", nr.retrieved_at, nr.raw_response_id)
-        note = "no adverse news found" if not hits else "; ".join(f"{h['title']} ({h['date']})" for h in hits)
+        hits = sources.news_hits((nr.data or {}).get("results", []))
+        f_n = add_fact(conn, "vendor", vid, "adverse_news", [{k: h.get(k) for k in ("title", "url")} for h in hits],
+                       sources.source_type("crustdata_web", nr), nr.source_ref, "results[].{title,url,snippet}",
+                       nr.retrieved_at, nr.raw_response_id)
+        note = "no adverse news found" if not hits else "; ".join(h.get("title", "") for h in hits[:3])
         rows.append(_sig("no_adverse_news", 0.0 if hits else 1.0, TRUST_WEIGHTS["no_adverse_news"], note, [f_n]))
     except sources.SourceUnavailable as e:
-        rows.append(_sig("no_adverse_news", 0, TRUST_WEIGHTS["no_adverse_news"], f"can't verify: {e}", verified=False))
+        rows.append(_sig("no_adverse_news", 0, TRUST_WEIGHTS["no_adverse_news"], f"can't verify: {e}", verified=False, unavailable=True))
     # fill in signals we could not compute
     have = {r["signal"] for r in rows}
     for s, w in TRUST_WEIGHTS.items():
@@ -149,7 +162,8 @@ def compute_priority(conn, vendor: dict) -> tuple[float, list[dict]]:
 
 def ensure_scores(conn, ctx, vendor_id: str) -> dict:
     v = q1(conn, "SELECT * FROM vendors WHERE id=?", (vendor_id,))
-    if v["trust_score"] is None:
+    provisional = any(r.get("unavailable") for r in unj(v["trust_breakdown"], []))
+    if v["trust_score"] is None or provisional:
         compute_trust(conn, ctx, v)
     if v["priority_score"] is None:
         compute_priority(conn, v)

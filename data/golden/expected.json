@@ -24,6 +24,7 @@
     "must_include": [
       "DUPLICATE_INVOICE"
     ],
+    "first": "DUPLICATE_INVOICE",
     "label": "Re-issue of #2 as INV/42 vs INV-0042"
   },
   "case06": {
@@ -75,6 +76,7 @@
     "must_include": [
       "SOURCE_UNAVAILABLE"
     ],
+    "only": true,
     "inject_fault": [
       "crustdata",
       "ifsc"

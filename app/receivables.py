@@ -21,19 +21,20 @@ def forecast_all(conn, ctx=None) -> None:
                     cd = idr.data["company_data"]
                     conn.execute("UPDATE customers SET crustdata_company_id=? WHERE id=?", (cd["crustdata_company_id"], c["id"]))
                     er = sources.company_enrich(conn, ctx, cd["crustdata_company_id"])
-                    ts = (er.data or {}).get("headcount", {}).get("timeseries", [])
-                    fids.append(add_fact(conn, "customer", c["id"], "headcount_timeseries", ts, sources.source_type("crustdata", er),
-                                         er.source_ref, "headcount.timeseries", er.retrieved_at, er.raw_response_id))
-                    chg = ts[-1]["value"] / ts[0]["value"] - 1 if len(ts) >= 2 and ts[0]["value"] else 0
+                    yoy = (((er.data or {}).get("headcount") or {}).get("growth_percent") or {}).get("yoy")
+                    fids.append(add_fact(conn, "customer", c["id"], "headcount_growth_yoy", yoy, sources.source_type("crustdata", er),
+                                         er.source_ref, f"{sources.ENRICH_PATH}.headcount.growth_percent.yoy", er.retrieved_at, er.raw_response_id))
+                    chg = float(yoy) / 100 if yoy is not None else 0
                     hc_score = 1.0 if chg >= 0 else max(0.0, 1 + chg / 0.3)
                     nr = sources.adverse_news(conn, ctx, c["legal_name"])
-                    hits = (nr.data or {}).get("results", [])
-                    fids.append(add_fact(conn, "customer", c["id"], "adverse_news", hits, sources.source_type("crustdata_web", nr),
-                                         nr.source_ref, "results", nr.retrieved_at, nr.raw_response_id))
+                    hits = sources.news_hits((nr.data or {}).get("results", []))
+                    fids.append(add_fact(conn, "customer", c["id"], "adverse_news", [{k: h.get(k) for k in ("title", "url")} for h in hits],
+                                         sources.source_type("crustdata_web", nr), nr.source_ref, "results[].{title,url,snippet}",
+                                         nr.retrieved_at, nr.raw_response_id))
                     health = 0.5 * hc_score + 0.5 * (0.0 if hits else 1.0)
                     breakdown = [{"signal": "headcount trend", "value": round(hc_score, 2), "note": f"{chg:+.0%} in 12 months"},
                                  {"signal": "adverse news", "value": 0.0 if hits else 1.0,
-                                  "note": "; ".join(h["title"] for h in hits) or "none found"}]
+                                  "note": "; ".join(h.get("title", "") for h in hits) or "none found"}]
                 else:
                     breakdown = [{"signal": "company", "value": 0, "note": "can't verify: not found in Crustdata"}]
             except sources.SourceUnavailable as e:

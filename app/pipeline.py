@@ -17,7 +17,7 @@ from app.db import j, new_id, now_iso, q, q1, tx, unj
 from app.extract import extract
 from app.ledger import add_event, add_fact, record_call
 from app.money import inr
-from app.reasons import BLOCK, HOLD, OK, passed, reason
+from app.reasons import BLOCK, HOLD, OK, passed, reason, sort_reasons
 from app.validators import (content_hash, domain_core, domain_of, edit_distance, gstin_check_char,
                             gstin_checksum_ok, gstin_format_ok, ifsc_format_ok, norm_invoice_no,
                             normalize_name, pressure_terms, similarity, skeleton)
@@ -441,9 +441,10 @@ def _check_bank_change(conn, inv, ctx, vendor, f):
         else:
             try:
                 res = sources.person_search(conn, ctx, cid, inv["signatory"])
-                hits = (res.data or {}).get("profiles", [])
-                fid = add_fact(conn, "invoice", inv["id"], "signatory_search", hits, sources.source_type("crustdata", res),
-                               res.source_ref, "profiles", res.retrieved_at, res.raw_response_id)
+                hits = sources.person_titles(res.data)   # titles only: no names / URLs in facts
+                fid = add_fact(conn, "invoice", inv["id"], "signatory_search", {"count": len(hits), "matches": hits},
+                               sources.source_type("crustdata", res), res.source_ref,
+                               "profiles[].basic_profile.current_title", res.retrieved_at, res.raw_response_id)
                 if not hits:
                     out.append(reason("SENDER_NOT_VERIFIED_AT_VENDOR", f"I can't verify that '{inv['signatory']}, {inv['signatory_title']}' works at "
                                       f"{vendor['legal_name']} (Crustdata people search: 0 current employees by that name)", [fid, f.get("signatory")], stage))
@@ -566,7 +567,7 @@ def step(conn, inv_id, ctx, actor="worker") -> str:
             inv = q1(conn, "SELECT * FROM invoices WHERE id=?", (inv_id,))
             upd, new_reasons = fn(conn, inv, ctx)
             tag = STAGE_TAG[state]
-            reasons = [r for r in unj(inv["reasons"], []) if r.get("stage") != tag] + new_reasons
+            reasons = sort_reasons([r for r in unj(inv["reasons"], []) if r.get("stage") != tag] + new_reasons)
             nxt = upd.pop("_state", NEXT[state])
             explain = upd.pop("_explain", False)
             if explain:
