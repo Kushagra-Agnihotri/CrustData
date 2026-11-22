@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& \"C:/Users/KUSHAGRA/.claude/plugins/cache/impeccable/impeccable/4.10.0/skills/impeccable/scripts/impeccable.cmd\" context)",
+      "PowerShell(& \"C:/Users/KUSHAGRA/.claude/plugins/cache/impeccable/impeccable/4.10.0/skills/impeccable/scripts/impeccable.cmd\" signals)"
+    ]
+  }
+}
