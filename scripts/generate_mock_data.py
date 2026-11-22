@@ -161,28 +161,48 @@ def gen_seed():
     }, indent=2), encoding="utf-8")
 
 
+def _person(name, title, cid):
+    # shaped like POST /person/search profiles[] with fields basic_profile.* + experience.employment_details.current.*
+    return {"basic_profile": {"name": name, "current_title": title},
+            "experience": {"employment_details": {"current": [{"title": title, "company_id": cid}]}}}
+
+
 def gen_mock_sources():
+    """Offline fixtures shaped exactly like the documented Crustdata responses (API 2025-11-01).
+
+    identify: matches[] items {confidence_score, company_data:{crustdata_company_id, basic_info}} (no headcount)
+    enrich:   company_data {basic_info, headcount:{total, growth_percent:{yoy}}, locations, news[]}
+    people:   person/search profiles[]
+    news:     web/search/live results[] {source,title,url,snippet,position} (no date field)
+    """
     identify_domain, enrich, people, news = {}, {}, {}, {}
+
+    def ent(cid, name, domain, founded, hc, city=None, state=None):
+        yoy = round((hc[1] / hc[0] - 1) * 100, 2)
+        return {"crustdata_company_id": cid,
+                "basic_info": {"crustdata_company_id": cid, "name": name, "primary_domain": domain, "year_founded": founded},
+                "headcount": {"total": hc[1], "growth_percent": {"yoy": yoy}},
+                "locations": {"country": "India", "headquarters": city, "state": state},
+                "news": []}
+
     for v in V:
-        cd = {"crustdata_company_id": v["cid"], "basic_info": {"name": v["legal_name"], "year_founded": v["founded"], "primary_domain": v["domain"]},
-              "headcount": {"total": v["hc"][1]}}
-        identify_domain[v["domain"]] = {"confidence": 0.97, "company_data": cd}
-        enrich[str(v["cid"])] = {"crustdata_company_id": v["cid"],
-                                 "basic_info": {"name": v["legal_name"], "year_founded": v["founded"], "primary_domain": v["domain"], "hq_city": v["city"]},
-                                 "headcount": {"total": v["hc"][1], "timeseries": [{"date": "2025-11-01", "value": v["hc"][0]},
-                                                                                   {"date": "2026-11-01", "value": v["hc"][1]}]}}
-    people["1000102"] = [{"name": "Priya Shah", "title": "Finance Controller", "current_employer_id": 1000102},
-                         {"name": "Nikhil Desai", "title": "Accounts Executive", "current_employer_id": 1000102}]
-    people["1000104"] = [{"name": "Sunil Kulkarni", "title": "Head of Accounts", "current_employer_id": 1000104}]
-    news["infra logistics pvt ltd"] = [{"title": "NCLT admits insolvency petition filed by lessor against Infra Logistics",
-                                        "url": "https://example-news.in/2026/10/05/infra-logistics-nclt", "date": "2026-10-05"}]
-    news["horizon retail pvt ltd"] = [{"title": "Horizon Retail delays salaries, shuts 12 stores",
-                                       "url": "https://example-news.in/2026/11/02/horizon-retail", "date": "2026-11-02"}]
+        identify_domain[v["domain"]] = {"confidence_score": 0.97, "company_data": {
+            "crustdata_company_id": v["cid"],
+            "basic_info": {"crustdata_company_id": v["cid"], "name": v["legal_name"], "primary_domain": v["domain"],
+                           "year_founded": v["founded"]}}}
+        enrich[str(v["cid"])] = ent(v["cid"], v["legal_name"], v["domain"], v["founded"], v["hc"], v["city"], v["state"])
+    people["1000102"] = [_person("Priya Shah", "Finance Controller", 1000102),
+                         _person("Nikhil Desai", "Accounts Executive", 1000102)]
+    people["1000104"] = [_person("Sunil Kulkarni", "Head of Accounts", 1000104)]
+    news["infra logistics pvt ltd"] = [{"source": "news", "title": "NCLT admits insolvency petition filed by lessor against Infra Logistics",
+                                        "url": "https://example-news.in/2026/10/05/infra-logistics-nclt", "snippet": "", "position": 1}]
+    news["horizon retail pvt ltd"] = [{"source": "news", "title": "Horizon Retail delays salaries, shuts 12 stores; lenders weigh default notice",
+                                       "url": "https://example-news.in/2026/11/02/horizon-retail", "snippet": "", "position": 1}]
     for c in CUSTOMERS:
         hc = (300, 310) if c[5] else (900, 560)
-        enrich[str(c[4])] = {"crustdata_company_id": c[4], "basic_info": {"name": c[1], "year_founded": 2004, "primary_domain": c[2]},
-                             "headcount": {"total": hc[1], "timeseries": [{"date": "2025-11-01", "value": hc[0]}, {"date": "2026-11-01", "value": hc[1]}]}}
-        identify_domain[c[2]] = {"confidence": 0.95, "company_data": {"crustdata_company_id": c[4], "basic_info": {"name": c[1], "primary_domain": c[2]}}}
+        enrich[str(c[4])] = ent(c[4], c[1], c[2], 2004, hc)
+        identify_domain[c[2]] = {"confidence_score": 0.95, "company_data": {
+            "crustdata_company_id": c[4], "basic_info": {"crustdata_company_id": c[4], "name": c[1], "primary_domain": c[2]}}}
     out = {"_note": "Offline fixtures shaped like Crustdata / Razorpay IFSC responses. Facts from these are labelled *_mock.",
            "identify": {"domain": identify_domain, "name": {v["legal_name"].lower(): identify_domain[v["domain"]] for v in V}},
            "enrich": enrich, "people": people, "news": news,

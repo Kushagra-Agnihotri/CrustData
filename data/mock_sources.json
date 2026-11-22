@@ -3,152 +3,140 @@
   "identify": {
     "domain": {
       "shreeganeshpackaging.in": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000101,
           "basic_info": {
+            "crustdata_company_id": 1000101,
             "name": "Shree Ganesh Packaging Pvt Ltd",
-            "year_founded": 2012,
-            "primary_domain": "shreeganeshpackaging.in"
-          },
-          "headcount": {
-            "total": 41
+            "primary_domain": "shreeganeshpackaging.in",
+            "year_founded": 2012
           }
         }
       },
       "acmesupplies.com": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000102,
           "basic_info": {
+            "crustdata_company_id": 1000102,
             "name": "Acme Supplies Pvt Ltd",
-            "year_founded": 2009,
-            "primary_domain": "acmesupplies.com"
-          },
-          "headcount": {
-            "total": 126
+            "primary_domain": "acmesupplies.com",
+            "year_founded": 2009
           }
         }
       },
       "kaveristeel.in": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000103,
           "basic_info": {
+            "crustdata_company_id": 1000103,
             "name": "Kaveri Steel Traders",
-            "year_founded": 2015,
-            "primary_domain": "kaveristeel.in"
-          },
-          "headcount": {
-            "total": 24
+            "primary_domain": "kaveristeel.in",
+            "year_founded": 2015
           }
         }
       },
       "precisioncastings.co.in": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000104,
           "basic_info": {
+            "crustdata_company_id": 1000104,
             "name": "Precision Castings Ltd",
-            "year_founded": 1998,
-            "primary_domain": "precisioncastings.co.in"
-          },
-          "headcount": {
-            "total": 432
+            "primary_domain": "precisioncastings.co.in",
+            "year_founded": 1998
           }
         }
       },
       "nimbuscloud.com": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000105,
           "basic_info": {
+            "crustdata_company_id": 1000105,
             "name": "Nimbus Cloud Services Pvt Ltd",
-            "year_founded": 2008,
-            "primary_domain": "nimbuscloud.com"
-          },
-          "headcount": {
-            "total": 5600
+            "primary_domain": "nimbuscloud.com",
+            "year_founded": 2008
           }
         }
       },
       "induschem.com": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000106,
           "basic_info": {
+            "crustdata_company_id": 1000106,
             "name": "Indus Chemicals Ltd",
-            "year_founded": 2005,
-            "primary_domain": "induschem.com"
-          },
-          "headcount": {
-            "total": 318
+            "primary_domain": "induschem.com",
+            "year_founded": 2005
           }
         }
       },
       "infralogistics.in": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000107,
           "basic_info": {
+            "crustdata_company_id": 1000107,
             "name": "Infra Logistics Pvt Ltd",
-            "year_founded": 2018,
-            "primary_domain": "infralogistics.in"
-          },
-          "headcount": {
-            "total": 156
+            "primary_domain": "infralogistics.in",
+            "year_founded": 2018
           }
         }
       },
       "bharatelectricals.com": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000108,
           "basic_info": {
+            "crustdata_company_id": 1000108,
             "name": "Bharat Electricals Pvt Ltd",
-            "year_founded": 2010,
-            "primary_domain": "bharatelectricals.com"
-          },
-          "headcount": {
-            "total": 91
+            "primary_domain": "bharatelectricals.com",
+            "year_founded": 2010
           }
         }
       },
       "zenithmotors.in": {
-        "confidence": 0.95,
+        "confidence_score": 0.95,
         "company_data": {
           "crustdata_company_id": 2000001,
           "basic_info": {
+            "crustdata_company_id": 2000001,
             "name": "Zenith Motors Ltd",
             "primary_domain": "zenithmotors.in"
           }
         }
       },
       "horizonretail.in": {
-        "confidence": 0.95,
+        "confidence_score": 0.95,
         "company_data": {
           "crustdata_company_id": 2000002,
           "basic_info": {
+            "crustdata_company_id": 2000002,
             "name": "Horizon Retail Pvt Ltd",
             "primary_domain": "horizonretail.in"
           }
         }
       },
       "apexengg.in": {
-        "confidence": 0.95,
+        "confidence_score": 0.95,
         "company_data": {
           "crustdata_company_id": 2000003,
           "basic_info": {
+            "crustdata_company_id": 2000003,
             "name": "Apex Engineering Works",
             "primary_domain": "apexengg.in"
           }
         }
       },
       "lotusfoods.in": {
-        "confidence": 0.95,
+        "confidence_score": 0.95,
         "company_data": {
           "crustdata_company_id": 2000004,
           "basic_info": {
+            "crustdata_company_id": 2000004,
             "name": "Lotus Foods Pvt Ltd",
             "primary_domain": "lotusfoods.in"
           }
@@ -157,114 +145,98 @@
     },
     "name": {
       "shree ganesh packaging pvt ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000101,
           "basic_info": {
+            "crustdata_company_id": 1000101,
             "name": "Shree Ganesh Packaging Pvt Ltd",
-            "year_founded": 2012,
-            "primary_domain": "shreeganeshpackaging.in"
-          },
-          "headcount": {
-            "total": 41
+            "primary_domain": "shreeganeshpackaging.in",
+            "year_founded": 2012
           }
         }
       },
       "acme supplies pvt ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000102,
           "basic_info": {
+            "crustdata_company_id": 1000102,
             "name": "Acme Supplies Pvt Ltd",
-            "year_founded": 2009,
-            "primary_domain": "acmesupplies.com"
-          },
-          "headcount": {
-            "total": 126
+            "primary_domain": "acmesupplies.com",
+            "year_founded": 2009
           }
         }
       },
       "kaveri steel traders": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000103,
           "basic_info": {
+            "crustdata_company_id": 1000103,
             "name": "Kaveri Steel Traders",
-            "year_founded": 2015,
-            "primary_domain": "kaveristeel.in"
-          },
-          "headcount": {
-            "total": 24
+            "primary_domain": "kaveristeel.in",
+            "year_founded": 2015
           }
         }
       },
       "precision castings ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000104,
           "basic_info": {
+            "crustdata_company_id": 1000104,
             "name": "Precision Castings Ltd",
-            "year_founded": 1998,
-            "primary_domain": "precisioncastings.co.in"
-          },
-          "headcount": {
-            "total": 432
+            "primary_domain": "precisioncastings.co.in",
+            "year_founded": 1998
           }
         }
       },
       "nimbus cloud services pvt ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000105,
           "basic_info": {
+            "crustdata_company_id": 1000105,
             "name": "Nimbus Cloud Services Pvt Ltd",
-            "year_founded": 2008,
-            "primary_domain": "nimbuscloud.com"
-          },
-          "headcount": {
-            "total": 5600
+            "primary_domain": "nimbuscloud.com",
+            "year_founded": 2008
           }
         }
       },
       "indus chemicals ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000106,
           "basic_info": {
+            "crustdata_company_id": 1000106,
             "name": "Indus Chemicals Ltd",
-            "year_founded": 2005,
-            "primary_domain": "induschem.com"
-          },
-          "headcount": {
-            "total": 318
+            "primary_domain": "induschem.com",
+            "year_founded": 2005
           }
         }
       },
       "infra logistics pvt ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000107,
           "basic_info": {
+            "crustdata_company_id": 1000107,
             "name": "Infra Logistics Pvt Ltd",
-            "year_founded": 2018,
-            "primary_domain": "infralogistics.in"
-          },
-          "headcount": {
-            "total": 156
+            "primary_domain": "infralogistics.in",
+            "year_founded": 2018
           }
         }
       },
       "bharat electricals pvt ltd": {
-        "confidence": 0.97,
+        "confidence_score": 0.97,
         "company_data": {
           "crustdata_company_id": 1000108,
           "basic_info": {
+            "crustdata_company_id": 1000108,
             "name": "Bharat Electricals Pvt Ltd",
-            "year_founded": 2010,
-            "primary_domain": "bharatelectricals.com"
-          },
-          "headcount": {
-            "total": 91
+            "primary_domain": "bharatelectricals.com",
+            "year_founded": 2010
           }
         }
       }
@@ -274,298 +246,327 @@
     "1000101": {
       "crustdata_company_id": 1000101,
       "basic_info": {
+        "crustdata_company_id": 1000101,
         "name": "Shree Ganesh Packaging Pvt Ltd",
-        "year_founded": 2012,
         "primary_domain": "shreeganeshpackaging.in",
-        "hq_city": "Pune"
+        "year_founded": 2012
       },
       "headcount": {
         "total": 41,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 38
-          },
-          {
-            "date": "2026-11-01",
-            "value": 41
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 7.89
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Pune",
+        "state": "MAHARASHTRA"
+      },
+      "news": []
     },
     "1000102": {
       "crustdata_company_id": 1000102,
       "basic_info": {
+        "crustdata_company_id": 1000102,
         "name": "Acme Supplies Pvt Ltd",
-        "year_founded": 2009,
         "primary_domain": "acmesupplies.com",
-        "hq_city": "Ahmedabad"
+        "year_founded": 2009
       },
       "headcount": {
         "total": 126,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 120
-          },
-          {
-            "date": "2026-11-01",
-            "value": 126
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 5.0
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Ahmedabad",
+        "state": "GUJARAT"
+      },
+      "news": []
     },
     "1000103": {
       "crustdata_company_id": 1000103,
       "basic_info": {
+        "crustdata_company_id": 1000103,
         "name": "Kaveri Steel Traders",
-        "year_founded": 2015,
         "primary_domain": "kaveristeel.in",
-        "hq_city": "Bengaluru"
+        "year_founded": 2015
       },
       "headcount": {
         "total": 24,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 22
-          },
-          {
-            "date": "2026-11-01",
-            "value": 24
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 9.09
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Bengaluru",
+        "state": "KARNATAKA"
+      },
+      "news": []
     },
     "1000104": {
       "crustdata_company_id": 1000104,
       "basic_info": {
+        "crustdata_company_id": 1000104,
         "name": "Precision Castings Ltd",
-        "year_founded": 1998,
         "primary_domain": "precisioncastings.co.in",
-        "hq_city": "Pune"
+        "year_founded": 1998
       },
       "headcount": {
         "total": 432,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 410
-          },
-          {
-            "date": "2026-11-01",
-            "value": 432
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 5.37
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Pune",
+        "state": "MAHARASHTRA"
+      },
+      "news": []
     },
     "1000105": {
       "crustdata_company_id": 1000105,
       "basic_info": {
+        "crustdata_company_id": 1000105,
         "name": "Nimbus Cloud Services Pvt Ltd",
-        "year_founded": 2008,
         "primary_domain": "nimbuscloud.com",
-        "hq_city": "Mumbai"
+        "year_founded": 2008
       },
       "headcount": {
         "total": 5600,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 5200
-          },
-          {
-            "date": "2026-11-01",
-            "value": 5600
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 7.69
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Mumbai",
+        "state": "MAHARASHTRA"
+      },
+      "news": []
     },
     "1000106": {
       "crustdata_company_id": 1000106,
       "basic_info": {
+        "crustdata_company_id": 1000106,
         "name": "Indus Chemicals Ltd",
-        "year_founded": 2005,
         "primary_domain": "induschem.com",
-        "hq_city": "Vadodara"
+        "year_founded": 2005
       },
       "headcount": {
         "total": 318,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 310
-          },
-          {
-            "date": "2026-11-01",
-            "value": 318
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 2.58
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Vadodara",
+        "state": "GUJARAT"
+      },
+      "news": []
     },
     "1000107": {
       "crustdata_company_id": 1000107,
       "basic_info": {
+        "crustdata_company_id": 1000107,
         "name": "Infra Logistics Pvt Ltd",
-        "year_founded": 2018,
         "primary_domain": "infralogistics.in",
-        "hq_city": "New Delhi"
+        "year_founded": 2018
       },
       "headcount": {
         "total": 156,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 260
-          },
-          {
-            "date": "2026-11-01",
-            "value": 156
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": -40.0
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "New Delhi",
+        "state": "DELHI"
+      },
+      "news": []
     },
     "1000108": {
       "crustdata_company_id": 1000108,
       "basic_info": {
+        "crustdata_company_id": 1000108,
         "name": "Bharat Electricals Pvt Ltd",
-        "year_founded": 2010,
         "primary_domain": "bharatelectricals.com",
-        "hq_city": "Kolkata"
+        "year_founded": 2010
       },
       "headcount": {
         "total": 91,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 85
-          },
-          {
-            "date": "2026-11-01",
-            "value": 91
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 7.06
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": "Kolkata",
+        "state": "WEST BENGAL"
+      },
+      "news": []
     },
     "2000001": {
       "crustdata_company_id": 2000001,
       "basic_info": {
+        "crustdata_company_id": 2000001,
         "name": "Zenith Motors Ltd",
-        "year_founded": 2004,
-        "primary_domain": "zenithmotors.in"
+        "primary_domain": "zenithmotors.in",
+        "year_founded": 2004
       },
       "headcount": {
         "total": 310,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 300
-          },
-          {
-            "date": "2026-11-01",
-            "value": 310
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 3.33
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": null,
+        "state": null
+      },
+      "news": []
     },
     "2000002": {
       "crustdata_company_id": 2000002,
       "basic_info": {
+        "crustdata_company_id": 2000002,
         "name": "Horizon Retail Pvt Ltd",
-        "year_founded": 2004,
-        "primary_domain": "horizonretail.in"
+        "primary_domain": "horizonretail.in",
+        "year_founded": 2004
       },
       "headcount": {
         "total": 560,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 900
-          },
-          {
-            "date": "2026-11-01",
-            "value": 560
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": -37.78
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": null,
+        "state": null
+      },
+      "news": []
     },
     "2000003": {
       "crustdata_company_id": 2000003,
       "basic_info": {
+        "crustdata_company_id": 2000003,
         "name": "Apex Engineering Works",
-        "year_founded": 2004,
-        "primary_domain": "apexengg.in"
+        "primary_domain": "apexengg.in",
+        "year_founded": 2004
       },
       "headcount": {
         "total": 310,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 300
-          },
-          {
-            "date": "2026-11-01",
-            "value": 310
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 3.33
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": null,
+        "state": null
+      },
+      "news": []
     },
     "2000004": {
       "crustdata_company_id": 2000004,
       "basic_info": {
+        "crustdata_company_id": 2000004,
         "name": "Lotus Foods Pvt Ltd",
-        "year_founded": 2004,
-        "primary_domain": "lotusfoods.in"
+        "primary_domain": "lotusfoods.in",
+        "year_founded": 2004
       },
       "headcount": {
         "total": 310,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 300
-          },
-          {
-            "date": "2026-11-01",
-            "value": 310
-          }
-        ]
-      }
+        "growth_percent": {
+          "yoy": 3.33
+        }
+      },
+      "locations": {
+        "country": "India",
+        "headquarters": null,
+        "state": null
+      },
+      "news": []
     }
   },
   "people": {
     "1000102": [
       {
-        "name": "Priya Shah",
-        "title": "Finance Controller",
-        "current_employer_id": 1000102
+        "basic_profile": {
+          "name": "Priya Shah",
+          "current_title": "Finance Controller"
+        },
+        "experience": {
+          "employment_details": {
+            "current": [
+              {
+                "title": "Finance Controller",
+                "company_id": 1000102
+              }
+            ]
+          }
+        }
       },
       {
-        "name": "Nikhil Desai",
-        "title": "Accounts Executive",
-        "current_employer_id": 1000102
+        "basic_profile": {
+          "name": "Nikhil Desai",
+          "current_title": "Accounts Executive"
+        },
+        "experience": {
+          "employment_details": {
+            "current": [
+              {
+                "title": "Accounts Executive",
+                "company_id": 1000102
+              }
+            ]
+          }
+        }
       }
     ],
     "1000104": [
       {
-        "name": "Sunil Kulkarni",
-        "title": "Head of Accounts",
-        "current_employer_id": 1000104
+        "basic_profile": {
+          "name": "Sunil Kulkarni",
+          "current_title": "Head of Accounts"
+        },
+        "experience": {
+          "employment_details": {
+            "current": [
+              {
+                "title": "Head of Accounts",
+                "company_id": 1000104
+              }
+            ]
+          }
+        }
       }
     ]
   },
   "news": {
     "infra logistics pvt ltd": [
       {
+        "source": "news",
         "title": "NCLT admits insolvency petition filed by lessor against Infra Logistics",
         "url": "https://example-news.in/2026/10/05/infra-logistics-nclt",
-        "date": "2026-10-05"
+        "snippet": "",
+        "position": 1
       }
     ],
     "horizon retail pvt ltd": [
       {
-        "title": "Horizon Retail delays salaries, shuts 12 stores",
+        "source": "news",
+        "title": "Horizon Retail delays salaries, shuts 12 stores; lenders weigh default notice",
         "url": "https://example-news.in/2026/11/02/horizon-retail",
-        "date": "2026-11-02"
+        "snippet": "",
+        "position": 1
       }
     ]
   },

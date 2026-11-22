@@ -441,9 +441,10 @@ def _check_bank_change(conn, inv, ctx, vendor, f):
         else:
             try:
                 res = sources.person_search(conn, ctx, cid, inv["signatory"])
-                hits = (res.data or {}).get("profiles", [])
-                fid = add_fact(conn, "invoice", inv["id"], "signatory_search", hits, sources.source_type("crustdata", res),
-                               res.source_ref, "profiles", res.retrieved_at, res.raw_response_id)
+                hits = sources.person_titles(res.data)   # titles only: no names / URLs in facts
+                fid = add_fact(conn, "invoice", inv["id"], "signatory_search", {"count": len(hits), "matches": hits},
+                               sources.source_type("crustdata", res), res.source_ref,
+                               "profiles[].basic_profile.current_title", res.retrieved_at, res.raw_response_id)
                 if not hits:
                     out.append(reason("SENDER_NOT_VERIFIED_AT_VENDOR", f"I can't verify that '{inv['signatory']}, {inv['signatory_title']}' works at "
                                       f"{vendor['legal_name']} (Crustdata people search: 0 current employees by that name)", [fid, f.get("signatory")], stage))
