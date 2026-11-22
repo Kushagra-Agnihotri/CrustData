@@ -331,3 +331,5 @@ details.plain > summary { cursor: pointer; font-weight: 600; font-size: .92rem; 
   main { padding: 24px 16px 60px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+.po-table td:first-child, .po-table td.side { min-width: 170px; }
