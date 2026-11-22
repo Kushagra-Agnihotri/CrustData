@@ -7,7 +7,9 @@
 - every call -> `calls` row; every response -> `raw_responses`
 
 Mode per source: "mock" serves fixtures from data/mock_sources.json shaped like
-the real API responses; "live" calls the real API. Facts record which mode was
+the real API responses; "live" calls the real API and appends each response to
+data/live_recordings.json; "replay" serves those recorded live responses with
+their original retrieved_at (labelled live + recorded, never _mock). Facts record which mode was
 used (`source_type` = 'crustdata' vs 'crustdata_mock'), so the UI never passes a
 fixture off as live data.
 """
@@ -43,6 +45,7 @@ class Result:
     mode: str
     cached: bool = False
     credits: float = 0.0
+    recorded: bool = False     # replayed from data/live_recordings.json
 
 
 @dataclass
@@ -53,6 +56,26 @@ class RunCtx:
 
 
 _MOCK = None
+_REC = None
+RECORDINGS = config.DATA / "live_recordings.json"
+# Recording hooks: a function that shrinks a response before it is written to the
+# committed recordings file (privacy: person search keeps titles only).
+REDACT: dict[str, object] = {}
+
+
+def _recordings() -> dict:
+    global _REC
+    if _REC is None:
+        _REC = json.loads(RECORDINGS.read_text(encoding="utf-8")) if RECORDINGS.exists() else {}
+    return _REC
+
+
+def _record(cache_key: str, endpoint: str, request: dict, status: int, data, credits: float, ts: str, tool: str):
+    rec = _recordings()
+    red = REDACT.get(tool)
+    rec[cache_key] = {"endpoint": endpoint, "request": request, "status": status,
+                      "response": red(data) if red else data, "retrieved_at": ts, "credits": credits}
+    RECORDINGS.write_text(json.dumps(dict(sorted(rec.items())), indent=1, ensure_ascii=False), encoding="utf-8")
 
 
 def _mock() -> dict:
@@ -76,7 +99,7 @@ def _check_ceiling(conn, ctx: RunCtx):
 
 
 def _call(conn, ctx: RunCtx, *, source: str, tool: str, endpoint: str, cache_key: str,
-          request: dict, mock_fn, live_fn, mode: str, credits_fn=lambda d: 0.0) -> Result:
+          request: dict, mock_fn, live_fn, mode: str, credits_fn=lambda d: 0.0, tool_key: str | None = None) -> Result:
     _check_ceiling(conn, ctx)
     ref = f"{endpoint} {json.dumps(request, sort_keys=True)}"
     # 1. fault injection comes before the cache
@@ -91,13 +114,33 @@ def _call(conn, ctx: RunCtx, *, source: str, tool: str, endpoint: str, cache_key
         v = unj(hit["value"], {})
         record_call(conn, tool=tool, endpoint=endpoint + " (cache)", run_id=ctx.run_id,
                     invoice_id=ctx.invoice_id, ok=True, mode=mode)
-        return Result(v.get("data"), v.get("raw_response_id"), hit["retrieved_at"], ref, mode, cached=True)
+        return Result(v.get("data"), v.get("raw_response_id"), hit["retrieved_at"], ref, mode, cached=True,
+                      recorded=bool(v.get("recorded")))
+    # 2b. replay a recorded live response (original retrieved_at, no credits spent)
+    if mode == "replay":
+        rec = _recordings().get(cache_key)
+        if not rec:
+            record_call(conn, tool=tool, endpoint=endpoint + " (replay)", run_id=ctx.run_id, invoice_id=ctx.invoice_id,
+                        ok=False, error="no recording", mode=mode)
+            raise SourceUnavailable(source, "no recorded live response for this lookup (run scripts/record_live.py)")
+        status, data = rec["status"], rec["response"]
+        raw_id = store_raw(conn, endpoint + " (recorded)", request, data, status)
+        record_call(conn, tool=tool, endpoint=endpoint + " (replay)", run_id=ctx.run_id, invoice_id=ctx.invoice_id,
+                    ok=status in (200, 404), http_status=status, mode=mode)
+        if status not in (200, 404):
+            raise SourceUnavailable(source, f"recorded response was HTTP {status}")
+        payload = data if status == 200 else None
+        conn.execute("INSERT OR REPLACE INTO cache(key,value,retrieved_at) VALUES (?,?,?)",
+                     (cache_key, j({"data": payload, "raw_response_id": raw_id, "status": status, "recorded": True}),
+                      rec["retrieved_at"]))
+        return Result(payload, raw_id, rec["retrieved_at"], ref + f" (recorded {rec['retrieved_at'][:16]})",
+                      mode, recorded=True)
     # 3. call with retry
     last_err = None
     for attempt in range(3):
         t0 = time.monotonic()
         try:
-            status, data = (mock_fn() if mode == "mock" else live_fn())
+            status, data = (mock_fn() if mode == "mock" else live_fn())   # replay never reaches here
             latency = int((time.monotonic() - t0) * 1000)
             credits = credits_fn(data) if status == 200 else 0.0
             raw_id = store_raw(conn, endpoint, request, data, status)
@@ -117,6 +160,8 @@ def _call(conn, ctx: RunCtx, *, source: str, tool: str, endpoint: str, cache_key
                 continue
             payload = data if status == 200 else None   # 404 = an explicit "not found" answer
             ts = now_iso()
+            if mode == "live":
+                _record(cache_key, endpoint, request, status, data, credits, ts, tool_key or tool)
             conn.execute("INSERT OR REPLACE INTO cache(key,value,retrieved_at) VALUES (?,?,?)",
                          (cache_key, j({"data": payload, "raw_response_id": raw_id, "status": status}), ts))
             return Result(payload, raw_id, ts, ref, mode, credits=credits)
@@ -265,7 +310,7 @@ def person_search(conn, ctx: RunCtx, company_id: int, person_name: str | None = 
                 and (not title or any(w in p["basic_profile"]["current_title"].lower() for w in title.lower().split("|")))]
         return 200, {"profiles": hits, "total_count": len(hits), "next_cursor": None}
 
-    return _call(conn, ctx, source="crustdata", tool="crustdata", endpoint="POST /person/search",
+    return _call(conn, ctx, source="crustdata", tool="crustdata", endpoint="POST /person/search", tool_key="person_search",
                  cache_key=f"crust:person:{company_id}:{(person_name or '').lower()}:{(title or '').lower()}", request=body,
                  mock_fn=mock_fn, live_fn=lambda: _crust_post("/person/search", body), mode=mode,
                  # docs pricing: 0.03/result + 0.1 experience filter + 0.1 experience received
@@ -275,6 +320,8 @@ def person_search(conn, ctx: RunCtx, company_id: int, person_name: str | None = 
 
 def person_titles(resp) -> list[dict]:
     """Privacy-reduced view of a person-search response: titles + company ids. No names, no URLs."""
+    if isinstance(resp, dict) and "matches" in resp and "profiles" not in resp:
+        return list(resp["matches"])          # already reduced (replay of a recording)
     out = []
     for p in (resp or {}).get("profiles", []) or []:
         cur = (((p.get("experience") or {}).get("employment_details") or {}).get("current") or [])
@@ -283,6 +330,9 @@ def person_titles(resp) -> list[dict]:
                     "current_company_id": next((c.get("company_id") for c in cur if c.get("company_id")), None)})
     return out
 
+
+REDACT["person_search"] = lambda d: ({"count": len(person_titles(d)), "matches": person_titles(d)}
+                                     if isinstance(d, dict) else d)
 
 NEWS_TERMS = ["insolvency", "nclt", "cirp", "liquidation", "resolution professional", "default", "winding up", "fraud"]
 
@@ -314,4 +364,17 @@ def news_hits(items: list[dict], title_key="title", text_keys=("snippet",)) -> l
 
 
 def source_type(base: str, res: Result) -> str:
-    return base if res.mode == "live" else f"{base}_mock"
+    """'live' and 'replay' are both real API data (replay = recorded earlier, dated); only mock is _mock."""
+    return base if res.mode in ("live", "replay") else f"{base}_mock"
+
+
+def account_credits() -> float | None:
+    """GET /account/credits (free). None if no key / not reachable."""
+    import httpx
+    if not config.CRUSTDATA_API_KEY:
+        return None
+    try:
+        r = httpx.get(config.CRUSTDATA_BASE + "/account/credits", headers=_crust_headers(), timeout=15)
+        return float(r.json()["account"]["credits"]) if r.status_code == 200 else None
+    except Exception:
+        return None
