@@ -623,19 +623,50 @@ def process_one(conn, inv_id, ctx, actor="worker") -> str:
     return st
 
 
-def run_pipeline(conn, actor="worker", ctx=None) -> dict:
+def pending_count(conn) -> int:
+    return q1(conn, "SELECT COUNT(*) n FROM invoices WHERE state NOT IN ('HELD','BLOCKED','ELIGIBLE','SCHEDULED','PARTIALLY_PAID','PAID')")["n"]
+
+
+def iter_pipeline(conn, actor="worker", ctx=None):
+    """Same work as run_pipeline, but yields an event after every stage so a UI can show it live.
+
+    Events: invoice_start{invoice, index, total} · stage{invoice_id, stage, state, reasons} ·
+    invoice_done{invoice} · run_done{run_id, processed}
+    """
     ctx = ctx or start_run(conn)
     ingest(conn)
+    total = pending_count(conn)
     done = 0
     while True:
         iid = claim_next(conn)
         if not iid:
             break
-        process_one(conn, iid, ctx, actor)
+        yield {"type": "invoice_start", "invoice": q1(conn, "SELECT * FROM invoices WHERE id=?", (iid,)), "index": done + 1, "total": total}
+        st = None
+        for _ in range(12):
+            prev = q1(conn, "SELECT state FROM invoices WHERE id=?", (iid,))["state"]
+            if prev in PIPELINE_FINAL:
+                break
+            st = step(conn, iid, ctx, actor)
+            tag = STAGE_TAG[prev]
+            row = q1(conn, "SELECT * FROM invoices WHERE id=?", (iid,))
+            yield {"type": "stage", "invoice_id": iid, "stage": tag, "state": st,
+                   "reasons": [r for r in unj(row["reasons"], []) if r.get("stage") == tag]}
+            if st in PIPELINE_FINAL:
+                break
+        yield {"type": "invoice_done", "invoice": q1(conn, "SELECT * FROM invoices WHERE id=?", (iid,))}
         done += 1
     with tx(conn):
         conn.execute("UPDATE pipeline_runs SET finished_at=?, status='DONE' WHERE id=?", (now_iso(), ctx.run_id))
-    return {"run_id": ctx.run_id, "processed": done}
+    yield {"type": "run_done", "run_id": ctx.run_id, "processed": done}
+
+
+def run_pipeline(conn, actor="worker", ctx=None) -> dict:
+    out = {}
+    for ev in iter_pipeline(conn, actor, ctx):
+        if ev["type"] == "run_done":
+            out = {"run_id": ev["run_id"], "processed": ev["processed"]}
+    return out
 
 
 # --------------------------------------------------------------------------- human actions

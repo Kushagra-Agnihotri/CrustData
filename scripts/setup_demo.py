@@ -19,12 +19,15 @@ def reset(db_path: Path | None = None, run: bool = False, regenerate: bool = Tru
         import scripts.generate_mock_data as gen
         gen.main()
     p = Path(db_path or config.DB_PATH)
-    for suffix in ("", "-wal", "-shm"):
-        f = Path(str(p) + suffix)
-        if f.exists():
-            f.unlink()
     sources._MOCK = None
     conn = connect(p)
+    # Drop tables rather than deleting the file: on Windows a running UI keeps the file open.
+    tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")]
+    conn.execute("PRAGMA foreign_keys=OFF")
+    for t in tables:
+        conn.execute(f'DROP TABLE IF EXISTS "{t}"')
+    conn.execute("DELETE FROM sqlite_sequence") if conn.execute("SELECT 1 FROM sqlite_master WHERE name='sqlite_sequence'").fetchone() else None
+    conn.execute("PRAGMA foreign_keys=ON")
     init_schema(conn)
     out = importer.load(conn, importer.CsvImporter())
     receivables.forecast_all(conn)
