@@ -4,7 +4,26 @@
 
 ContextCon 05 · Theme 6.1 (Buying and Paying) · team Aditya, Kushagra, Rajat. Full design: [BUILD_PROMPT.md](BUILD_PROMPT.md). API findings: [NOTES.md](NOTES.md).
 
-**Demo video:** _link to be added before submission_
+**Demo video:** [demo/payables-desk-demo.mp4](demo/payables-desk-demo.mp4) (~5 min walkthrough of every screen; re-record with
+`node demo/record-demo.js`, which needs Playwright and ffmpeg).
+
+**Docs:** [ARCHITECTURE.md](ARCHITECTURE.md) (technical reference with workflow diagrams) ·
+[docs/system-architecture.html](docs/system-architecture.html) and [docs/architecture.html](docs/architecture.html) (visual
+architecture) · [PRODUCT.md](PRODUCT.md) · [UI_REDESIGN.md](UI_REDESIGN.md) · [CHANGES_TODO.md](CHANGES_TODO.md).
+
+## What changed in this version
+
+- **Chat-first UI.** The four sidebar pages (Invoice Desk, Payment Run, Vendor 360, Audit Ledger) are replaced by one guided
+  flow in `ui/screens/`: chat → live evaluation → results → per-invoice overlay → pay now (mock paywall) → receipt.
+- **Intent parser** (`app/intent.py`, tested in `tests/test_intent.py`): reads the scope from the prompt, refuses off-topic
+  prompts, and ignores any attempt to switch a check off.
+- **Live bank-change verification** (`app/bank_verify.py`): paste an email/SMS in the overlay's Bank details tab for a
+  🟢/🟡/🔴 verdict, plus the call-back checklist with a second approver.
+- **Real vendors and live data**: test-set vendors are real Indian companies; Crustdata and Razorpay IFSC responses are
+  recorded (`data/live_recordings.json`, `scripts/record_live.py`) and replayed with their original dates.
+- **New checks**: `ADVERSE_NEWS` from live news (case 18), genuine bank change → checklist → payment to the new account
+  (cases 19, 20, 20b), weekly summary (`app/summary.py`).
+- **Demo assets**: a recorded walkthrough video and a Playwright recorder script in `demo/`.
 
 > **All invoices, emails, people and bank accounts in the test set are synthetic. Company names/domains are real so live checks can run.**
 > GSTINs, PANs, phone numbers, MSME categories and our POs/GRNs/receivables are synthetic too. The case 07 fraud email impersonates a real company's name as a test fixture only.
