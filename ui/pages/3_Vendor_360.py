@@ -58,19 +58,53 @@ for x in accts:
     with st.container(border=True):
         st.warning(f"Pending bank change → A/c ****{x['account_no'][-4:]} / {x['ifsc']}, proposed by **{x['proposed_by']}**. "
                    "Emails can only propose. Maker-checker: a different person approves after verifying out of band.")
-        st.markdown(f"☎️ **Checklist:** call **{v['phone_on_file']}** (the number already on file — never one from the email), "
-                    "ask for a known contact, read back the new account number, and confirm the reason for the change.")
-        with st.form(f"mc_{x['id']}"):
-            who = st.text_input("Your name (checker)")
-            called = st.checkbox(f"I called {v['phone_on_file']} and the vendor confirmed this change")
-            note = st.text_input("Note")
-            ca, cb = st.columns(2)
-            if ca.form_submit_button("Approve change"):
-                err = vendor_admin.approve_bank_change(conn, x["id"], who, called, note)
-                st.error(err) if err else st.rerun()
-            if cb.form_submit_button("Reject change"):
-                err = vendor_admin.reject_bank_change(conn, x["id"], who, note or "rejected")
-                st.error(err) if err else st.rerun()
+        st.caption("A request is never proof: a real vendor and a fraudster send the same polite email. "
+                   "Every step below uses a channel the sender doesn't control, and is written to the Audit Ledger.")
+        k = x["id"]
+        who = st.text_input("Your name", key=f"who_{k}")
+        note = st.text_input("Note", key=f"note_{k}")
+
+        def done(e):
+            st.error(e) if e else st.rerun()
+
+        for row in vendor_admin.checklist(conn, k):
+            mark = "✅" if row["done"] else ("➖" if row["done"] is None else "☐")
+            st.markdown(f"{mark} **{row['step']}** <span class='small'>{row['detail'] or ''}</span>", unsafe_allow_html=True)
+        c1, c2, c3 = st.columns(3)
+        if c1.button("📄 Documents received", key=f"docs_{k}", disabled=bool(x["docs_received"])):
+            done(vendor_admin.mark_docs_received(conn, k, who, note))
+        if c2.button(f"☎️ I called {v['phone_on_file']}", key=f"cb_{k}", disabled=bool(x["callback_done"]),
+                     help="Only the number already on file — never one from the email"):
+            done(vendor_admin.record_callback(conn, k, who, note))
+        if c3.button("🏦 Run penny drop (mock)", key=f"pd_{k}", disabled=x["penny_drop_status"] == "name_match",
+                     help="penny_drop_mock: Razorpay Account Validation is not available in test mode"):
+            err = vendor_admin.run_penny_drop(conn, k, who or "system")
+            st.error(err) if err else st.rerun()
+        with st.expander("👥 Second contact (Crustdata suggestion)"):
+            sug = vendor_admin.suggest_second_contact(conn, k)
+            if sug.get("ok"):
+                for p in sug["contacts"]:
+                    st.markdown(f"- **{p['name']}**, {p['title']} · found on Crustdata ({sug['source']}), retrieved {sug['retrieved_at'][:16]}")
+                st.caption("Someone other than the sender. Call them on the number on file, not a number from the email.")
+            else:
+                st.info(sug.get("why"))
+            if st.button("Record second-contact confirmation", key=f"sc_{k}"):
+                done(vendor_admin.record_second_contact(conn, k, who, note))
+        with st.expander("✉️ Notify the old contact (draft → send)"):
+            st.code(vendor_admin.draft_old_contact_notice(conn, k) or "", language=None)
+            if st.button("Send (mock: logs an event, no real email)", key=f"send_{k}", disabled=bool(x["old_contact_notified_at"])):
+                done(vendor_admin.send_old_contact_notice(conn, k, who))
+        blockers = vendor_admin.approval_blockers(x, who)
+        if not x["old_contact_notified_at"]:
+            st.caption("⚠️ Old contact not notified yet (allowed, but flagged on approval).")
+        ca, cb = st.columns(2)
+        if ca.button("✅ Approve change (different person)", key=f"ap_{k}", disabled=bool(blockers) or not who.strip(),
+                     help="; ".join(blockers) or None):
+            done(vendor_admin.approve_bank_change(conn, k, who, True, note))
+        if blockers:
+            ca.caption("Approve disabled: " + "; ".join(blockers))
+        if cb.button("❌ Reject change", key=f"rj_{k}"):
+            done(vendor_admin.reject_bank_change(conn, k, who, note or "rejected"))
 if v["status"] != "active":
     with st.form("lift"):
         st.markdown(f"Vendor is **{v['status']}**. Lifting the hold lets its eligible invoices into payment runs again.")
