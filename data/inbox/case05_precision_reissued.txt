@@ -1,0 +1,6 @@
+BILL | Precision Castings Ltd | GSTIN:27AABCP5567R1ZL
+Inv Ref INV/42 | Date 2026-10-20 | PO PO-4471
+Items:
+- Grey iron castings - pump housing x 50 @ 8,000.00 (18%) = 4,00,000.00
+Net 4,00,000.00 | Tax 72,000.00 | Total 4,72,000.00
+Pay to A/c 50200011223344 | IFSC HDFC0000007 | Beneficiary: Precision Castings Ltd

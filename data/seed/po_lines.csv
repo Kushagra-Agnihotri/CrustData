@@ -1,0 +1,11 @@
+po_number,line_no,item,unit,qty_ordered,unit_price,gst_rate
+PO-4471,1,Grey iron castings - pump housing,nos,50,8000,18
+PO-4472,1,Machined flanges DN100,nos,200,950,18
+PO-4473,1,Corrugated boxes 5-ply,nos,4000,45,12
+PO-4474,1,Industrial LED fixtures 100W,nos,400,500,18
+PO-4475,1,Kraft paper rolls,rolls,100,1200,12
+PO-4476,1,BOPP packing tape rolls,rolls,2000,60,18
+PO-4477,1,MS steel rods 12mm,nos,200,1500,18
+PO-4478,1,Cloud hosting - October,month,1,200000,18
+PO-4478,2,Managed backup - October,month,1,50000,18
+PO-4479,1,Caustic soda flakes,kg,6000,50,18

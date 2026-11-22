@@ -1,0 +1,5 @@
+customer_code,legal_name,domain,on_time_rate
+C1,Zenith Motors Ltd,zenithmotors.in,0.95
+C2,Horizon Retail Pvt Ltd,horizonretail.in,0.6
+C3,Apex Engineering Works,apexengg.in,0.9
+C4,Lotus Foods Pvt Ltd,lotusfoods.in,0.7

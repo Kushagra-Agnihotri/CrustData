@@ -1,0 +1,35 @@
+From: Accounts <accounts@precisioncastings.co.in>
+To: payables@orbitmfg.in
+Subject: Invoice INV-0042 against PO-4471
+Date: Tue, 20 Oct 2026 10:30:00 +0530
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+TAX INVOICE
+
+Supplier: Precision Castings Ltd
+GSTIN: 27AABCP5567R1ZL
+Address: Pune, Maharashtra
+Email: accounts@precisioncastings.co.in
+
+Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTI=
+N 27AAFCO1234M1Z5)
+
+Invoice No.: INV-0042
+Invoice Date: 20 Oct 2026
+PO Number: PO-4471
+
+#  | Item | Qty | Rate | GST % | Amount
+1  | Grey iron castings - pump housing | 50 | 8,000.00 | 18 | 4,00,000.00
+
+Sub-total: 4,00,000.00
+CGST @9%: 36,000.00
+SGST @9%: 36,000.00
+Grand Total: Rs. 4,72,000.00
+
+Terms: Payment as per PO terms
+Bank: A/c No 50200011223344 | IFSC HDFC0000007 | Beneficiary: Precision Casti=
+ngs Ltd
+
+This is a computer generated invoice.

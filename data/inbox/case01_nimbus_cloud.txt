@@ -1,0 +1,26 @@
+TAX INVOICE
+
+Supplier: Nimbus Cloud Services Pvt Ltd
+GSTIN: 27AACCN1029B1Z2
+Address: Mumbai, Maharashtra
+Email: accounts@nimbuscloud.com
+
+Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)
+
+Invoice No.: NCS/2026/1187
+Invoice Date: 22 Oct 2026
+PO Number: PO-4478
+
+#  | Item | Qty | Rate | GST % | Amount
+1  | Cloud hosting - October | 1 | 2,00,000.00 | 18 | 2,00,000.00
+2  | Managed backup - October | 1 | 50,000.00 | 18 | 50,000.00
+
+Sub-total: 2,50,000.00
+CGST @9%: 22,500.00
+SGST @9%: 22,500.00
+Grand Total: Rs. 2,95,000.00
+
+Terms: Payment as per PO terms
+Bank: A/c No 50200099887766 | IFSC HDFC0000001 | Beneficiary: Nimbus Cloud Services Pvt Ltd
+
+This is a computer generated invoice.

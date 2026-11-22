@@ -1,0 +1,24 @@
+TAX INVOICE
+
+Supplier: Acme Supplies Pvt Ltd
+GSTIN: 24AAFCA7712Q1ZD
+Address: Ahmedabad, Gujarat
+Email: accounts@acmesupplies.com
+
+Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)
+
+Invoice No.: ACM/1123
+Invoice Date: 14 Nov 2026
+PO Number: PO-4476
+
+#  | Item | Qty | Rate | GST % | Amount
+1  | BOPP packing tape rolls | 2000 | 60.00 | 18 | 1,20,000.00
+
+Sub-total: 1,20,000.00
+IGST @18%: 21,600.00
+Grand Total: Rs. 1,41,600.00
+
+Terms: Payment as per PO terms
+Bank: A/c No 38211904452 | IFSC SBIN0000301 | Beneficiary: Acme Supplies Pvt Ltd
+
+This is a computer generated invoice.

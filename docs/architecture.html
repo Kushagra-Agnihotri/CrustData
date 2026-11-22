@@ -1,0 +1,938 @@
+<title>Payables Desk Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ledger-paper workbook — sticky tab strip, each tab one working sheet; detail panes sit beside or under the thing they explain */
+:root{
+  --paper:#f3f6f4; --sheet:#ffffff; --ink:#15231f; --muted:#5b6b66; --rule:#d5e0db; --rule-2:#e7eeea;
+  --accent:#1d6b58; --accent-soft:#dcefe8; --accent-ink:#ffffff;
+  --ok:#1f7a4a; --ok-soft:#dff3e7; --hold:#a86200; --hold-soft:#fbeed8; --block:#b4232c; --block-soft:#fbe1e2;
+  --info:#2a5d9f; --info-soft:#e1ebf8;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0e1513; --sheet:#151f1c; --ink:#e3ece8; --muted:#93a59f; --rule:#2a3834; --rule-2:#1f2b28;
+  --accent:#5cc2a3; --accent-soft:#183a31; --accent-ink:#0b1a16;
+  --ok:#5fd394; --ok-soft:#163626; --hold:#f0b04f; --hold-soft:#3a2b12; --block:#f2747a; --block-soft:#3f1a1d;
+  --info:#82b1ec; --info-soft:#18273c; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0e1513; --sheet:#151f1c; --ink:#e3ece8; --muted:#93a59f; --rule:#2a3834; --rule-2:#1f2b28;
+  --accent:#5cc2a3; --accent-soft:#183a31; --accent-ink:#0b1a16;
+  --ok:#5fd394; --ok-soft:#163626; --hold:#f0b04f; --hold-soft:#3a2b12; --block:#f2747a; --block-soft:#3f1a1d;
+  --info:#82b1ec; --info-soft:#18273c; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:15px/1.55 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sheet)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4.2vw,44px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+.eyebrow{font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:68ch}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+header.top{padding-block:28px 18px}
+.top .wrap{display:grid;gap:12px}
+.quote{border-left:3px solid var(--accent);padding:4px 0 4px 14px;color:var(--muted);max-width:78ch;font-style:italic}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sheet);border-block:1px solid var(--rule)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto}
+nav.tabs a{flex:none;padding:12px 14px;color:var(--muted);text-decoration:none;font-weight:500;border-bottom:2px solid transparent}
+nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs a:hover{color:var(--ink)}
+main{padding-block:28px 64px}
+section.view{display:grid;gap:28px}
+.sec-head{display:grid;gap:8px}
+
+.panel{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r)}
+.pad{padding:18px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){.grid2{grid-template-columns:minmax(0,1fr)}}
+
+/* badges */
+.b{display:inline-flex;align-items:center;gap:4px;font:500 11px/1 var(--f-mono);letter-spacing:.04em;padding:4px 7px;border-radius:4px;white-space:nowrap;border:1px solid transparent}
+.b-ok{background:var(--ok-soft);color:var(--ok)}
+.b-hold{background:var(--hold-soft);color:var(--hold)}
+.b-block{background:var(--block-soft);color:var(--block)}
+.b-info{background:var(--info-soft);color:var(--info)}
+.b-acc{background:var(--accent-soft);color:var(--accent)}
+.b-line{border-color:var(--rule);color:var(--muted)}
+
+/* ---------- pipeline ---------- */
+.rail{display:flex;gap:0;overflow-x:auto;padding:4px 2px 10px}
+.stage{flex:none;width:118px;display:grid;gap:6px;justify-items:start;text-align:left;padding:12px 10px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);cursor:pointer;position:relative;transition:border-color .15s, background .15s}
+.stage+.stage{margin-left:18px}
+.stage+.stage::before{content:"";position:absolute;left:-19px;top:50%;width:18px;height:1px;background:var(--rule)}
+.stage+.stage::after{content:"";position:absolute;left:-6px;top:calc(50% - 3px);border:3px solid transparent;border-left-color:var(--muted)}
+.stage .n{font:500 11px/1 var(--f-mono);color:var(--muted)}
+.stage .nm{font-weight:600;font-size:14px;line-height:1.2}
+.stage[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.stage.run{border-color:var(--accent)}
+.stage.flag-hold{border-color:var(--hold);background:var(--hold-soft)}
+.stage.flag-block{border-color:var(--block);background:var(--block-soft)}
+.stage.dim{opacity:.4}
+.kind{font:500 10px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 5px;border-radius:3px}
+.k-llm{background:var(--info-soft);color:var(--info)}
+.k-rule{background:var(--accent-soft);color:var(--accent)}
+.k-live{background:var(--hold-soft);color:var(--hold)}
+.k-human{background:var(--block-soft);color:var(--block)}
+.k-worker{background:var(--rule-2);color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--muted);font-size:13px}
+
+.detail{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}
+@media (max-width:860px){.detail{grid-template-columns:minmax(0,1fr)}}
+.detail ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px}
+.kv{display:grid;gap:14px}
+.kv .label{font:500 11px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+
+/* case runner */
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.case{text-align:left;padding:10px 12px;border:1px solid var(--rule);background:var(--sheet);border-radius:var(--r);cursor:pointer;display:grid;gap:4px}
+.case:hover{border-color:var(--muted)}
+.case[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.case .cn{font:500 11px/1 var(--f-mono);color:var(--muted)}
+.case .ct{font-size:13.5px;line-height:1.3}
+.verdict{display:grid;gap:10px;padding:16px 18px;border-radius:var(--r);border:1px solid var(--rule);background:var(--sheet)}
+.verdict.v-ok{border-color:var(--ok)}
+.verdict.v-hold{border-color:var(--hold)}
+.verdict.v-block{border-color:var(--block)}
+.reason{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:baseline}
+.reason+.reason{border-top:1px dashed var(--rule);padding-top:8px}
+
+/* ---------- state machines ---------- */
+.sm{display:flex;flex-wrap:wrap;align-items:center;gap:6px 0}
+.st{padding:7px 10px;border:1px solid var(--rule);border-radius:4px;background:var(--sheet);font:500 12.5px/1 var(--f-mono);cursor:pointer}
+.st[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.st.final-ok{border-color:var(--ok);color:var(--ok)}
+.st.final-hold{border-color:var(--hold);color:var(--hold)}
+.st.final-block{border-color:var(--block);color:var(--block)}
+.st.live{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.st.crashed{background:var(--block);color:var(--sheet);border-color:var(--block)}
+.arr{color:var(--muted);padding:0 6px;font-family:var(--f-mono)}
+.branch{display:grid;gap:6px;padding-left:10px;border-left:1px dashed var(--rule)}
+.log{font:12.5px/1.6 var(--f-mono);background:var(--paper);border:1px solid var(--rule);border-radius:var(--r);padding:12px;min-height:150px;max-height:280px;overflow:auto;white-space:pre-wrap}
+.log .t{color:var(--muted)}
+.log .e{color:var(--block)}
+.log .g{color:var(--ok)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{padding:8px 14px;border-radius:var(--r);border:1px solid var(--rule);background:var(--sheet);cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{color:var(--block);border-color:var(--block)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* ---------- database ---------- */
+.domains{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.domain{display:grid;gap:8px;align-content:start}
+.domain h3{font-size:14px;font-family:var(--f-mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tbl{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--rule);background:var(--sheet);border-radius:var(--r);cursor:pointer;text-align:left;width:100%;transition:opacity .15s,border-color .15s}
+.tbl .tn{font:500 13.5px/1.2 var(--f-mono)}
+.tbl .tc{font-size:12px;color:var(--muted)}
+.tbl[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.tbl.rel{border-color:var(--info);background:var(--info-soft)}
+.domains.focus .tbl:not(.rel):not([aria-pressed="true"]){opacity:.38}
+.cols{width:100%;border-collapse:collapse;font-size:13.5px}
+.cols th{text-align:left;font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:8px 8px;border-bottom:1px solid var(--rule)}
+.cols td{padding:7px 8px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.cols td:first-child{font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
+.cols td.ty{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.scroll{overflow-x:auto}
+.guards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.guard{padding:14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);display:grid;gap:6px;align-content:start}
+.guard code{color:var(--accent)}
+
+/* ---------- classification ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:5px 10px;border-radius:20px;border:1px solid var(--rule);background:var(--sheet);cursor:pointer;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.codes td:first-child{font-family:var(--f-mono);font-size:12.5px}
+.ladder{display:grid;gap:8px}
+.rung{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet)}
+.rung .q{font:700 13px/1 var(--f-mono);color:var(--muted)}
+.slider-row{display:grid;grid-template-columns:minmax(0,1fr) 120px 44px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule-2)}
+.slider-row label{font-size:13.5px;line-height:1.3}
+.slider-row .w{font:12px var(--f-mono);color:var(--muted)}
+.slider-row output{font:500 13px var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.slider-row input[type=range]{width:100%;accent-color:var(--accent)}
+.cv{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted);white-space:nowrap}
+@media (max-width:520px){.slider-row{grid-template-columns:minmax(0,1fr) 90px 40px}}
+.meter{height:12px;border-radius:6px;background:var(--rule-2);position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:6px;transition:width .2s}
+.meter .gate{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--block)}
+.big{font:700 34px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.tool{display:grid;gap:10px}
+.tool input[type=text],.tool input[type=number],.tool input[type=date],.tool select{width:100%;padding:9px 10px;border:1px solid var(--rule);border-radius:var(--r);background:var(--paper);color:var(--ink);font:14px var(--f-mono)}
+.res{font:13.5px/1.5 var(--f-mono);padding:10px 12px;border-radius:var(--r);background:var(--paper);border:1px solid var(--rule)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+
+/* allocation */
+.cashbar{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-variant-numeric:tabular-nums}
+.cashbar .term{display:grid;gap:2px}
+.cashbar .term span:first-child{font:500 10.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cashbar .term strong{font:600 18px/1.2 var(--f-mono)}
+.cashbar .op{font:500 18px var(--f-mono);color:var(--muted)}
+.alloc td,.alloc th{font-variant-numeric:tabular-nums}
+.alloc td.num,.alloc th.num{text-align:right;font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
+.alloc .why{font-size:12.5px;color:var(--muted);line-height:1.35}
+.fill{height:6px;background:var(--rule-2);border-radius:3px;overflow:hidden;min-width:70px}
+.fill i{display:block;height:100%;background:var(--accent)}
+.alert{padding:10px 14px;border-radius:var(--r);background:var(--block-soft);color:var(--block);font-weight:500}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 24px}
+footer{color:var(--muted);font-size:13px;padding-block:0 40px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <span class="eyebrow">ContextCon 05 · Theme 6.1 Buying &amp; Paying · Run date 22 Nov 2026</span>
+    <h1>Payables Desk</h1>
+    <p class="lede">How an invoice travels from the accounts inbox to a test-mode payout: the pipeline stages, the two state machines that make it crash-safe, the Postgres schema behind it, and the rules that classify every invoice as ELIGIBLE, HOLD or BLOCK. The language model only extracts and explains. Deterministic rules decide.</p>
+    <p class="quote">“Match each one to its purchase order, check the vendor and its bank account, pay each one once, according to the cash we have, and hold anything unusual for my approval with the reason.”</p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap">
+    <a href="#workflow" data-view="workflow">Workflow</a>
+    <a href="#states" data-view="states">State machines</a>
+    <a href="#database" data-view="database">Database</a>
+    <a href="#classification" data-view="classification">Classification</a>
+    <a href="#payment-run" data-view="payment-run">Payment run</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= WORKFLOW ================= -->
+<section class="view" id="v-workflow">
+  <div class="sec-head">
+    <span class="eyebrow">Pipeline</span>
+    <h2>Inbox to bank, in eleven stages</h2>
+    <p class="lede">Click a stage to see what it checks, what it writes, and which reason codes it can raise. Every check that touches the outside world records its source and <code>retrieved_at</code> in the facts ledger.</p>
+  </div>
+  <div class="legend">
+    <span class="kind k-llm">LLM</span> extracts or explains only
+    <span class="kind k-rule">Rules</span> deterministic code
+    <span class="kind k-live">Live</span> Crustdata / IFSC / web
+    <span class="kind k-human">Human</span> explicit approval
+    <span class="kind k-worker">Worker</span> state machine step
+  </div>
+  <div class="rail" id="rail" role="group" aria-label="Pipeline stages"></div>
+  <div class="panel pad detail" id="stageDetail"></div>
+
+  <div class="sec-head" style="margin-top:12px">
+    <span class="eyebrow">Golden test set</span>
+    <h2>Run a test case through the pipeline</h2>
+    <p class="lede">All 17 cases are dated October–November 2026. Pick one to watch it move through the stages and see where it gets flagged and what the decision is.</p>
+  </div>
+  <div class="cases" id="cases"></div>
+  <div class="verdict" id="verdict" aria-live="polite"></div>
+</section>
+
+<!-- ================= STATES ================= -->
+<section class="view" id="v-states" hidden>
+  <div class="sec-head">
+    <span class="eyebrow">Crash safety</span>
+    <h2>Two state machines</h2>
+    <p class="lede">Every transition is one database transaction: update the state, append an <code>events</code> row, insert any <code>facts</code>. The worker claims work with <code>SELECT … FOR UPDATE SKIP LOCKED</code> and a 60-second lease, so a killed process just lets the lease expire.</p>
+  </div>
+
+  <div class="panel pad" style="display:grid;gap:16px">
+    <h3>Invoice lifecycle</h3>
+    <div class="sm" id="smInvoice"></div>
+    <div class="res" id="smInvoiceInfo"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel pad" style="display:grid;gap:14px;align-content:start">
+      <h3>Instalment lifecycle: exactly once</h3>
+      <div class="sm" id="smPay"></div>
+      <p class="lede" style="font-size:14px">Idempotency key = <code>sha256(invoice_id | instalment_no | amount_paise)</code>. It is generated once and reused on every retry. A new key is never minted for the same instalment.</p>
+      <div class="btns">
+        <button class="btn pri" id="payRun" type="button">Execute instalment</button>
+        <button class="btn danger" id="payCrash" type="button">Run and kill -9 after submit</button>
+        <button class="btn" id="payReset" type="button">Reset</button>
+      </div>
+    </div>
+    <div class="panel pad" style="display:grid;gap:10px;align-content:start">
+      <h3>Worker log</h3>
+      <div class="log" id="payLog" aria-live="polite"></div>
+      <div class="res" id="payTally"></div>
+    </div>
+  </div>
+
+  <div class="panel pad" style="display:grid;gap:10px">
+    <h3>Source failures are never read as answers</h3>
+    <div class="ladder">
+      <div class="rung"><span class="q">1</span><span>Call fails or times out → retry with exponential backoff, up to 2 times.</span><span class="b b-line">retry</span></div>
+      <div class="rung"><span class="q">2</span><span>Still failing → invoice moves to HELD with <code>SOURCE_UNAVAILABLE</code>, naming the source.</span><span class="b b-hold">HOLD</span></div>
+      <div class="rung"><span class="q">3</span><span>Crustdata <code>402</code> credits exhausted → no retry. Run stops, remaining invoices held.</span><span class="b b-hold">HOLD</span></div>
+      <div class="rung"><span class="q">4</span><span>Run ceiling (time limit 900 s or 200 credits) checked before every external call → <code>RUN_CEILING_REACHED</code>.</span><span class="b b-hold">HOLD</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DATABASE ================= -->
+<section class="view" id="v-database" hidden>
+  <div class="sec-head">
+    <span class="eyebrow">Supabase Postgres · psycopg v3 · db/migrations/001_init.sql</span>
+    <h2>Schema</h2>
+    <p class="lede">Nineteen tables in six areas. Money is <code>numeric(14,2)</code> rupees, times are <code>timestamptz</code>, enums are <code>text</code> with CHECK constraints. Click a table to see its columns; tables it links to light up.</p>
+  </div>
+  <div class="domains" id="domains"></div>
+  <div class="panel pad" id="tblDetail" style="display:grid;gap:12px"></div>
+
+  <div class="sec-head">
+    <span class="eyebrow">Guards in the database itself</span>
+    <h2>Constraints that hold even if the code is wrong</h2>
+  </div>
+  <div class="guards">
+    <div class="guard"><code>invoices UNIQUE(file_sha256)</code><span>The same file dropped twice becomes the same row.</span></div>
+    <div class="guard"><code>invoices UNIQUE(vendor_id, invoice_no_norm)</code><span>The database refuses a second invoice with the same identity. <code>INV/42</code> and <code>INV-0042</code> both normalise to <code>INV42</code>.</span></div>
+    <div class="guard"><code>instalments UNIQUE(idem_key)</code><span>One provider payout per key. Retries reuse the key.</span></div>
+    <div class="guard"><code>instalments UNIQUE(invoice_id, instalment_no)</code><span>Instalment numbers cannot repeat. Maximum 3 per invoice.</span></div>
+    <div class="guard"><code>Σ instalments ≤ invoices.total</code><span>Enforced in the same transaction. <code>outstanding</code> never goes below zero.</span></div>
+    <div class="guard"><code>approved_by ≠ proposed_by</code><span>Maker-checker on bank account changes. An email can never update the vendor master.</span></div>
+    <div class="guard"><code>po_lines CHECK(qty_invoiced ≤ qty_ordered)</code><span>Hard stop against re-billing an exhausted PO.</span></div>
+    <div class="guard"><code>events, facts: append-only</code><span>UPDATE and DELETE revoked for the app role. The audit trail can be replayed line by line.</span></div>
+  </div>
+</section>
+
+<!-- ================= CLASSIFICATION ================= -->
+<section class="view" id="v-classification" hidden>
+  <div class="sec-head">
+    <span class="eyebrow">app/pipeline/decide.py · app/scoring/</span>
+    <h2>How an invoice is classified</h2>
+    <p class="lede">The decision is a fixed ladder. Checks attach reason codes as they run; the decider reads the codes, never the free text. The same case worded differently gets the same answer.</p>
+  </div>
+
+  <div class="ladder">
+    <div class="rung"><span class="q">1</span><span>Any BLOCK-level reason present?</span><span class="b b-block">BLOCK</span></div>
+    <div class="rung"><span class="q">2</span><span>Any HOLD-level reason present?</span><span class="b b-hold">HOLD</span></div>
+    <div class="rung"><span class="q">3</span><span>Trust score below 0.40? → <code>LOW_TRUST</code> with the breakdown</span><span class="b b-hold">HOLD</span></div>
+    <div class="rung"><span class="q">4</span><span>Otherwise eligible for the payment run, where tiers decide order and amount.</span><span class="b b-ok">ELIGIBLE</span></div>
+  </div>
+
+  <div class="panel pad" style="display:grid;gap:14px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:baseline">
+      <h3>Reason codes</h3>
+      <div class="filters" id="codeFilters"></div>
+    </div>
+    <div class="scroll"><table class="cols codes" id="codeTable"></table></div>
+  </div>
+
+  <div class="sec-head">
+    <span class="eyebrow">Two separate scores</span>
+    <h2>Trust is a gate. Priority is an order.</h2>
+    <p class="lede">A large, old company is very trustworthy but does not need paying first. A young micro supplier may be less established but is legally and economically more urgent. Missing signals score zero and are listed as “can't verify”, never imputed.</p>
+  </div>
+  <div class="grid2">
+    <div class="panel pad tool">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h3>Trust score</h3><span class="eyebrow">scoring/trust.py</span></div>
+      <div id="trustSliders"></div>
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span class="big" id="trustOut">0.00</span><span id="trustBadge"></span></div>
+      <div class="meter" aria-hidden="true"><i id="trustBar"></i><span class="gate" style="left:40%"></span></div>
+      <div class="res" id="trustMissing"></div>
+    </div>
+    <div class="panel pad tool">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h3>Priority score</h3><span class="eyebrow">scoring/priority.py</span></div>
+      <div id="prioSliders"></div>
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span class="big" id="prioOut">0.00</span><span class="b b-line">orders Tier 2 only</span></div>
+      <div class="meter" aria-hidden="true"><i id="prioBar"></i></div>
+      <div class="res">Built mostly from our own history with the vendor. Used to rank Tier 2 and to weight how leftover cash is shared.</div>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <span class="eyebrow">Deterministic validators</span>
+    <h2>Try the checks</h2>
+  </div>
+  <div class="tools">
+    <div class="panel pad tool">
+      <h3>GSTIN checksum</h3>
+      <label for="gstinIn" class="eyebrow">15-character GSTIN</label>
+      <input type="text" id="gstinIn" maxlength="15" autocomplete="off" spellcheck="false">
+      <div class="res" id="gstinOut"></div>
+    </div>
+    <div class="panel pad tool">
+      <h3>Invoice number identity</h3>
+      <label for="invA" class="eyebrow">Invoice A</label>
+      <input type="text" id="invA" value="INV-0042" autocomplete="off">
+      <label for="invB" class="eyebrow">Invoice B</label>
+      <input type="text" id="invB" value="inv / 42" autocomplete="off">
+      <div class="res" id="invOut"></div>
+    </div>
+    <div class="panel pad tool">
+      <h3>MSME payment deadline</h3>
+      <label for="msAcc" class="eyebrow">Goods accepted (GRN date)</label>
+      <input type="date" id="msAcc" value="2026-10-13">
+      <label for="msCat" class="eyebrow">Category</label>
+      <select id="msCat"><option value="micro">Micro</option><option value="small">Small</option><option value="medium">Medium</option><option value="none">Not MSME</option></select>
+      <label class="cv"><input type="checkbox" id="msAgr" checked> Written agreement</label>
+      <label class="cv"><input type="checkbox" id="msTrd"> Vendor is a trader</label>
+      <div class="res" id="msOut"></div>
+    </div>
+    <div class="panel pad tool">
+      <h3>Early-payment discount</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+        <div><label for="dPct" class="eyebrow">Disc %</label><input type="number" id="dPct" value="2" step="0.5" min="0"></div>
+        <div><label for="dDays" class="eyebrow">Within days</label><input type="number" id="dDays" value="10" min="0"></div>
+        <div><label for="dNet" class="eyebrow">Net days</label><input type="number" id="dNet" value="30" min="1"></div>
+      </div>
+      <label for="dCoc" class="eyebrow">Cost of cash (annual %)</label>
+      <input type="number" id="dCoc" value="12" step="0.5" min="0">
+      <div class="res" id="dOut"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAYMENT RUN ================= -->
+<section class="view" id="v-payment-run" hidden>
+  <div class="sec-head">
+    <span class="eyebrow">app/scheduler/cash.py · allocate.py</span>
+    <h2>Liquidity-aware payment run</h2>
+    <p class="lede">Don't clear every invoice at once. Pay by tier, in instalments where cash is short, and justify every rupee. This is a sketch of the greedy allocator running on example invoices; move the cash sliders and watch the plan re-flow.</p>
+  </div>
+
+  <div class="panel pad" style="display:grid;gap:16px">
+    <div class="ctrls">
+      <div class="slider-row"><label for="cBal">Bank balance</label><input type="range" id="cBal" min="600000" max="3000000" step="50000" value="1200000"><output id="cBalO"></output></div>
+      <div class="slider-row"><label for="cBuf">Safety buffer (payroll, rent, GST/TDS)</label><input type="range" id="cBuf" min="0" max="1000000" step="25000" value="500000"><output id="cBufO"></output></div>
+      <div class="slider-row"><label for="cConf">Min receipt confidence</label><input type="range" id="cConf" min="0.5" max="0.95" step="0.05" value="0.7"><output id="cConfO"></output></div>
+    </div>
+    <div class="cashbar" id="cashbar"></div>
+    <div id="cashAlert"></div>
+  </div>
+
+  <div class="panel pad" style="display:grid;gap:10px">
+    <h3>Proposed instalments</h3>
+    <div class="scroll">
+      <table class="cols alloc" id="allocTable"></table>
+    </div>
+    <p class="lede" style="font-size:13px">Example data, not seed values. Tier 2 shares are proportional to priority × outstanding, with a minimum instalment of max(25% of total, ₹10,000), whole rupees, never above outstanding, at most 3 instalments per invoice. Greedy rather than LP so each line can be explained in one sentence to the approver.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel pad" style="display:grid;gap:10px;align-content:start">
+      <h3>Tier rules</h3>
+      <div class="reason"><span class="b b-block">TIER 0</span><span>Must pay in full now. MSME micro/small, non-trader, deadline (accepted + 15 or 45 days) within the 7-day horizon; or a critical supplier that is overdue. If cash can't cover Tier 0, the run stops and alerts. Legal dues are never silently part-paid.</span></div>
+      <div class="reason"><span class="b b-hold">TIER 1</span><span>Worth paying early. Unexpired discount whose annualised return beats the cost of cash.</span></div>
+      <div class="reason"><span class="b b-info">TIER 2</span><span>Everything else eligible and due within the horizon, ordered by priority score then due date.</span></div>
+    </div>
+    <div class="panel pad" style="display:grid;gap:10px;align-content:start">
+      <h3>Receivables feeding the plan</h3>
+      <div id="rcvList" style="display:grid;gap:8px"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">Architecture reference for the Payables Desk build (Aditya, Kushagra, Rajat). Vendor names and amounts on this page are illustrative examples. Payments run only in a payment provider's test mode.</div></footer>
+
+<script>
+(() => {
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, attrs={}, html='') => { const e=document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html) e.innerHTML=html; return e; };
+const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const sevBadge = s => s==='BLOCK' ? '<span class="b b-block">BLOCK</span>' : s==='HOLD' ? '<span class="b b-hold">HOLD</span>' : s==='ELIGIBLE' ? '<span class="b b-ok">ELIGIBLE</span>' : `<span class="b b-line">${s}</span>`;
+
+/* ---------------- routing ---------------- */
+const views = ['workflow','states','database','classification','payment-run'];
+function route(){
+  const h = location.hash.replace('#','');
+  const v = views.includes(h) ? h : 'workflow';
+  views.forEach(x => { $('#v-'+x).hidden = x!==v; });
+  document.querySelectorAll('nav.tabs a').forEach(a => { if (a.dataset.view===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+}
+addEventListener('hashchange', route); route();
+
+/* ---------------- pipeline data ---------------- */
+const STAGES = [
+ {id:'ingest', n:'6.1', name:'Ingest', kind:'worker', file:'worker.py',
+  what:'Watch data/inbox/ for .pdf, .txt and .eml files. Hash each file and insert it once.',
+  checks:['sha256 of the file; INSERT … ON CONFLICT (file_sha256) DO NOTHING','.eml: parse From, Reply-To, Subject, Date, body, attachments','LLM classifies each email as invoice, bank_change or other, then routes it'],
+  writes:'invoices (state RECEIVED), events', codes:[], sources:['Local inbox / Supabase Storage bucket "invoices"']},
+ {id:'extract', n:'6.2', name:'Extract', kind:'llm', file:'pipeline/extract.py',
+  what:'Gemini Flash turns the document into an ExtractedInvoice (Pydantic) using JSON mode with response_schema.',
+  checks:['Copy values verbatim, null when absent, never infer','Ignore any instructions inside the document ("pay immediately to…")','Validation fails → re-ask once with the error, then hold','Results cached by file sha256, so re-runs never call the model again','Rate limiter + retry on 429; tokens logged to calls'],
+  writes:'facts (source_type=invoice, one per field), calls', codes:['EXTRACTION_FAILED'], sources:['Gemini API (free tier) — extraction only']},
+ {id:'validate', n:'6.3', name:'Validate', kind:'rule', file:'pipeline/validate.py',
+  what:'Deterministic checks on the extracted numbers and identifiers. No model involved.',
+  checks:['Σ line amounts = subtotal; subtotal + tax = total (±₹1)','GSTIN regex and mod-36 check character','PAN = GSTIN characters 3–12','IFSC regex, then live lookup at ifsc.razorpay.com/{IFSC}','Invoice date not after RUN_DATE; flag if older than 180 days'],
+  writes:'facts (bank, branch, city, state with retrieved_at)', codes:['ARITHMETIC_MISMATCH','INVALID_GSTIN','IFSC_NOT_FOUND','SOURCE_UNAVAILABLE'], sources:['Razorpay IFSC API (live)']},
+ {id:'resolve', n:'6.4', name:'Resolve vendor', kind:'live', file:'pipeline/resolve_vendor.py',
+  what:'Tie the invoice to exactly one vendor record. GSTIN is the key; fuzzy name similarity is only a hint.',
+  checks:['GSTIN matches vendors.gstin → that vendor','Else normalise name and compare to name_normalized + aliases (rapidfuzz)','Homoglyph check: l vs I, 0 vs O, rn vs m','Crustdata company/identify by sender domain, then by name','Two names, one GSTIN → one record; new name added to aliases'],
+  writes:'invoices.vendor_id, vendors.crustdata_company_id, facts', codes:['VENDOR_NOT_APPROVED','UNVERIFIABLE_VENDOR','SOURCE_UNAVAILABLE'], sources:['Crustdata Company Identify (0.2 credits per matched identifier)','Crustdata Company Enrich']},
+ {id:'po', n:'6.5', name:'PO match', kind:'rule', file:'pipeline/po_match.py',
+  what:'Two-way match against the purchase order, three-way when goods receipts exist.',
+  checks:['PO exists and its vendor equals the resolved vendor','Per line: invoiced so far + qty ≤ qty ordered (and ≤ received)','|unit price − PO price| / PO price ≤ 2%','accepted_date = latest GRN received_date, which starts the MSME clock','qty_invoiced is consumed only when the invoice becomes ELIGIBLE'],
+  writes:'invoices.po_id, accepted_date, facts', codes:['NO_PO','PO_VENDOR_MISMATCH','OVER_BILLED','PRICE_VARIANCE'], sources:['Internal: purchase_orders, po_lines, grns']},
+ {id:'dups', n:'6.6', name:'Duplicates', kind:'rule', file:'pipeline/duplicates.py',
+  what:'Three levels of duplicate detection, so a re-issued invoice in a new format is still caught.',
+  checks:['Identity: (vendor, normalised invoice no.) already exists','Fuzzy: same vendor + same total within ±7 days, different number','Content hash: sha256 of sorted (item, qty, unit_price)','PO exhaustion catches re-billing as OVER_BILLED'],
+  writes:'invoices.invoice_no_norm, content_hash, reasons', codes:['DUPLICATE_INVOICE','POSSIBLE_DUPLICATE'], sources:['Internal: invoices']},
+ {id:'bank', n:'6.7', name:'Bank check', kind:'live', file:'pipeline/bank_check.py',
+  what:'The bank-detail fraud defence. New bank details on an invoice always hold. An email can never change the vendor master.',
+  checks:['Invoice account/IFSC ≠ vendor\'s current account → hold','Bank-change email → pending_verification row + "call phone on file" task','Sender domain vs official domain (vendor master and Crustdata), incl. lookalikes','Reply-To ≠ From','Signatory checked with Crustdata People Search at the vendor','Urgency language, IFSC city far from vendor, beneficiary ≠ legal name','Domain mismatch + bank change → BLOCK and vendor on_hold'],
+  writes:'vendor_bank_accounts (pending), facts, reasons', codes:['BANK_DETAILS_CHANGED','SENDER_DOMAIN_MISMATCH','REPLY_TO_MISMATCH','SENDER_NOT_VERIFIED_AT_VENDOR','PRESSURE_LANGUAGE','IFSC_LOCATION_MISMATCH','BENEFICIARY_NAME_MISMATCH'], sources:['Crustdata People Search','Crustdata Identify / Enrich','Razorpay IFSC API']},
+ {id:'decide', n:'6.8', name:'Decide', kind:'rule', file:'pipeline/decide.py',
+  what:'Read the accumulated reason codes and apply the fixed ladder. Then the LLM writes a 2–3 sentence explanation from the reasons and facts only.',
+  checks:['Any BLOCK reason → BLOCK','Any HOLD reason → HOLD','Trust score < 0.40 → HOLD: LOW_TRUST','Otherwise ELIGIBLE','Explanation may not add new claims'],
+  writes:'invoices.decision, reasons [{code,message,fact_ids}], explanation', codes:['LOW_TRUST'], sources:['Trust score (Crustdata enrich, web news, bank history)']},
+ {id:'schedule', n:'10', name:'Payment run', kind:'rule', file:'scheduler/allocate.py',
+  what:'Compute spendable cash, sort eligible invoices into tiers, and allocate greedily with a justification per instalment.',
+  checks:['spendable = balance − buffer + Σ(confident receipts × confidence)','Tier 0 in full; stop and alert if short','Tier 1 in full while the discount beats cost of cash','Tier 2 proportional to priority × outstanding, min instalment rule'],
+  writes:'payment_runs, instalments (PROPOSED) with justification', codes:['CASH_CRISIS'], sources:['bank_position.json, receivables']},
+ {id:'approve', n:'12.2', name:'Approve', kind:'human', file:'ui/pages/2_Payment_Run.py',
+  what:'A named person reviews the plan, can drag amounts within bounds, and approves the run. Nothing irreversible happens before this.',
+  checks:['Approver name required','Overrides marked approver_override = true and logged','Warnings: Tier 0 cash crisis, discount expiring, MSME deadline ≤ 3 days'],
+  writes:'instalments (APPROVED, approved_by, approved_at), events', codes:[], sources:['Human approval']},
+ {id:'pay', n:'5', name:'Pay once', kind:'worker', file:'payments/',
+  what:'Execute each approved instalment exactly once through RazorpayX test mode or the MockProvider, to the vendor\'s current verified account only.',
+  checks:['Write INTENT_WRITTEN and commit before calling the provider','Submit with idem_key; store provider_ref','PAID decrements outstanding in the same transaction','On restart, ask the provider by key before resubmitting','Refuses to run with rzp_live_ keys'],
+  writes:'instalments, invoices.outstanding, mock_provider_payouts, calls', codes:[], sources:['RazorpayX Payouts (test mode) / MockProvider']}
+];
+const KIND = {llm:['k-llm','LLM'], rule:['k-rule','Rules'], live:['k-live','Live'], human:['k-human','Human'], worker:['k-worker','Worker']};
+
+const CODES = [
+ ['EXTRACTION_FAILED','extract','HOLD','Model output failed schema validation twice.'],
+ ['ARITHMETIC_MISMATCH','validate','HOLD','Lines don\'t sum to subtotal, or subtotal + tax ≠ total (±₹1).'],
+ ['INVALID_GSTIN','validate','BLOCK','GSTIN fails the format or mod-36 check character.'],
+ ['IFSC_NOT_FOUND','validate','HOLD','IFSC lookup returned 404.'],
+ ['SOURCE_UNAVAILABLE','any','HOLD','A live source timed out or failed after 2 retries, or credits ran out. Silence is never read as an answer.'],
+ ['RUN_CEILING_REACHED','any','HOLD','The run hit its time or credit limit before this invoice was checked.'],
+ ['VENDOR_NOT_APPROVED','resolve','HOLD','Name resembles an approved vendor but the GSTIN differs or is missing (possible lookalike).'],
+ ['UNVERIFIABLE_VENDOR','resolve','HOLD','“I can\'t verify”: no GSTIN, no PO, no registry record. Lists what is missing.'],
+ ['NO_PO','po','HOLD','PO number missing or unknown.'],
+ ['PO_VENDOR_MISMATCH','po','HOLD','The PO belongs to a different vendor.'],
+ ['OVER_BILLED','po','HOLD','Billed quantity exceeds ordered (or received) quantity. Line cited.'],
+ ['PRICE_VARIANCE','po','HOLD','Unit price differs from the PO by more than 2%.'],
+ ['DUPLICATE_INVOICE','dups','HOLD','Same vendor and normalised invoice number already exist.'],
+ ['POSSIBLE_DUPLICATE','dups','HOLD','Same vendor + total within ±7 days, or identical line items.'],
+ ['BANK_DETAILS_CHANGED','bank','HOLD','Invoice bank account differs from the vendor\'s current account. Escalates to BLOCK with a domain mismatch.'],
+ ['SENDER_DOMAIN_MISMATCH','bank','BLOCK','Sender domain is not the vendor\'s official domain (when combined with a bank change).'],
+ ['REPLY_TO_MISMATCH','bank','HOLD','Reply-To differs from From.'],
+ ['SENDER_NOT_VERIFIED_AT_VENDOR','bank','HOLD','People Search finds no such signatory at the vendor. A match removes the signal but never makes a change safe.'],
+ ['PRESSURE_LANGUAGE','bank','HOLD','“Urgent”, “today”, “account frozen”, “confidential”.'],
+ ['IFSC_LOCATION_MISMATCH','bank','HOLD','New branch city/state is far from the vendor\'s known location.'],
+ ['BENEFICIARY_NAME_MISMATCH','bank','HOLD','Beneficiary name ≠ vendor legal name after normalisation.'],
+ ['LOW_TRUST','decide','HOLD','Trust score below the 0.40 gate. Breakdown attached.'],
+];
+const STAGE_NAME = Object.fromEntries(STAGES.map(s=>[s.id,s.name])); STAGE_NAME.any='Any live call';
+
+/* ---------------- pipeline render ---------------- */
+let curStage = 'bank';
+function renderRail(){
+  const rail = $('#rail'); rail.innerHTML='';
+  STAGES.forEach((s,i) => {
+    const b = el('button',{class:'stage',type:'button','data-id':s.id,'aria-pressed':String(s.id===curStage)},
+      `<span class="n">§${s.n}</span><span class="nm">${s.name}</span><span class="kind ${KIND[s.kind][0]}">${KIND[s.kind][1]}</span>`);
+    b.addEventListener('click',()=>{curStage=s.id; document.querySelectorAll('.stage').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.id===curStage))); renderStage();});
+    rail.appendChild(b);
+  });
+}
+function renderStage(){
+  const s = STAGES.find(x=>x.id===curStage);
+  const codes = s.codes.length ? s.codes.map(c=>{const d=CODES.find(x=>x[0]===c); const sev=d?d[2]:'HOLD'; return `<span class="b ${sev==='BLOCK'?'b-block':'b-hold'}">${c}</span>`;}).join('') : '<span class="b b-line">raises no codes</span>';
+  $('#stageDetail').innerHTML = `
+   <div class="kv">
+     <div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap"><h3>${s.name}</h3><code style="color:var(--muted)">app/${s.file}</code></div>
+     <p>${s.what}</p>
+     <div><span class="label">Checks</span><ul>${s.checks.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+   </div>
+   <div class="kv">
+     <div><span class="label">Writes</span><p class="mono" style="margin-top:4px">${s.writes}</p></div>
+     <div><span class="label">Sources</span><div class="chips">${s.sources.map(x=>`<span class="b b-line">${x}</span>`).join('')}</div></div>
+     <div><span class="label">Reason codes</span><div class="chips">${codes}</div></div>
+   </div>`;
+}
+renderRail(); renderStage();
+
+/* ---------------- test cases ---------------- */
+// flag: stage where it is flagged; reasons: [code, sev, text]; decision; tier
+const CASES = [
+ {n:1, t:'Clean invoice, PO matches', decision:'ELIGIBLE', tier:2, reasons:[], note:'Scheduled in Tier 2 by priority.'},
+ {n:2, t:'Clean invoice INV-0042', decision:'ELIGIBLE', tier:2, reasons:[], note:'Scheduled in Tier 2. Becomes the original for case 5.'},
+ {n:3, t:'Clean invoice, critical supplier', decision:'ELIGIBLE', tier:2, reasons:[], note:'High priority score puts it at the top of Tier 2.'},
+ {n:4, t:'Clean invoice, large established vendor', decision:'ELIGIBLE', tier:2, reasons:[], note:'High trust, low priority: gets paid after smaller suppliers.'},
+ {n:5, t:'Case 2 re-issued as INV/42', flag:'dups', decision:'HOLD', reasons:[['DUPLICATE_INVOICE','HOLD','INV/42 normalises to INV42, same as INV-0042 from case 2.']]},
+ {n:6, t:'Same vendor + amount, new number, 3 days later', flag:'dups', decision:'HOLD', reasons:[['POSSIBLE_DUPLICATE','HOLD','Same vendor and total within ±7 days of an existing invoice.']]},
+ {n:7, t:'Polite “we changed banks” email', flag:'bank', decision:'BLOCK', reasons:[
+   ['BANK_DETAILS_CHANGED','HOLD','New account ≠ current account on file.'],
+   ['SENDER_DOMAIN_MISMATCH','BLOCK','Sent from a lookalike of the official domain.'],
+   ['REPLY_TO_MISMATCH','HOLD','Reply-To points to a different address than From.'],
+   ['SENDER_NOT_VERIFIED_AT_VENDOR','HOLD','I can\'t verify the signatory works at the vendor (People Search: no match).'],
+   ['PRESSURE_LANGUAGE','HOLD','“Please update today, our old account is frozen.”']], note:'Vendor set to on_hold. Pending bank row created with a “call phone on file” task.'},
+ {n:8, t:'Homoglyph lookalike vendor name', flag:'resolve', decision:'HOLD', reasons:[['VENDOR_NOT_APPROVED','HOLD','Name matches an approved vendor with l↔I swapped; GSTIN differs.']]},
+ {n:9, t:'Billed quantity above PO', flag:'po', decision:'HOLD', reasons:[['OVER_BILLED','HOLD','Line 2: billed 120 units, PO ordered 100.']]},
+ {n:10, t:'GSTIN fails checksum', flag:'validate', decision:'BLOCK', reasons:[['INVALID_GSTIN','BLOCK','The 15th character does not match the mod-36 check character.']]},
+ {n:11, t:'“Sharma Traders”: no GSTIN, no PO', flag:'resolve', decision:'HOLD', reasons:[['UNVERIFIABLE_VENDOR','HOLD','I can\'t verify. Missing: GSTIN, PO, registry record.'],['NO_PO','HOLD','No PO number on the invoice.']]},
+ {n:12, t:'Crustdata / IFSC timeout injected', flag:'validate', decision:'HOLD', reasons:[['SOURCE_UNAVAILABLE','HOLD','IFSC API timed out after 2 retries. Never treated as “no problem”.']]},
+ {n:13, t:'MSME micro, accepted 40 days ago', decision:'ELIGIBLE', tier:0, reasons:[], note:'Deadline = accepted + 45 days, 5 days away → Tier 0, paid in full.'},
+ {n:14, t:'2/10 net 30 within discount window', decision:'ELIGIBLE', tier:1, reasons:[], note:'Annualised ≈ 37.2% > 12% cost of cash → Tier 1, paid in full.'},
+ {n:15, t:'Large invoice, cash short', decision:'ELIGIBLE', tier:2, reasons:[], note:'Split into instalments ≥ the minimum; remainder planned for the next run.'},
+ {n:16, t:'Case 1 re-worded and re-laid-out', decision:'ELIGIBLE', tier:2, reasons:[], note:'Different labels, line order and date format. Same decision as case 1.'},
+ {n:17, t:'Crash mid-payment, restart', decision:'ELIGIBLE', tier:2, reasons:[], crash:true, note:'Each instalment paid exactly once; totals reconcile. See the State machines tab.'},
+];
+let curCase = null, timer = null;
+function renderCases(){
+  const c = $('#cases'); c.innerHTML='';
+  CASES.forEach(k=>{
+    const b = el('button',{class:'case',type:'button','aria-pressed':'false'},`<span class="cn">Case ${k.n} · ${k.decision==='ELIGIBLE' && k.tier!==undefined ? 'Tier '+k.tier : k.decision}</span><span class="ct">${k.t}</span>`);
+    b.addEventListener('click',()=>runCase(k,b));
+    c.appendChild(b);
+  });
+}
+function runCase(k, btn){
+  document.querySelectorAll('.case').forEach(x=>x.setAttribute('aria-pressed','false')); btn.setAttribute('aria-pressed','true');
+  clearInterval(timer); curCase=k;
+  const stages = [...document.querySelectorAll('.stage')];
+  stages.forEach(s=>{s.classList.remove('run','flag-hold','flag-block','dim'); s.setAttribute('aria-pressed','false');});
+  const ok = k.decision==='ELIGIBLE';
+  const lastIdx = ok ? STAGES.length-1 : STAGES.findIndex(s=>s.id==='decide');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let i = 0;
+  const v = $('#verdict'); v.className='verdict'; v.innerHTML='<span class="eyebrow">Running case '+k.n+'…</span>';
+  const step = () => {
+    const s = stages[i]; const id = STAGES[i].id;
+    s.classList.add('run');
+    if (k.flag===id) s.classList.add(k.decision==='BLOCK'?'flag-block':'flag-hold');
+    if (id==='decide' && !ok) s.classList.add(k.decision==='BLOCK'?'flag-block':'flag-hold');
+    i++;
+    if (i>lastIdx){ clearInterval(timer); for (let j=lastIdx+1;j<stages.length;j++) stages[j].classList.add('dim'); showVerdict(k); }
+  };
+  if (reduce){ while(i<=lastIdx) step(); } else { step(); timer = setInterval(step, 140); }
+}
+function showVerdict(k){
+  const v = $('#verdict');
+  v.className = 'verdict ' + (k.decision==='ELIGIBLE'?'v-ok':k.decision==='BLOCK'?'v-block':'v-hold');
+  const tier = k.tier!==undefined ? `<span class="b ${k.tier===0?'b-block':k.tier===1?'b-hold':'b-info'}">TIER ${k.tier}</span>` : '';
+  const where = k.flag ? `<span style="color:var(--muted)">flagged at ${STAGE_NAME[k.flag]}</span>` : `<span style="color:var(--muted)">passed every check</span>`;
+  const rs = k.reasons.length ? k.reasons.map(r=>`<div class="reason">${sevBadge(r[1])}<span><code>${r[0]}</code> ${r[2]}</span></div>`).join('') : '';
+  const extra = k.decision!=='ELIGIBLE' ? 'Does not enter the payment run. Shown on the Invoice Desk with evidence; a person can release a HOLD with a logged note.' : '';
+  v.innerHTML = `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><strong>Case ${k.n}</strong>${sevBadge(k.decision)}${tier}${where}</div>${rs}${k.note?`<p>${k.note}</p>`:''}${extra?`<p style="color:var(--muted);font-size:14px">${extra}</p>`:''}`;
+}
+renderCases();
+$('#verdict').innerHTML = '<span class="eyebrow">Pick a case above</span><p style="color:var(--muted)">Case 7, the bank-change email from a lookalike domain, is the hardest one.</p>';
+
+/* ---------------- state machines ---------------- */
+const INV_STATES = [
+ ['RECEIVED','File hashed and inserted once (UNIQUE file_sha256).'],
+ ['EXTRACTED','Fields extracted by the LLM and stored as facts with source_type=invoice.'],
+ ['VALIDATED','Arithmetic, GSTIN, PAN, IFSC and date checks done.'],
+ ['RESOLVED','Linked to exactly one vendor (GSTIN first, Crustdata identify).'],
+ ['MATCHED','PO (and GRN) matched; accepted_date set.'],
+ ['CHECKED','Duplicate and bank-detail checks done.'],
+ ['DECIDED','Reason codes run through the decision ladder.'],
+];
+const INV_BRANCH = [
+ ['ELIGIBLE','final-ok','Passed. Waits for the next payment run.'],
+ ['HELD','final-hold','At least one HOLD reason. A person can release it with a logged note.'],
+ ['BLOCKED','final-block','At least one BLOCK reason. Not payable.'],
+];
+const INV_TAIL = [
+ ['SCHEDULED','Has at least one PROPOSED instalment in a payment run.'],
+ ['PARTIALLY_PAID','Some instalments PAID; outstanding > 0. Rest rolls to a later run.'],
+ ['PAID','outstanding = 0.'],
+];
+function renderInvSM(){
+  const box = $('#smInvoice'); box.innerHTML='';
+  const add = (name, desc, cls='') => { const b = el('button',{class:'st '+cls,type:'button','aria-pressed':'false'},name); b.addEventListener('click',()=>{box.querySelectorAll('.st').forEach(x=>x.setAttribute('aria-pressed','false')); b.setAttribute('aria-pressed','true'); $('#smInvoiceInfo').innerHTML=`<strong>${name}</strong> · ${desc}`;}); return b; };
+  INV_STATES.forEach((s,i)=>{ box.appendChild(add(s[0],s[1])); box.appendChild(el('span',{class:'arr'},'→')); });
+  const br = el('div',{class:'branch'});
+  INV_BRANCH.forEach(s=>{
+    const row = el('div',{class:'sm'}); row.appendChild(add(s[0],s[2],s[1]));
+    if (s[0]==='ELIGIBLE'){ INV_TAIL.forEach(t=>{ row.appendChild(el('span',{class:'arr'},'→')); row.appendChild(add(t[0],t[1], t[0]==='PAID'?'final-ok':'')); }); }
+    br.appendChild(row);
+  });
+  box.appendChild(br);
+  $('#smInvoiceInfo').innerHTML = 'Click a state. The worker picks the oldest non-final invoice whose lease has expired, runs the step for its state, and commits. Each step is idempotent.';
+}
+renderInvSM();
+
+const PAY_STATES = ['PROPOSED','APPROVED','INTENT_WRITTEN','SUBMITTED','PAID'];
+let payPaid = 0, payCalls = 0, payBusy = false, providerHas = false;
+function renderPaySM(active, crashed){
+  const box = $('#smPay'); box.innerHTML='';
+  PAY_STATES.forEach((s,i)=>{
+    const cls = s===crashed ? 'crashed' : s===active ? 'live' : s==='PAID' ? 'final-ok' : '';
+    box.appendChild(el('span',{class:'st '+cls},s));
+    if (i<PAY_STATES.length-1) box.appendChild(el('span',{class:'arr'},'→'));
+  });
+  box.appendChild(el('span',{class:'arr'},'|')); box.appendChild(el('span',{class:'st final-block'},'FAILED'));
+}
+const logEl = $('#payLog');
+let clock = 0;
+function log(msg, cls=''){ clock+=1; const ts = `12:${String(40+Math.floor(clock/60)).padStart(2,'0')}:${String(clock%60).padStart(2,'0')}`; logEl.innerHTML += `<span class="t">${ts}</span> <span class="${cls}">${msg}</span>\n`; logEl.scrollTop = logEl.scrollHeight; }
+function tally(){ $('#payTally').innerHTML = `invoice total ₹1,80,000 · instalment #1 ₹1,20,000<br>provider payouts for idem_key 9f3c…a1: <strong>${payPaid}</strong> · paid ₹${(payPaid?120000:0).toLocaleString('en-IN')} · outstanding ₹${(180000-(payPaid?120000:0)).toLocaleString('en-IN')}`; }
+const wait = ms => new Promise(r=>setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : ms));
+async function execute(crash){
+  if (payBusy) return; payBusy=true; ['#payRun','#payCrash'].forEach(s=>$(s).disabled=true);
+  if (payPaid){ log('instalment already PAID. Nothing to do.', 'g'); payBusy=false; ['#payRun','#payCrash'].forEach(s=>$(s).disabled=false); return; }
+  renderPaySM('APPROVED'); log('approved_by=kushagra · tx: status APPROVED, events +1'); await wait(500);
+  renderPaySM('INTENT_WRITTEN'); log('tx: status INTENT_WRITTEN · COMMIT (before any provider call)'); await wait(500);
+  log('provider.create_payout(idem_key=9f3c…a1, amount_paise=12000000)'); providerHas = true; payCalls++; await wait(500);
+  if (crash){
+    renderPaySM(null,'SUBMITTED'); log('kill -9 worker (before SUBMITTED was committed)', 'e'); await wait(900);
+    log('worker restarted · lease expired · instalment found in INTENT_WRITTEN');  await wait(500);
+    log('provider.get_status(idem_key=9f3c…a1) → found, ref pout_T8x2, processed'); await wait(500);
+    log('NOT resubmitting. Adopting existing payout.', 'g');
+  }
+  renderPaySM('SUBMITTED'); log('tx: status SUBMITTED, provider_ref=pout_T8x2'); await wait(500);
+  payPaid = 1;
+  renderPaySM('PAID'); log('tx: status PAID · invoices.outstanding −₹1,20,000 · same transaction', 'g');
+  tally(); payBusy=false; ['#payRun','#payCrash'].forEach(s=>$(s).disabled=false);
+}
+$('#payRun').addEventListener('click',()=>execute(false));
+$('#payCrash').addEventListener('click',()=>execute(true));
+$('#payReset').addEventListener('click',()=>{ payPaid=0; payCalls=0; providerHas=false; logEl.innerHTML=''; clock=0; renderPaySM('PROPOSED'); log('instalment #1 PROPOSED · idem_key = sha256(invoice_id|1|12000000)'); tally(); });
+$('#payReset').click();
+
+/* ---------------- database ---------------- */
+const DOMAINS = [
+ ['Vendor master', ['vendors','vendor_bank_accounts']],
+ ['Procurement', ['purchase_orders','po_lines','grns']],
+ ['Invoices', ['invoices','invoice_lines']],
+ ['Payments', ['payment_runs','instalments','mock_provider_payouts']],
+ ['Receivables', ['customers','receivables']],
+ ['Evidence & audit (append-only)', ['facts','raw_responses','events','calls','cache']],
+];
+const T = {
+ vendors:{d:'The most protected table. GSTIN is the identity key; both scores and their breakdowns live here.', c:[
+  ['id','uuid','PK'],['legal_name','text','NOT NULL'],['name_normalized','text','lowercased, suffixes stripped'],['aliases','text[]','other names seen for the same GSTIN'],
+  ['gstin','text','UNIQUE · primary identity key'],['pan','text','must equal gstin[2:12]'],['udyam_no','text',''],['msme_category','text','CHECK micro | small | medium | none'],
+  ['is_trader','boolean','traders excluded from MSME 45-day rule'],['has_written_agreement','boolean','45 vs 15 day limit'],['domain','text','official email/web domain'],['phone_on_file','text','used for out-of-band verification'],
+  ['credit_days','int','default 30'],['discount_pct / discount_days','numeric / int','e.g. 2.00 / 10'],['is_critical','boolean','sole/critical supplier'],['relationship_since','date',''],
+  ['crustdata_company_id','bigint','from company/identify'],['trust_score / priority_score','numeric(4,3)','0–1'],['trust_breakdown / priority_breakdown','jsonb','signal, value, weight, fact_ids'],['status','text','CHECK active | on_hold | blocked']]},
+ vendor_bank_accounts:{d:'Bank account history. Exactly one current per vendor. New details arrive as pending_verification and need maker-checker.', c:[
+  ['id','uuid','PK'],['vendor_id','uuid','FK → vendors'],['account_no / ifsc / beneficiary_name','text',''],['bank_name / branch / city','text','from IFSC API'],
+  ['valid_from / valid_to','timestamptz',''],['status','text','CHECK current | pending_verification | rejected | retired'],['proposed_by / approved_by','text','approved_by ≠ proposed_by'],['verification_note','text','"called phone on file…"'],['evidence_fact_ids','uuid[]','→ facts']]},
+ purchase_orders:{d:'PO headers imported from CSV or a Tally-shaped export. Status recomputed after each GRN or invoice.', c:[
+  ['id','uuid','PK'],['po_number','text','UNIQUE'],['vendor_id','uuid','FK → vendors'],['po_date','date',''],['status','text','CHECK OPEN | PARTIALLY_RECEIVED | PARTIALLY_INVOICED | CLOSED | CANCELLED'],['source','text','csv | tally_csv | manual']]},
+ po_lines:{d:'Ordered, received and invoiced quantities per line. The hard stop against re-billing.', c:[
+  ['id','uuid','PK'],['po_id','uuid','FK → purchase_orders'],['line_no','int','UNIQUE(po_id, line_no)'],['item / unit','text',''],['qty_ordered','numeric',''],['unit_price','numeric(14,2)','±2% tolerance'],['gst_rate','numeric(5,2)',''],['qty_received','numeric','default 0'],['qty_invoiced','numeric','CHECK ≤ qty_ordered']]},
+ grns:{d:'Goods receipts. The latest received_date becomes the invoice\'s accepted_date and starts the MSME clock.', c:[
+  ['id','uuid','PK'],['po_id','uuid','FK → purchase_orders'],['line_no','int',''],['qty','numeric',''],['received_date','date','starts MSME clock'],['grn_number','text','UNIQUE']]},
+ invoices:{d:'One row per inbound document. Holds the raw extracted values, the state machine, the decision and its reasons.', c:[
+  ['id','uuid','PK'],['file_sha256','text','UNIQUE · same file = same row'],['source_path / source_kind','text','pdf | txt | eml'],['vendor_id','uuid','FK → vendors (null until resolved)'],
+  ['vendor_name_raw / gstin_raw','text','as extracted'],['invoice_no_raw / invoice_no_norm','text','UNIQUE(vendor_id, invoice_no_norm)'],['invoice_date / accepted_date','date',''],
+  ['po_number_raw / po_id','text / uuid','FK → purchase_orders'],['subtotal / tax / total','numeric(14,2)',''],['outstanding','numeric(14,2)','total − paid, never < 0'],
+  ['bank_account_raw / ifsc_raw / beneficiary_raw','text','never paid to; compared only'],['sender_email / reply_to','text',''],['content_hash','text','hash of normalised lines'],
+  ['state','text','NOT NULL · see state machine'],['decision','text','CHECK PAY_ELIGIBLE | HOLD | BLOCK'],['reasons','jsonb','[{code, message, fact_ids}]'],['explanation','text','LLM prose from reasons'],
+  ['attempts / last_error / locked_until','int / text / timestamptz','worker lease']]},
+ invoice_lines:{d:'Extracted line items.', c:[['invoice_id','uuid','FK → invoices'],['line_no','int',''],['item','text',''],['qty','numeric',''],['unit_price','numeric(14,2)',''],['gst_rate','numeric(5,2)',''],['amount','numeric(14,2)','']]},
+ payment_runs:{d:'One weekly run: the cash position, ceilings and spend.', c:[
+  ['id','uuid','PK'],['run_date','date',''],['bank_balance / safety_buffer','numeric',''],['expected_receipts / spendable','numeric',''],['status','text','CHECK DRAFT | PROPOSED | APPROVED | EXECUTING | DONE | ABORTED'],['time_limit_s / credit_limit','int / numeric','900 s / 200 credits'],['credits_used','numeric','checked before every call'],['started_at / finished_at','timestamptz','']]},
+ instalments:{d:'Each instalment is paid exactly once. Total paid never exceeds the invoice.', c:[
+  ['id','uuid','PK'],['idem_key','text','UNIQUE NOT NULL · sha256(invoice|no|paise)'],['invoice_id','uuid','FK → invoices'],['run_id','uuid','FK → payment_runs'],['instalment_no','int','UNIQUE(invoice_id, instalment_no)'],
+  ['amount','numeric(14,2)','CHECK > 0'],['tier','int','CHECK 0 | 1 | 2'],['justification','jsonb','headline, reasons, remaining, cash_after'],['proposed_amount','numeric(14,2)','engine suggestion'],['approver_override','boolean',''],
+  ['status','text','CHECK PROPOSED | APPROVED | INTENT_WRITTEN | SUBMITTED | PAID | FAILED | CANCELLED'],['provider / provider_ref / provider_status','text',''],['approved_by / approved_at / paid_at','text / timestamptz','']]},
+ mock_provider_payouts:{d:'The MockProvider\'s own ledger. Same key returns the existing payout, giving true idempotency for the crash demo.', c:[['idem_key','text','UNIQUE'],['amount_paise','bigint',''],['beneficiary','jsonb',''],['status','text',''],['created_at','timestamptz','']]},
+ customers:{d:'Customers whose receipts feed the cash plan.', c:[['id','uuid','PK'],['legal_name / gstin / domain','text',''],['crustdata_company_id','bigint',''],['health_score','numeric',''],['health_breakdown','jsonb','headcount trend, adverse news']]},
+ receivables:{d:'Expected receipts. Only confident ones (≥ 0.7) count toward spendable, weighted by confidence.', c:[['id','uuid','PK'],['customer_id','uuid','FK → customers'],['invoice_no','text',''],['amount','numeric(14,2)',''],['due_date','date',''],['confidence','numeric(4,3)','P(received by due date)'],['status','text','CHECK OPEN | PAID | OVERDUE | WRITTEN_OFF'],['paylink_id / paylink_url / paylink_status','text','Razorpay test link']]},
+ facts:{d:'Every claim the product makes, with the record behind it, the exact field, and the date it was retrieved.', c:[['id','uuid','PK'],['entity_type / entity_id','text / uuid','what the fact is about'],['key','text',''],['value','jsonb',''],['source_type','text','crustdata | ifsc_api | web | internal | invoice | computed'],['source_ref','text','URL or endpoint + params'],['source_field','text','exact JSON path'],['retrieved_at','timestamptz',''],['raw_response_id','uuid','FK → raw_responses']]},
+ raw_responses:{d:'Verbatim API responses that facts point into.', c:[['id','uuid','PK'],['endpoint','text',''],['request','jsonb',''],['response','jsonb',''],['status','int',''],['retrieved_at','timestamptz','']]},
+ events:{d:'Append-only timeline of every state transition. Never updated or deleted.', c:[['seq','bigserial','PK'],['entity_type / entity_id','text / uuid','invoice, instalment, vendor, run'],['from_state / to_state','text',''],['actor','text','worker | person name'],['detail','jsonb',''],['at','timestamptz','default now()']]},
+ calls:{d:'The cost ledger. Every API and model call, including tokens and estimated ₹ cost.', c:[['id','bigserial','PK'],['run_id','uuid','FK → payment_runs'],['invoice_id','uuid','FK → invoices, nullable'],['tool / endpoint','text',''],['credits','numeric','from the response'],['input_tokens / output_tokens','int','Gemini usage metadata'],['est_cost_inr','numeric','at paid-tier rates'],['latency_ms / ok / http_status / error','','']]},
+ cache:{d:'Crustdata and IFSC responses reused within a run, so each vendor costs credits once.', c:[['key','text','PK'],['value','jsonb',''],['retrieved_at','timestamptz','']]},
+};
+const REL = [
+ ['vendor_bank_accounts','vendors'],['purchase_orders','vendors'],['po_lines','purchase_orders'],['grns','purchase_orders'],
+ ['invoices','vendors'],['invoices','purchase_orders'],['invoice_lines','invoices'],['instalments','invoices'],['instalments','payment_runs'],
+ ['mock_provider_payouts','instalments'],['receivables','customers'],['facts','raw_responses'],['vendor_bank_accounts','facts'],
+ ['calls','payment_runs'],['calls','invoices'],['events','invoices'],['events','instalments'],['facts','invoices'],['facts','vendors'],
+];
+let curTbl = 'invoices';
+function renderDomains(){
+  const box = $('#domains'); box.innerHTML='';
+  DOMAINS.forEach(([name, tbls])=>{
+    const d = el('div',{class:'domain'}); d.appendChild(el('h3',{},name));
+    tbls.forEach(t=>{
+      const b = el('button',{class:'tbl',type:'button','data-t':t,'aria-pressed':String(t===curTbl)},`<span class="tn">${t}</span><span class="tc">${T[t].c.length} cols</span>`);
+      b.addEventListener('click',()=>{ curTbl=t; paintDomains(); renderTbl(); });
+      d.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+  paintDomains();
+}
+function paintDomains(){
+  const rel = new Set(REL.filter(r=>r.includes(curTbl)).flat()); rel.delete(curTbl);
+  $('#domains').classList.add('focus');
+  document.querySelectorAll('.tbl').forEach(b=>{ b.setAttribute('aria-pressed',String(b.dataset.t===curTbl)); b.classList.toggle('rel', rel.has(b.dataset.t)); });
+}
+function renderTbl(){
+  const t = T[curTbl];
+  const rel = REL.filter(r=>r.includes(curTbl)).map(r=> r[0]===curTbl ? `<span class="b b-info">→ ${r[1]}</span>` : `<span class="b b-line">${r[0]} →</span>`).join('');
+  const tag = n => /^PK/.test(n) ? '<span class="b b-acc">PK</span> ' : /^FK/.test(n) ? '<span class="b b-info">FK</span> ' : /UNIQUE/.test(n) ? '<span class="b b-hold">UNIQUE</span> ' : '';
+  $('#tblDetail').innerHTML = `
+    <div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap"><h3 class="mono" style="font-family:var(--f-mono)">${curTbl}</h3><div class="chips" style="margin:0">${rel}</div></div>
+    <p class="lede">${t.d}</p>
+    <div class="scroll"><table class="cols"><thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+    ${t.c.map(c=>`<tr><td>${c[0]}</td><td class="ty">${c[1]}</td><td>${tag(c[2])}${c[2].replace(/^(PK|FK)\s*/, '')}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+renderDomains(); renderTbl();
+
+/* ---------------- reason code table ---------------- */
+let codeFilter = 'all';
+const FILTERS = [['all','All'],['BLOCK','Block'],['HOLD','Hold'],['validate','Validate'],['resolve','Resolve'],['po','PO match'],['dups','Duplicates'],['bank','Bank check']];
+function renderCodes(){
+  const f = $('#codeFilters'); f.innerHTML='';
+  FILTERS.forEach(([k,l])=>{ const b=el('button',{class:'chip',type:'button','aria-pressed':String(k===codeFilter)},l); b.addEventListener('click',()=>{codeFilter=k; renderCodes();}); f.appendChild(b); });
+  const rows = CODES.filter(c=> codeFilter==='all' || c[2]===codeFilter || c[1]===codeFilter);
+  $('#codeTable').innerHTML = `<thead><tr><th>Code</th><th>Severity</th><th>Stage</th><th>Raised when</th></tr></thead><tbody>${rows.map(c=>`<tr><td>${c[0]}</td><td>${sevBadge(c[2])}</td><td style="white-space:nowrap">${STAGE_NAME[c[1]]}</td><td>${c[3]}</td></tr>`).join('')}</tbody>`;
+}
+renderCodes();
+
+/* ---------------- score calculators ---------------- */
+const TRUST = [
+ ['Identity consistent (GSTIN ↔ PAN ↔ name ↔ Crustdata)',0.25,1],['Company age (≥10 y → 1)',0.15,0.8],['Headcount stability (12-month trend)',0.15,0.9],
+ ['Domain consistency (sender = official)',0.15,1],['Bank details stable',0.15,1],['No adverse news found',0.15,1]];
+const PRIO = [
+ ['Critical / sole supplier',0.25,0],['Years of relationship (≥5 y → 1)',0.15,0.6],['Clean-match rate',0.20,0.9],
+ ['On-time delivery rate',0.20,0.85],['Low dispute rate',0.10,1],['MSME micro/small, non-trader',0.10,1]];
+function sliders(boxId, sig, prefix, withCV, onChange){
+  const box = $(boxId);
+  sig.forEach(([name,w,v],i)=>{
+    const row = el('div',{class:'slider-row'});
+    row.innerHTML = `<label for="${prefix}${i}">${name} <span class="w">×${w.toFixed(2)}</span>${withCV?`<br><span class="cv"><input type="checkbox" id="${prefix}cv${i}"> can't verify</span>`:''}</label><input type="range" id="${prefix}${i}" min="0" max="1" step="0.05" value="${v}"><output id="${prefix}o${i}"></output>`;
+    box.appendChild(row);
+  });
+  box.addEventListener('input', onChange); onChange();
+}
+function trustCalc(){
+  let s=0; const miss=[];
+  TRUST.forEach(([n,w],i)=>{ const cv=$('#tcv'+i).checked; const v=+$('#t'+i).value; $('#t'+i).disabled=cv; $('#to'+i).textContent = cv?'—':v.toFixed(2); if(cv) miss.push(n); else s+=v*w; });
+  $('#trustOut').textContent = s.toFixed(2); $('#trustBar').style.width = (s*100)+'%';
+  $('#trustBadge').innerHTML = s<0.4 ? '<span class="b b-hold">HOLD: LOW_TRUST</span>' : '<span class="b b-ok">passes gate (≥ 0.40)</span>';
+  $('#trustMissing').innerHTML = miss.length ? `Can't verify: ${miss.join('; ')}. These score 0 and are listed on the invoice.` : 'All six signals verified from dated sources.';
+}
+function prioCalc(){
+  let s=0; PRIO.forEach(([n,w],i)=>{ const v=+$('#p'+i).value; $('#po'+i).textContent=v.toFixed(2); s+=v*w; });
+  $('#prioOut').textContent = s.toFixed(2); $('#prioBar').style.width=(s*100)+'%';
+}
+// checkboxes must exist before first calc
+(function(){ const box=$('#trustSliders'); TRUST.forEach(([name,w,v],i)=>{ const row=el('div',{class:'slider-row'}); row.innerHTML=`<label for="t${i}">${name} <span class="w">×${w.toFixed(2)}</span><br><span class="cv"><input type="checkbox" id="tcv${i}"> can't verify</span></label><input type="range" id="t${i}" min="0" max="1" step="0.05" value="${v}"><output id="to${i}"></output>`; box.appendChild(row); }); box.addEventListener('input',trustCalc); box.addEventListener('change',trustCalc); trustCalc(); })();
+sliders('#prioSliders', PRIO, 'p', false, prioCalc);
+
+/* ---------------- validators ---------------- */
+const CH = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function gstinCheck(g14){ let t=0; for (let i=0;i<14;i++){ const p = CH.indexOf(g14[i]) * (i%2===0?1:2); t += Math.floor(p/36) + p%36; } return CH[(36 - t%36)%36]; }
+const GST_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+const sample = '27AAPFU0939F1Z'; $('#gstinIn').value = sample + gstinCheck(sample);
+function gstinRun(){
+  const g = $('#gstinIn').value.toUpperCase().trim(); const o = $('#gstinOut');
+  if (g.length!==15){ o.innerHTML = `${g.length}/15 characters`; return; }
+  if (!GST_RE.test(g)){ o.innerHTML = `<span class="b b-block">BLOCK</span> INVALID_GSTIN: format does not match`; return; }
+  const exp = gstinCheck(g.slice(0,14));
+  o.innerHTML = exp===g[14] ? `<span class="b b-ok">valid</span> check char ${exp} · state ${g.slice(0,2)} · PAN ${g.slice(2,12)}` : `<span class="b b-block">BLOCK</span> INVALID_GSTIN: expected check char <strong>${exp}</strong>, got ${g[14]}`;
+}
+$('#gstinIn').addEventListener('input', gstinRun); gstinRun();
+
+const norm = s => s.toUpperCase().replace(/[^A-Z0-9]/g,'').replace(/(^|[^0-9])0+(?=[0-9])/g,'$1');
+function invRun(){ const a=norm($('#invA').value), b=norm($('#invB').value);
+  $('#invOut').innerHTML = `A → <strong>${a||'∅'}</strong><br>B → <strong>${b||'∅'}</strong><br>` + (a && a===b ? '<span class="b b-hold">HOLD</span> DUPLICATE_INVOICE for the same vendor' : '<span class="b b-ok">different identity</span> fuzzy + content-hash checks still run'); }
+['#invA','#invB'].forEach(s=>$(s).addEventListener('input',invRun)); invRun();
+
+const RUN_DATE = new Date('2026-11-22T00:00:00');
+function msRun(){
+  const acc = new Date($('#msAcc').value+'T00:00:00'); const cat=$('#msCat').value; const agr=$('#msAgr').checked; const trd=$('#msTrd').checked; const o=$('#msOut');
+  if (isNaN(acc)){ o.textContent='Enter a date'; return; }
+  if (!(cat==='micro'||cat==='small')){ o.innerHTML='<span class="b b-line">not covered</span> Only micro and small enterprises are covered. Normal credit terms apply.'; return; }
+  if (trd){ o.innerHTML='<span class="b b-line">not covered</span> MSME traders are excluded from the 45-day rule.'; return; }
+  const days = agr?45:15; const dl = new Date(acc); dl.setDate(dl.getDate()+days);
+  const left = Math.round((dl-RUN_DATE)/86400000);
+  const fmt = dl.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const t0 = left<=7;
+  o.innerHTML = `Deadline ${fmt} (accepted + ${days} days) · ${left<0? `<strong>${-left} days overdue</strong>` : `${left} days left`} at RUN_DATE<br>${t0?'<span class="b b-block">TIER 0</span> pay in full in this run':'<span class="b b-line">not yet Tier 0</span> outside the 7-day horizon'}${left<=3&&left>=0?' · warning: due within 3 days':''}<br><span style="color:var(--muted)">Late payment loses the 43B(h) deduction this year, plus MSMED interest.</span>`;
+}
+['#msAcc','#msCat','#msAgr','#msTrd'].forEach(s=>$(s).addEventListener('input',msRun)); msRun();
+
+function dRun(){
+  const d=(+$('#dPct').value)/100, dd=+$('#dDays').value, net=+$('#dNet').value, coc=+$('#dCoc').value;
+  if (net<=dd||d>=1){ $('#dOut').textContent='Net days must be greater than discount days.'; return; }
+  const ann = (d/(1-d))*(365/(net-dd))*100;
+  $('#dOut').innerHTML = `annualised = (d / (1−d)) × 365 / (${net}−${dd}) = <strong>${ann.toFixed(1)}%</strong><br>` + (ann>coc ? `<span class="b b-hold">TIER 1</span> beats ${coc}% cost of cash, pay early in full` : `<span class="b b-info">TIER 2</span> below ${coc}% cost of cash, not worth paying early`);
+}
+['#dPct','#dDays','#dNet','#dCoc'].forEach(s=>$(s).addEventListener('input',dRun)); dRun();
+
+/* ---------------- payment run allocator ---------------- */
+const INV = [
+ {v:'Kaveri Precision Works', tag:'Micro MSME · written agreement', tier:0, total:180000, prio:0.78, why:'MSME micro, deadline 27 Nov 2026, 5 days left'},
+ {v:'Deccan Packaging', tag:'2/10 net 30', tier:1, total:236000, prio:0.55, why:'2% discount ≈ 37.2% annualised > 12% cost of cash; window closes 28 Nov'},
+ {v:'Northline Logistics', tag:'Critical supplier', tier:2, total:472000, prio:0.86, why:'Sole freight carrier, 0 disputes in 4 years'},
+ {v:'Sahyadri Chemicals', tag:'Small MSME, deadline later', tier:2, total:354000, prio:0.62, why:'Clean-match rate 92%; MSME deadline 19 Dec'},
+ {v:'Metro Office Supplies', tag:'Trader', tier:2, total:118000, prio:0.41, why:'Routine supplies; due 30 Nov'},
+ {v:'Large cloud provider', tag:'Established, high trust', tier:2, total:600000, prio:0.30, why:'High trust (0.92) but low priority; generous credit terms'},
+];
+const RCV = [
+ {c:'Client X (retail chain)', amt:310000, conf:0.85, due:'27 Nov'},
+ {c:'Client Y (distributor)', amt:200000, conf:0.40, due:'26 Nov', note:'headcount down 18% in 12 months'},
+ {c:'Client Z (exporter)', amt:150000, conf:0.72, due:'28 Nov'},
+];
+function allocate(spend){
+  let cash = spend; const out = INV.map(x=>({...x, pay:0, rows:[]}));
+  const t0 = out.filter(x=>x.tier===0), t0sum = t0.reduce((a,x)=>a+x.total,0);
+  if (cash < t0sum) return {crisis: t0sum-cash, out};
+  t0.forEach(x=>{ x.pay=x.total; cash-=x.total; });
+  out.filter(x=>x.tier===1).forEach(x=>{ if (cash>=x.total){ x.pay=x.total; cash-=x.total; } });
+  let t2 = out.filter(x=>x.tier===2).sort((a,b)=>b.prio-a.prio);
+  const minInst = x => Math.min(x.total, Math.max(0.25*x.total, 10000));
+  // iteratively drop invoices whose proportional share falls below their minimum
+  let active = t2.slice();
+  for (let iter=0; iter<10; iter++){
+    const W = active.reduce((a,x)=>a+x.prio*x.total,0);
+    let changed=false;
+    active.forEach(x=>{ x.share = W ? cash*(x.prio*x.total)/W : 0; });
+    const below = active.filter(x=>x.share < minInst(x));
+    if (below.length){ const drop = below.sort((a,b)=>a.prio-b.prio)[0]; active = active.filter(x=>x!==drop); changed=true; }
+    if (!changed) break;
+  }
+  // cap at outstanding, redistribute surplus by priority order
+  let left = cash;
+  active.forEach(x=>{ x.pay = Math.min(x.total, Math.floor(x.share)); left -= x.pay; });
+  active.forEach(x=>{ const add = Math.min(x.total-x.pay, left); x.pay+=add; left-=add; });
+  // leftover may fund a dropped invoice's minimum in priority order
+  t2.filter(x=>!active.includes(x)).forEach(x=>{ const m=Math.ceil(minInst(x)); if (left>=m){ x.pay=Math.min(x.total, Math.floor(left)); left-=x.pay; } });
+  return {crisis:0, out, left};
+}
+function payRun(){
+  const bal=+$('#cBal').value, buf=+$('#cBuf').value, th=+$('#cConf').value;
+  $('#cBalO').textContent = (bal/100000).toFixed(1)+'L'; $('#cBufO').textContent=(buf/100000).toFixed(2)+'L'; $('#cConfO').textContent=th.toFixed(2);
+  const rec = RCV.filter(r=>r.conf>=th).reduce((a,r)=>a+r.amt*r.conf,0);
+  const spend = Math.max(0, bal-buf+rec);
+  const {crisis,out} = allocate(spend);
+  const paid = out.reduce((a,x)=>a+x.pay,0);
+  $('#cashbar').innerHTML = `
+    <div class="term"><span>Bank balance</span><strong>${inr(bal)}</strong></div><span class="op">−</span>
+    <div class="term"><span>Safety buffer</span><strong>${inr(buf)}</strong></div><span class="op">+</span>
+    <div class="term"><span>Expected receipts</span><strong>${inr(rec)}</strong></div><span class="op">=</span>
+    <div class="term"><span>Spendable</span><strong style="color:var(--accent)">${inr(spend)}</strong></div>
+    <div class="term" style="margin-left:auto"><span>Proposed now</span><strong>${inr(paid)}</strong></div>
+    <div class="term"><span>Cash after</span><strong>${inr(spend-paid)}</strong></div>`;
+  $('#cashAlert').innerHTML = crisis ? `<div class="alert">Cash crisis: ${inr(crisis)} short for legally due MSME payments. The run stops here for a person to decide. No partial payment of legal dues.</div>` : '';
+  const tb = t => t===0?'<span class="b b-block">TIER 0</span>':t===1?'<span class="b b-hold">TIER 1</span>':'<span class="b b-info">TIER 2</span>';
+  const order = out.slice().sort((a,b)=> a.tier-b.tier || b.prio-a.prio);
+  $('#allocTable').innerHTML = `<thead><tr><th>Tier</th><th>Vendor</th><th class="num">Priority</th><th class="num">Outstanding</th><th class="num">Pay now</th><th>Share</th><th>Remaining</th></tr></thead><tbody>${
+    order.map(x=>{ const rem=x.total-x.pay; const pct=x.pay/x.total*100;
+      const head = crisis ? 'Run halted' : x.pay===x.total ? 'In full' : x.pay>0 ? `${inr(x.pay)} of ${inr(x.total)} now` : 'Rolls to next run';
+      return `<tr><td>${tb(x.tier)}</td><td><strong>${x.v}</strong><div class="why">${x.tag} · ${x.why}</div><div class="why" style="color:var(--ink)">${head}</div></td><td class="num">${x.prio.toFixed(2)}</td><td class="num">${inr(x.total)}</td><td class="num"><strong>${inr(x.pay)}</strong></td><td><div class="fill"><i style="width:${pct}%"></i></div></td><td class="why">${rem>0 && !crisis ? `${inr(rem)} planned after Client X receipt (29 Nov)` : rem>0 ? '—' : 'settled'}</td></tr>`; }).join('')
+  }</tbody>`;
+  $('#rcvList').innerHTML = RCV.map(r=>{ const used=r.conf>=th; return `<div class="reason"><span class="b ${used?'b-ok':'b-line'}">${used?'counted':'excluded'}</span><span><strong>${r.c}</strong> · ${inr(r.amt)} due ${r.due} · confidence ${r.conf.toFixed(2)}${used?` → adds ${inr(r.amt*r.conf)}`:''}${r.note?`<br><span style="color:var(--muted);font-size:13px">${r.note} (Crustdata health signal)</span>`:''}</span></div>`; }).join('');
+}
+['#cBal','#cBuf','#cConf'].forEach(s=>$(s).addEventListener('input',payRun)); payRun();
+})();
+</script>

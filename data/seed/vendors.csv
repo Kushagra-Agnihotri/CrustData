@@ -1,0 +1,9 @@
+vendor_code,legal_name,gstin,pan,udyam_no,msme_category,is_trader,has_written_agreement,domain,phone_on_file,city,state,credit_days,discount_pct,discount_days,is_critical,relationship_since,hist_invoices,hist_clean,hist_on_time,hist_deliveries,hist_disputes
+V1,Shree Ganesh Packaging Pvt Ltd,27AAKCS4821K1Z0,AAKCS4821K,UDYAM-MH-26-0012345,micro,0,1,shreeganeshpackaging.in,+91 20 2567 1100,Pune,MAHARASHTRA,45,0,0,0,2023-04-01,24,22,20,24,0
+V2,Acme Supplies Pvt Ltd,24AAFCA7712Q1ZD,AAFCA7712Q,UDYAM-GJ-01-0045678,small,0,0,acmesupplies.com,+91 79 2658 4400,Ahmedabad,GUJARAT,15,0,0,0,2021-06-01,40,37,36,40,1
+V3,Kaveri Steel Traders,29AAGFK3390M1ZS,AAGFK3390M,UDYAM-KR-03-0098765,small,1,1,kaveristeel.in,+91 80 4110 2200,Bengaluru,KARNATAKA,30,0,0,0,2022-01-10,30,26,25,30,2
+V4,Precision Castings Ltd,27AABCP5567R1ZL,AABCP5567R,UDYAM-MH-26-0004321,medium,0,1,precisioncastings.co.in,+91 20 2712 9000,Pune,MAHARASHTRA,30,0,0,1,2017-03-15,80,76,74,80,1
+V5,Nimbus Cloud Services Pvt Ltd,27AACCN1029B1Z2,AACCN1029B,,none,0,1,nimbuscloud.com,+91 22 6100 7000,Mumbai,MAHARASHTRA,30,0,0,0,2024-08-01,15,15,15,15,0
+V6,Indus Chemicals Ltd,24AADCI8834H1ZH,AADCI8834H,,none,0,1,induschem.com,+91 265 233 9000,Vadodara,GUJARAT,30,2.0,10,0,2020-02-01,36,34,33,36,0
+V7,Infra Logistics Pvt Ltd,07AAECI6612L1ZF,AAECI6612L,,none,0,1,infralogistics.in,+91 11 4567 8800,New Delhi,DELHI,30,0,0,0,2022-09-01,20,15,14,20,3
+V8,Bharat Electricals Pvt Ltd,19AAHCB2245D1ZY,AAHCB2245D,UDYAM-WB-10-0033221,small,0,1,bharatelectricals.com,+91 33 2289 5500,Kolkata,WEST BENGAL,30,0,0,0,2019-07-01,50,47,46,50,0

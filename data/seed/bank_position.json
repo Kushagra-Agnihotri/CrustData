@@ -1,0 +1,10 @@
+{
+  "as_of": "2026-11-22T09:00:00+05:30",
+  "source": "HDFC current a/c statement (mock) \u2014 internal record",
+  "balance": 4200000,
+  "safety_buffer": {
+    "Payroll (30 Nov)": 1800000,
+    "Rent (1 Dec)": 200000,
+    "GST + TDS due (20 Dec)": 400000
+  }
+}

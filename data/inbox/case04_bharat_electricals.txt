@@ -1,0 +1,6 @@
+BILL | Bharat Electricals Pvt Ltd | GSTIN:19AAHCB2245D1ZY
+Inv Ref BE-2026-0917 | Date 2026-10-28 | PO PO-4474
+Items:
+- Industrial LED fixtures 100W x 400 @ 500.00 (18%) = 2,00,000.00
+Net 2,00,000.00 | Tax 36,000.00 | Total 2,36,000.00
+Pay to A/c 50200033221100 | IFSC HDFC0000014 | Beneficiary: Bharat Electricals Pvt Ltd
