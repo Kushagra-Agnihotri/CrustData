@@ -1,13 +1,13 @@
 TAX INVOICE
 
-Supplier: Infra Logistics Pvt Ltd
-GSTIN: 07AAECI6612L1ZF
-Address: New Delhi, Delhi
-Email: accounts@infralogistics.in
+Supplier: Transport Corporation of India Ltd
+GSTIN: 06AAECT6612L1Z6
+Address: Gurugram, Haryana
+Email: accounts@tcifreight.in
 
 Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)
 
-Invoice No.: IL/FRT/2026/0451
+Invoice No.: TCI/FRT/2026/0451
 Invoice Date: 30 Oct 2026
 PO Number: PO-4480
 
@@ -19,6 +19,6 @@ IGST @18%: 2,70,000.00
 Grand Total: Rs. 17,70,000.00
 
 Terms: Payment as per PO terms
-Bank: A/c No 10293847561 | IFSC SBIN0000691 | Beneficiary: Infra Logistics Pvt Ltd
+Bank: A/c No 10293847561 | IFSC KKBK0000261 | Beneficiary: Transport Corporation of India Ltd
 
 This is a computer generated invoice.

@@ -1,0 +1,24 @@
+TAX INVOICE
+
+Supplier: Transport Corporation of India Ltd
+GSTIN: 06AAECT6612L1Z6
+Address: Gurugram, Haryana
+Email: accounts@tcifreight.in
+
+Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)
+
+Invoice No.: TCI/FRT/2026/0502
+Invoice Date: 12 Nov 2026
+PO Number: PO-4481
+
+#  | Item | Qty | Rate | GST % | Amount
+1  | Freight - Gurugram to Pune part load | 2 | 18,000.00 | 18 | 36,000.00
+
+Sub-total: 36,000.00
+IGST @18%: 6,480.00
+Grand Total: Rs. 42,480.00
+
+Terms: Payment as per PO terms
+Bank: A/c No 10293847561 | IFSC KKBK0000261 | Beneficiary: Transport Corporation of India Ltd
+
+This is a computer generated invoice.

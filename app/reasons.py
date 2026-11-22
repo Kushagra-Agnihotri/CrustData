@@ -44,8 +44,33 @@ SEVERITY: dict[str, str] = {
     "SOURCE_UNAVAILABLE": HOLD,
     "RUN_CEILING_REACHED": HOLD,
     "LOW_TRUST": HOLD,
+    "ADVERSE_NEWS": HOLD,
     "PIPELINE_ERROR": HOLD,
 }
+
+
+# Display/decision order: the most serious thing a reviewer must see comes first.
+PRIORITY = [
+    "BANK_CHANGE_FRAUD", "INVALID_GSTIN", "VENDOR_BLOCKED",
+    "DUPLICATE_INVOICE", "BANK_CHANGE_REQUEST", "SENDER_DOMAIN_MISMATCH", "REPLY_TO_MISMATCH", "BANK_DETAILS_CHANGED",
+    "VENDOR_NOT_APPROVED", "UNVERIFIABLE_VENDOR", "GSTIN_MISMATCH", "PAN_MISMATCH", "VENDOR_ON_HOLD", "ADVERSE_NEWS",
+    "SENDER_NOT_VERIFIED_AT_VENDOR", "PRESSURE_LANGUAGE", "POSSIBLE_DUPLICATE", "OVER_BILLED", "NOT_RECEIVED",
+    "PRICE_VARIANCE", "UNMATCHED_LINE", "NO_PO", "PO_VENDOR_MISMATCH", "ARITHMETIC_MISMATCH", "BENEFICIARY_NAME_MISMATCH",
+    "IFSC_NOT_FOUND", "IFSC_LOCATION_MISMATCH", "IFSC_FORMAT", "GSTIN_FORMAT", "INVOICE_DATE_FUTURE", "INVOICE_TOO_OLD",
+    "LOW_TRUST", "SOURCE_UNAVAILABLE", "RUN_CEILING_REACHED", "EXTRACTION_FAILED", "PIPELINE_ERROR",
+]
+_SEV_RANK = {BLOCK: 0, HOLD: 1, OK: 2}
+
+
+def sort_reasons(reasons: list[dict]) -> list[dict]:
+    """BLOCK first, then HOLD by PRIORITY, then passed checks (stable within each group)."""
+    pr = {c: i for i, c in enumerate(PRIORITY)}
+
+    def key(x):
+        i, r = x
+        sev = r.get("severity")
+        return (_SEV_RANK.get(sev, 3), pr.get(r["code"], len(pr)) if sev != OK else 0, i)
+    return [r for _, r in sorted(enumerate(reasons), key=key)]
 
 
 def reason(code: str, message: str, fact_ids=None, stage: str = "", **extra) -> dict:

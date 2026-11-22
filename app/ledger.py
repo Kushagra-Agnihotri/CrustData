@@ -5,15 +5,23 @@ from app.db import j, new_id, now_iso
 
 
 def add_fact(conn, entity_type, entity_id, key, value, source_type, source_ref,
-             source_field, retrieved_at=None, raw_response_id=None) -> str:
+             source_field, retrieved_at=None, raw_response_id=None, recorded=False) -> str:
+    """recorded=True: a real response replayed from data/live_recordings.json (retrieved_at is the original date)."""
     fid = new_id()
     conn.execute(
-        "INSERT INTO facts(id,entity_type,entity_id,key,value,source_type,source_ref,source_field,retrieved_at,raw_response_id)"
-        " VALUES (?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO facts(id,entity_type,entity_id,key,value,source_type,source_ref,source_field,retrieved_at,raw_response_id,recorded)"
+        " VALUES (?,?,?,?,?,?,?,?,?,?,?)",
         (fid, entity_type, entity_id, key, j(value), source_type, source_ref, source_field,
-         retrieved_at or now_iso(), raw_response_id),
+         retrieved_at or now_iso(), raw_response_id, 1 if recorded else 0),
     )
     return fid
+
+
+def add_src_fact(conn, entity_type, entity_id, key, value, base_source, res, source_field) -> str:
+    """Fact from an external source Result (sources.Result): carries mode label, date, raw response and the recorded flag."""
+    from app import sources
+    return add_fact(conn, entity_type, entity_id, key, value, sources.source_type(base_source, res), res.source_ref,
+                    source_field, res.retrieved_at, res.raw_response_id, res.recorded)
 
 
 def add_event(conn, entity_type, entity_id, from_state, to_state, actor, detail=None) -> None:

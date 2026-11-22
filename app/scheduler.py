@@ -114,7 +114,9 @@ def _context_reasons(inv, vendor) -> list[dict]:
     if bs:
         rs.append({"code": "BANK_STABLE" if bs["value"] >= 1 else "BANK_RECENT", "text": f"Bank details {bs['note']}" + (" ✓" if bs["value"] >= 1 else ""),
                    "fact_ids": bs["fact_ids"]})
-    rs.append({"code": "SCORES", "text": f"Priority {vendor['priority_score']:.2f} · Trust {vendor['trust_score']:.2f}"})
+    trust = f"{vendor['trust_score']:.2f}" if vendor["trust_score"] is not None else "pending re-score (bank-change request open)"
+    prio = f"{vendor['priority_score']:.2f}" if vendor["priority_score"] is not None else "n/a"
+    rs.append({"code": "SCORES", "text": f"Priority {prio} · Trust {trust}"})
     return rs
 
 

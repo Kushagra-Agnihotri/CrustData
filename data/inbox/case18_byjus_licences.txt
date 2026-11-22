@@ -1,0 +1,24 @@
+TAX INVOICE
+
+Supplier: Think and Learn Pvt Ltd
+GSTIN: 29AAGCT5705N1ZS
+Address: Bengaluru, Karnataka
+Email: accounts@byjus.com
+
+Bill To: Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)
+
+Invoice No.: TLPL/B2B/2026/1140
+Invoice Date: 10 Nov 2026
+PO Number: PO-4482
+
+#  | Item | Qty | Rate | GST % | Amount
+1  | Employee upskilling licences (annual) | 20 | 9,000.00 | 18 | 1,80,000.00
+
+Sub-total: 1,80,000.00
+IGST @18%: 32,400.00
+Grand Total: Rs. 2,12,400.00
+
+Terms: Payment as per PO terms
+Bank: A/c No 39017720551 | IFSC SBIN0021745 | Beneficiary: Think and Learn Pvt Ltd
+
+This is a computer generated invoice.

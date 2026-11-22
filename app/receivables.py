@@ -5,9 +5,9 @@ Overdue receivables are never counted as expected cash.
 """
 from __future__ import annotations
 
-from app import sources
+from app import scoring, sources
 from app.db import j, q, tx
-from app.ledger import add_fact
+from app.ledger import add_src_fact
 
 
 def forecast_all(conn, ctx=None) -> None:
@@ -21,19 +21,19 @@ def forecast_all(conn, ctx=None) -> None:
                     cd = idr.data["company_data"]
                     conn.execute("UPDATE customers SET crustdata_company_id=? WHERE id=?", (cd["crustdata_company_id"], c["id"]))
                     er = sources.company_enrich(conn, ctx, cd["crustdata_company_id"])
-                    ts = (er.data or {}).get("headcount", {}).get("timeseries", [])
-                    fids.append(add_fact(conn, "customer", c["id"], "headcount_timeseries", ts, sources.source_type("crustdata", er),
-                                         er.source_ref, "headcount.timeseries", er.retrieved_at, er.raw_response_id))
-                    chg = ts[-1]["value"] / ts[0]["value"] - 1 if len(ts) >= 2 and ts[0]["value"] else 0
-                    hc_score = 1.0 if chg >= 0 else max(0.0, 1 + chg / 0.3)
-                    nr = sources.adverse_news(conn, ctx, c["legal_name"])
-                    hits = (nr.data or {}).get("results", [])
-                    fids.append(add_fact(conn, "customer", c["id"], "adverse_news", hits, sources.source_type("crustdata_web", nr),
-                                         nr.source_ref, "results", nr.retrieved_at, nr.raw_response_id))
+                    yoy, field = scoring._yoy(er.data or {})
+                    fids.append(add_src_fact(conn, "customer", c["id"], "headcount_yoy_pct", yoy, "crustdata", er,
+                                             "[0].matches[0].company_data." + (field or "headcount")))
+                    hc_score = 1.0 if (yoy or 0) >= 0 else max(0.0, 1 + yoy / 30)
+                    qname = sources.news_name(c["legal_name"])
+                    hits, nf, n = scoring.news_check(conn, ctx, "customer", c["id"], qname,
+                                                     [c["legal_name"], qname, (cd.get("basic_info") or {}).get("name")], fetch_dates=False)
+                    fids += nf
                     health = 0.5 * hc_score + 0.5 * (0.0 if hits else 1.0)
-                    breakdown = [{"signal": "headcount trend", "value": round(hc_score, 2), "note": f"{chg:+.0%} in 12 months"},
+                    breakdown = [{"signal": "headcount trend", "value": round(hc_score, 2),
+                                  "note": f"{yoy:+.1f}% in 12 months" if yoy is not None else "can't verify: no headcount series"},
                                  {"signal": "adverse news", "value": 0.0 if hits else 1.0,
-                                  "note": "; ".join(h["title"] for h in hits) or "none found"}]
+                                  "note": "; ".join(h["title"] for h in hits) or f"none in {n} news results"}]
                 else:
                     breakdown = [{"signal": "company", "value": 0, "note": "can't verify: not found in Crustdata"}]
             except sources.SourceUnavailable as e:

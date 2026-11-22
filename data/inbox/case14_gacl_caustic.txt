@@ -1,0 +1,6 @@
+BILL | Gujarat Alkalies and Chemicals Ltd | GSTIN:24AADCG8834H1ZJ
+Inv Ref GACL-77812 | Date 2026-11-16 | PO PO-4479
+Items:
+- Caustic soda flakes x 6000 @ 50.00 (18%) = 3,00,000.00
+Net 3,00,000.00 | Tax 54,000.00 | Total 3,54,000.00
+Pay to A/c 50200055443322 | IFSC HDFC0000147 | Beneficiary: Gujarat Alkalies and Chemicals Ltd

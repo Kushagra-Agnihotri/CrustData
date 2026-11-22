@@ -1,0 +1,6 @@
+BILL | iLuxer Technologies Pvt Ltd | GSTIN:36AAHCI2245D1ZV
+Inv Ref ILX-2026-0917 | Date 2026-10-28 | PO PO-4474
+Items:
+- Industrial LED high-bay 100W x 400 @ 500.00 (18%) = 2,00,000.00
+Net 2,00,000.00 | Tax 36,000.00 | Total 2,36,000.00
+Pay to A/c 50200033221100 | IFSC HDFC0000521 | Beneficiary: iLuxer Technologies Pvt Ltd

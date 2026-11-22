@@ -1,0 +1,17 @@
+{
+  "_note": "MOCK penny-drop provider (Razorpay Account Validation is not available in test mode). Account number \u2192 name the bank has registered for it. Synthetic.",
+  "accounts": {
+    "50100412345678": {
+      "registered_name": "GUJARAT ALKALIES AND CHEMICALS LIMITED",
+      "status": "success"
+    },
+    "50100498765432": {
+      "registered_name": "R K TRADING COMPANY",
+      "status": "success"
+    },
+    "77120045539021": {
+      "registered_name": "SURESH KUMAR",
+      "status": "success"
+    }
+  }
+}

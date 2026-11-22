@@ -1,651 +1,1562 @@
 {
-  "_note": "Offline fixtures shaped like Crustdata / Razorpay IFSC responses. Facts from these are labelled *_mock.",
-  "identify": {
-    "domain": {
-      "shreeganeshpackaging.in": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000101,
-          "basic_info": {
-            "name": "Shree Ganesh Packaging Pvt Ltd",
-            "year_founded": 2012,
-            "primary_domain": "shreeganeshpackaging.in"
-          },
-          "headcount": {
-            "total": 41
-          }
-        }
+  "_note": "OFFLINE MOCK FIXTURES (synthetic values, real response shapes). Used only when CRUSTDATA_MODE/IFSC_MODE=mock. Facts from these are labelled *_mock. Real data lives in data/live_recordings.json.",
+  "entries": {
+    "crust:identify:domain:cppackers.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "cppackers.com"
+        ]
       },
-      "acmesupplies.com": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000102,
-          "basic_info": {
-            "name": "Acme Supplies Pvt Ltd",
-            "year_founded": 2009,
-            "primary_domain": "acmesupplies.com"
-          },
-          "headcount": {
-            "total": 126
-          }
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "cppackers.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 67543780,
+                "basic_info": {
+                  "crustdata_company_id": 67543780,
+                  "name": "Chander Prabhu Packers",
+                  "primary_domain": "cppackers.com",
+                  "all_domains": [
+                    "cppackers.com"
+                  ],
+                  "year_founded": 2007
+                }
+              }
+            }
+          ]
         }
+      ]
+    },
+    "crust:enrich:67543780": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          67543780
+        ]
       },
-      "kaveristeel.in": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000103,
-          "basic_info": {
-            "name": "Kaveri Steel Traders",
-            "year_founded": 2015,
-            "primary_domain": "kaveristeel.in"
-          },
-          "headcount": {
-            "total": 24
-          }
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "67543780",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 67543780,
+                "basic_info": {
+                  "crustdata_company_id": 67543780,
+                  "name": "Chander Prabhu Packers",
+                  "primary_domain": "cppackers.com",
+                  "all_domains": [
+                    "cppackers.com"
+                  ],
+                  "year_founded": 2007
+                },
+                "headcount": {
+                  "total": 2,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 2
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 2
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 0.0
+                  }
+                },
+                "locations": {
+                  "headquarters": "Ghaziabad, Uttar Pradesh, India",
+                  "state": "Uttar Pradesh",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
         }
+      ]
+    },
+    "crust:news:chander prabhu packers": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Chander Prabhu Packers",
+        "sources": [
+          "news"
+        ]
       },
-      "precisioncastings.co.in": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000104,
-          "basic_info": {
-            "name": "Precision Castings Ltd",
-            "year_founded": 1998,
-            "primary_domain": "precisioncastings.co.in"
-          },
-          "headcount": {
-            "total": 432
-          }
-        }
-      },
-      "nimbuscloud.com": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000105,
-          "basic_info": {
-            "name": "Nimbus Cloud Services Pvt Ltd",
-            "year_founded": 2008,
-            "primary_domain": "nimbuscloud.com"
-          },
-          "headcount": {
-            "total": 5600
-          }
-        }
-      },
-      "induschem.com": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000106,
-          "basic_info": {
-            "name": "Indus Chemicals Ltd",
-            "year_founded": 2005,
-            "primary_domain": "induschem.com"
-          },
-          "headcount": {
-            "total": 318
-          }
-        }
-      },
-      "infralogistics.in": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000107,
-          "basic_info": {
-            "name": "Infra Logistics Pvt Ltd",
-            "year_founded": 2018,
-            "primary_domain": "infralogistics.in"
-          },
-          "headcount": {
-            "total": 156
-          }
-        }
-      },
-      "bharatelectricals.com": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000108,
-          "basic_info": {
-            "name": "Bharat Electricals Pvt Ltd",
-            "year_founded": 2010,
-            "primary_domain": "bharatelectricals.com"
-          },
-          "headcount": {
-            "total": 91
-          }
-        }
-      },
-      "zenithmotors.in": {
-        "confidence": 0.95,
-        "company_data": {
-          "crustdata_company_id": 2000001,
-          "basic_info": {
-            "name": "Zenith Motors Ltd",
-            "primary_domain": "zenithmotors.in"
-          }
-        }
-      },
-      "horizonretail.in": {
-        "confidence": 0.95,
-        "company_data": {
-          "crustdata_company_id": 2000002,
-          "basic_info": {
-            "name": "Horizon Retail Pvt Ltd",
-            "primary_domain": "horizonretail.in"
-          }
-        }
-      },
-      "apexengg.in": {
-        "confidence": 0.95,
-        "company_data": {
-          "crustdata_company_id": 2000003,
-          "basic_info": {
-            "name": "Apex Engineering Works",
-            "primary_domain": "apexengg.in"
-          }
-        }
-      },
-      "lotusfoods.in": {
-        "confidence": 0.95,
-        "company_data": {
-          "crustdata_company_id": 2000004,
-          "basic_info": {
-            "name": "Lotus Foods Pvt Ltd",
-            "primary_domain": "lotusfoods.in"
-          }
-        }
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
       }
     },
-    "name": {
-      "shree ganesh packaging pvt ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000101,
-          "basic_info": {
-            "name": "Shree Ganesh Packaging Pvt Ltd",
-            "year_founded": 2012,
-            "primary_domain": "shreeganeshpackaging.in"
-          },
-          "headcount": {
-            "total": 41
-          }
-        }
+    "crust:identify:domain:astralpipes.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "astralpipes.com"
+        ]
       },
-      "acme supplies pvt ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000102,
-          "basic_info": {
-            "name": "Acme Supplies Pvt Ltd",
-            "year_founded": 2009,
-            "primary_domain": "acmesupplies.com"
-          },
-          "headcount": {
-            "total": 126
-          }
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "astralpipes.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 433,
+                "basic_info": {
+                  "crustdata_company_id": 433,
+                  "name": "Astral Limited",
+                  "primary_domain": "astralpipes.com",
+                  "all_domains": [
+                    "astralpipes.com"
+                  ],
+                  "year_founded": 1996
+                }
+              }
+            }
+          ]
         }
+      ]
+    },
+    "crust:enrich:433": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          433
+        ]
       },
-      "kaveri steel traders": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000103,
-          "basic_info": {
-            "name": "Kaveri Steel Traders",
-            "year_founded": 2015,
-            "primary_domain": "kaveristeel.in"
-          },
-          "headcount": {
-            "total": 24
-          }
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "433",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 433,
+                "basic_info": {
+                  "crustdata_company_id": 433,
+                  "name": "Astral Limited",
+                  "primary_domain": "astralpipes.com",
+                  "all_domains": [
+                    "astralpipes.com"
+                  ],
+                  "year_founded": 1996
+                },
+                "headcount": {
+                  "total": 1342,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 1263
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 1342
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 6.25
+                  }
+                },
+                "locations": {
+                  "headquarters": "Ahmedabad, Gujarat, India",
+                  "state": "Gujarat",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
         }
+      ]
+    },
+    "crust:news:astral pipes": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Astral Pipes",
+        "sources": [
+          "news"
+        ]
       },
-      "precision castings ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000104,
-          "basic_info": {
-            "name": "Precision Castings Ltd",
-            "year_founded": 1998,
-            "primary_domain": "precisioncastings.co.in"
-          },
-          "headcount": {
-            "total": 432
-          }
-        }
-      },
-      "nimbus cloud services pvt ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000105,
-          "basic_info": {
-            "name": "Nimbus Cloud Services Pvt Ltd",
-            "year_founded": 2008,
-            "primary_domain": "nimbuscloud.com"
-          },
-          "headcount": {
-            "total": 5600
-          }
-        }
-      },
-      "indus chemicals ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000106,
-          "basic_info": {
-            "name": "Indus Chemicals Ltd",
-            "year_founded": 2005,
-            "primary_domain": "induschem.com"
-          },
-          "headcount": {
-            "total": 318
-          }
-        }
-      },
-      "infra logistics pvt ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000107,
-          "basic_info": {
-            "name": "Infra Logistics Pvt Ltd",
-            "year_founded": 2018,
-            "primary_domain": "infralogistics.in"
-          },
-          "headcount": {
-            "total": 156
-          }
-        }
-      },
-      "bharat electricals pvt ltd": {
-        "confidence": 0.97,
-        "company_data": {
-          "crustdata_company_id": 1000108,
-          "basic_info": {
-            "name": "Bharat Electricals Pvt Ltd",
-            "year_founded": 2010,
-            "primary_domain": "bharatelectricals.com"
-          },
-          "headcount": {
-            "total": 91
-          }
-        }
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
       }
-    }
-  },
-  "enrich": {
-    "1000101": {
-      "crustdata_company_id": 1000101,
-      "basic_info": {
-        "name": "Shree Ganesh Packaging Pvt Ltd",
-        "year_founded": 2012,
-        "primary_domain": "shreeganeshpackaging.in",
-        "hq_city": "Pune"
+    },
+    "crust:identify:domain:pankajsteels.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "pankajsteels.com"
+        ]
       },
-      "headcount": {
-        "total": 41,
-        "timeseries": [
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "pankajsteels.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 14111936,
+                "basic_info": {
+                  "crustdata_company_id": 14111936,
+                  "name": "Pankaj Steels",
+                  "primary_domain": "pankajsteels.com",
+                  "all_domains": [
+                    "pankajsteels.com"
+                  ],
+                  "year_founded": 1972
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:14111936": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          14111936
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "14111936",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 14111936,
+                "basic_info": {
+                  "crustdata_company_id": 14111936,
+                  "name": "Pankaj Steels",
+                  "primary_domain": "pankajsteels.com",
+                  "all_domains": [
+                    "pankajsteels.com"
+                  ],
+                  "year_founded": 1972
+                },
+                "headcount": {
+                  "total": 10,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 9
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 10
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 11.11
+                  }
+                },
+                "locations": {
+                  "headquarters": "Bengaluru, Karnataka, India",
+                  "state": "Karnataka",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:pankaj steels": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Pankaj Steels",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:kirloskarferrous.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "kirloskarferrous.com"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "kirloskarferrous.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1139506,
+                "basic_info": {
+                  "crustdata_company_id": 1139506,
+                  "name": "Kirloskar Ferrous Industries Ltd",
+                  "primary_domain": "kirloskarferrous.com",
+                  "all_domains": [
+                    "kirloskarferrous.com"
+                  ],
+                  "year_founded": 1991
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:1139506": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          1139506
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "1139506",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1139506,
+                "basic_info": {
+                  "crustdata_company_id": 1139506,
+                  "name": "Kirloskar Ferrous Industries Ltd",
+                  "primary_domain": "kirloskarferrous.com",
+                  "all_domains": [
+                    "kirloskarferrous.com"
+                  ],
+                  "year_founded": 1991
+                },
+                "headcount": {
+                  "total": 1513,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 1195
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 1513
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 26.61
+                  }
+                },
+                "locations": {
+                  "headquarters": "Koppal, Karnataka, India",
+                  "state": "Karnataka",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:kirloskar ferrous": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Kirloskar Ferrous",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:tatacommunications.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "tatacommunications.com"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "tatacommunications.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6183393,
+                "basic_info": {
+                  "crustdata_company_id": 6183393,
+                  "name": "Tata Communications Ltd",
+                  "primary_domain": "tatacommunications.com",
+                  "all_domains": [
+                    "tatacommunications.com"
+                  ],
+                  "year_founded": 1972
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:6183393": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          6183393
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "6183393",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6183393,
+                "basic_info": {
+                  "crustdata_company_id": 6183393,
+                  "name": "Tata Communications Ltd",
+                  "primary_domain": "tatacommunications.com",
+                  "all_domains": [
+                    "tatacommunications.com"
+                  ],
+                  "year_founded": 1972
+                },
+                "headcount": {
+                  "total": 16835,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 17293
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 16835
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": -2.65
+                  }
+                },
+                "locations": {
+                  "headquarters": "Mumbai, Maharashtra, India",
+                  "state": "Maharashtra",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:tata communications": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Tata Communications",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:gacl.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "gacl.com"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "gacl.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1268066,
+                "basic_info": {
+                  "crustdata_company_id": 1268066,
+                  "name": "Gujarat Alkalies and Chemicals Ltd",
+                  "primary_domain": "gacl.com",
+                  "all_domains": [
+                    "gacl.com"
+                  ],
+                  "year_founded": 1973
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:1268066": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          1268066
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "1268066",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1268066,
+                "basic_info": {
+                  "crustdata_company_id": 1268066,
+                  "name": "Gujarat Alkalies and Chemicals Ltd",
+                  "primary_domain": "gacl.com",
+                  "all_domains": [
+                    "gacl.com"
+                  ],
+                  "year_founded": 1973
+                },
+                "headcount": {
+                  "total": 549,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 499
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 549
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 10.02
+                  }
+                },
+                "locations": {
+                  "headquarters": "Vadodara, Gujarat, India",
+                  "state": "Gujarat",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:gujarat alkalies and chemicals": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Gujarat Alkalies and Chemicals",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:tcifreight.in": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "tcifreight.in"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "tcifreight.in",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1131959,
+                "basic_info": {
+                  "crustdata_company_id": 1131959,
+                  "name": "Transport Corporation of India Ltd",
+                  "primary_domain": "tcifreight.in",
+                  "all_domains": [
+                    "tcifreight.in"
+                  ],
+                  "year_founded": 1958
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:1131959": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          1131959
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "1131959",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1131959,
+                "basic_info": {
+                  "crustdata_company_id": 1131959,
+                  "name": "Transport Corporation of India Ltd",
+                  "primary_domain": "tcifreight.in",
+                  "all_domains": [
+                    "tcifreight.in"
+                  ],
+                  "year_founded": 1958
+                },
+                "headcount": {
+                  "total": 2861,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 2565
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 2861
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 11.54
+                  }
+                },
+                "locations": {
+                  "headquarters": "Gurugram, Haryana, India",
+                  "state": "Haryana",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:transport corporation of india": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Transport Corporation of India",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:i-luxer.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "i-luxer.com"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "i-luxer.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2748814,
+                "basic_info": {
+                  "crustdata_company_id": 2748814,
+                  "name": "iLuxer Technologies Pvt Ltd",
+                  "primary_domain": "i-luxer.com",
+                  "all_domains": [
+                    "i-luxer.com"
+                  ],
+                  "year_founded": 2013
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:2748814": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          2748814
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "2748814",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2748814,
+                "basic_info": {
+                  "crustdata_company_id": 2748814,
+                  "name": "iLuxer Technologies Pvt Ltd",
+                  "primary_domain": "i-luxer.com",
+                  "all_domains": [
+                    "i-luxer.com"
+                  ],
+                  "year_founded": 2013
+                },
+                "headcount": {
+                  "total": 2,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 2
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 2
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 0.0
+                  }
+                },
+                "locations": {
+                  "headquarters": "Hyderabad, Telangana, India",
+                  "state": "Telangana",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:iluxer technologies": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "iLuxer Technologies",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:byjus.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "byjus.com"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "byjus.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5705,
+                "basic_info": {
+                  "crustdata_company_id": 5705,
+                  "name": "Think and Learn Pvt Ltd",
+                  "primary_domain": "byjus.com",
+                  "all_domains": [
+                    "byjus.com"
+                  ],
+                  "year_founded": 2011
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:5705": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          5705
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "5705",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5705,
+                "basic_info": {
+                  "crustdata_company_id": 5705,
+                  "name": "Think and Learn Pvt Ltd",
+                  "primary_domain": "byjus.com",
+                  "all_domains": [
+                    "byjus.com"
+                  ],
+                  "year_founded": 2011
+                },
+                "headcount": {
+                  "total": 19044,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 18827
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 19044
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 1.15
+                  }
+                },
+                "locations": {
+                  "headquarters": "Bengaluru, Karnataka, India",
+                  "state": "Karnataka",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:byju's": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Byju's",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": [
           {
-            "date": "2025-11-01",
-            "value": 38
-          },
-          {
-            "date": "2026-11-01",
-            "value": 41
+            "source": "news",
+            "position": 1,
+            "title": "Mock fixture: Byju's insolvency resolution process continues before NCLT",
+            "url": "https://example-news.invalid/byjus-cirp",
+            "snippet": "Mock fixture text, not a real article."
           }
         ]
       }
     },
-    "1000102": {
-      "crustdata_company_id": 1000102,
-      "basic_info": {
-        "name": "Acme Supplies Pvt Ltd",
-        "year_founded": 2009,
-        "primary_domain": "acmesupplies.com",
-        "hq_city": "Ahmedabad"
+    "crust:identify:domain:marutisuzuki.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "marutisuzuki.com"
+        ]
       },
-      "headcount": {
-        "total": 126,
-        "timeseries": [
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "marutisuzuki.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2957,
+                "basic_info": {
+                  "crustdata_company_id": 2957,
+                  "name": "Maruti Suzuki India Ltd",
+                  "primary_domain": "marutisuzuki.com",
+                  "all_domains": [
+                    "marutisuzuki.com"
+                  ],
+                  "year_founded": 1990
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:2957": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          2957
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "2957",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2957,
+                "basic_info": {
+                  "crustdata_company_id": 2957,
+                  "name": "Maruti Suzuki India Ltd",
+                  "primary_domain": "marutisuzuki.com",
+                  "all_domains": [
+                    "marutisuzuki.com"
+                  ],
+                  "year_founded": 1990
+                },
+                "headcount": {
+                  "total": 310,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 300
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 310
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 3.33
+                  }
+                },
+                "locations": {
+                  "headquarters": "Mumbai, Maharashtra, India",
+                  "state": "Maharashtra",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:maruti suzuki india": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Maruti Suzuki India",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:futureretail.in": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "futureretail.in"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "futureretail.in",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6842965,
+                "basic_info": {
+                  "crustdata_company_id": 6842965,
+                  "name": "Future Retail Ltd",
+                  "primary_domain": "futureretail.in",
+                  "all_domains": [
+                    "futureretail.in"
+                  ],
+                  "year_founded": 1990
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:6842965": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          6842965
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "6842965",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6842965,
+                "basic_info": {
+                  "crustdata_company_id": 6842965,
+                  "name": "Future Retail Ltd",
+                  "primary_domain": "futureretail.in",
+                  "all_domains": [
+                    "futureretail.in"
+                  ],
+                  "year_founded": 1990
+                },
+                "headcount": {
+                  "total": 560,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 900
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 560
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": -37.78
+                  }
+                },
+                "locations": {
+                  "headquarters": "Mumbai, Maharashtra, India",
+                  "state": "Maharashtra",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:future retail": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Future Retail",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": [
           {
-            "date": "2025-11-01",
-            "value": 120
-          },
-          {
-            "date": "2026-11-01",
-            "value": 126
+            "source": "news",
+            "position": 1,
+            "title": "Mock fixture: NCLT orders liquidation of Future Retail",
+            "url": "https://example-news.invalid/future-retail",
+            "snippet": "Mock fixture text, not a real article."
           }
         ]
       }
     },
-    "1000103": {
-      "crustdata_company_id": 1000103,
-      "basic_info": {
-        "name": "Kaveri Steel Traders",
-        "year_founded": 2015,
-        "primary_domain": "kaveristeel.in",
-        "hq_city": "Bengaluru"
+    "crust:identify:domain:thermaxglobal.com": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "thermaxglobal.com"
+        ]
       },
-      "headcount": {
-        "total": 24,
-        "timeseries": [
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "thermaxglobal.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5110,
+                "basic_info": {
+                  "crustdata_company_id": 5110,
+                  "name": "Thermax Ltd",
+                  "primary_domain": "thermaxglobal.com",
+                  "all_domains": [
+                    "thermaxglobal.com"
+                  ],
+                  "year_founded": 1990
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:5110": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          5110
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "5110",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5110,
+                "basic_info": {
+                  "crustdata_company_id": 5110,
+                  "name": "Thermax Ltd",
+                  "primary_domain": "thermaxglobal.com",
+                  "all_domains": [
+                    "thermaxglobal.com"
+                  ],
+                  "year_founded": 1990
+                },
+                "headcount": {
+                  "total": 310,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 300
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 310
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 3.33
+                  }
+                },
+                "locations": {
+                  "headquarters": "Mumbai, Maharashtra, India",
+                  "state": "Maharashtra",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:thermax": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Thermax",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:identify:domain:britannia.co.in": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "britannia.co.in"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "britannia.co.in",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 787,
+                "basic_info": {
+                  "crustdata_company_id": 787,
+                  "name": "Britannia Industries Ltd",
+                  "primary_domain": "britannia.co.in",
+                  "all_domains": [
+                    "britannia.co.in"
+                  ],
+                  "year_founded": 1990
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:enrich:787": {
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          787
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "787",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 787,
+                "basic_info": {
+                  "crustdata_company_id": 787,
+                  "name": "Britannia Industries Ltd",
+                  "primary_domain": "britannia.co.in",
+                  "all_domains": [
+                    "britannia.co.in"
+                  ],
+                  "year_founded": 1990
+                },
+                "headcount": {
+                  "total": 310,
+                  "timeseries": [
+                    {
+                      "date": "2025-11-03",
+                      "employee_count": 300
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 310
+                    }
+                  ],
+                  "growth_percent": {
+                    "yoy": 3.33
+                  }
+                },
+                "locations": {
+                  "headquarters": "Mumbai, Maharashtra, India",
+                  "state": "Maharashtra",
+                  "country": "IND"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "crust:news:britannia industries": {
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "Britannia Industries",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "results": []
+      }
+    },
+    "crust:fetch:https://example-news.invalid/byjus-cirp": {
+      "endpoint": "POST /web/enrich/live",
+      "request": {
+        "urls": [
+          "https://example-news.invalid/byjus-cirp"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "success": true,
+          "url": "https://example-news.invalid/byjus-cirp",
+          "title": "Mock fixture: Byju's insolvency resolution process continues before NCLT",
+          "published": "2026-11-03T23:34:00+05:30",
+          "published_source": "mock"
+        }
+      ]
+    },
+    "crust:fetch:https://example-news.invalid/future-retail": {
+      "endpoint": "POST /web/enrich/live",
+      "request": {
+        "urls": [
+          "https://example-news.invalid/future-retail"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "success": true,
+          "url": "https://example-news.invalid/future-retail",
+          "title": "Mock fixture: NCLT orders liquidation of Future Retail",
+          "published": "2026-11-03T23:34:00+05:30",
+          "published_source": "mock"
+        }
+      ]
+    },
+    "crust:identify:domain:astral-pipes.co": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "astral-pipes.co"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "astral-pipes.co",
+          "match_type": "domain",
+          "matches": []
+        }
+      ]
+    },
+    "crust:identify:name:sharma traders": {
+      "endpoint": "POST /company/identify",
+      "request": {
+        "names": [
+          "Sharma Traders"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "Sharma Traders",
+          "match_type": "name",
+          "matches": []
+        }
+      ]
+    },
+    "crust:person:433:rahul mehta": {
+      "endpoint": "POST /person/search",
+      "request": {},
+      "status": 200,
+      "response": {
+        "count": 0,
+        "matches": []
+      }
+    },
+    "crust:person:1268066:nirav joshi": {
+      "endpoint": "POST /person/search",
+      "request": {},
+      "status": 200,
+      "response": {
+        "count": 0,
+        "matches": []
+      }
+    },
+    "crust:finance_contacts:1268066": {
+      "endpoint": "POST /person/search",
+      "request": {},
+      "status": 200,
+      "response": {
+        "count": 1,
+        "matches": [
           {
-            "date": "2025-11-01",
-            "value": 22
-          },
-          {
-            "date": "2026-11-01",
-            "value": 24
+            "title": "Finance Manager (mock)",
+            "current_company_id": 1268066
           }
         ]
       }
     },
-    "1000104": {
-      "crustdata_company_id": 1000104,
-      "basic_info": {
-        "name": "Precision Castings Ltd",
-        "year_founded": 1998,
-        "primary_domain": "precisioncastings.co.in",
-        "hq_city": "Pune"
+    "ifsc:HDFC0000590": {
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000590",
+      "request": {
+        "ifsc": "HDFC0000590"
       },
-      "headcount": {
-        "total": 432,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 410
-          },
-          {
-            "date": "2026-11-01",
-            "value": 432
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "HDFC Bank",
+        "BRANCH": "GHAZIABAD - INDIRAPURAM",
+        "CITY": "GHAZIABAD",
+        "STATE": "UTTAR PRADESH",
+        "IFSC": "HDFC0000590"
       }
     },
-    "1000105": {
-      "crustdata_company_id": 1000105,
-      "basic_info": {
-        "name": "Nimbus Cloud Services Pvt Ltd",
-        "year_founded": 2008,
-        "primary_domain": "nimbuscloud.com",
-        "hq_city": "Mumbai"
+    "ifsc:SBIN0000301": {
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0000301",
+      "request": {
+        "ifsc": "SBIN0000301"
       },
-      "headcount": {
-        "total": 5600,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 5200
-          },
-          {
-            "date": "2026-11-01",
-            "value": 5600
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "State Bank of India",
+        "BRANCH": "AHMEDABAD MAIN",
+        "CITY": "AHMEDABAD",
+        "STATE": "GUJARAT",
+        "IFSC": "SBIN0000301"
       }
     },
-    "1000106": {
-      "crustdata_company_id": 1000106,
-      "basic_info": {
-        "name": "Indus Chemicals Ltd",
-        "year_founded": 2005,
-        "primary_domain": "induschem.com",
-        "hq_city": "Vadodara"
+    "ifsc:HDFC0000053": {
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000053",
+      "request": {
+        "ifsc": "HDFC0000053"
       },
-      "headcount": {
-        "total": 318,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 310
-          },
-          {
-            "date": "2026-11-01",
-            "value": 318
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "HDFC Bank",
+        "BRANCH": "BANGALORE - KORAMANGALAM",
+        "CITY": "BANGALORE URBAN",
+        "STATE": "KARNATAKA",
+        "IFSC": "HDFC0000053"
       }
     },
-    "1000107": {
-      "crustdata_company_id": 1000107,
-      "basic_info": {
-        "name": "Infra Logistics Pvt Ltd",
-        "year_founded": 2018,
-        "primary_domain": "infralogistics.in",
-        "hq_city": "New Delhi"
+    "ifsc:HDFC0000075": {
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000075",
+      "request": {
+        "ifsc": "HDFC0000075"
       },
-      "headcount": {
-        "total": 156,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 260
-          },
-          {
-            "date": "2026-11-01",
-            "value": 156
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "HDFC Bank",
+        "BRANCH": "BANGALORE - AIRPORT ROAD",
+        "CITY": "BANGALORE URBAN",
+        "STATE": "KARNATAKA",
+        "IFSC": "HDFC0000075"
       }
     },
-    "1000108": {
-      "crustdata_company_id": 1000108,
-      "basic_info": {
-        "name": "Bharat Electricals Pvt Ltd",
-        "year_founded": 2010,
-        "primary_domain": "bharatelectricals.com",
-        "hq_city": "Kolkata"
+    "ifsc:HDFC0000001": {
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000001",
+      "request": {
+        "ifsc": "HDFC0000001"
       },
-      "headcount": {
-        "total": 91,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 85
-          },
-          {
-            "date": "2026-11-01",
-            "value": 91
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "HDFC Bank",
+        "BRANCH": "TULSIANI CHMBRS - NARIMAN PT",
+        "CITY": "GREATER MUMBAI",
+        "STATE": "MAHARASHTRA",
+        "IFSC": "HDFC0000001"
       }
     },
-    "2000001": {
-      "crustdata_company_id": 2000001,
-      "basic_info": {
-        "name": "Zenith Motors Ltd",
-        "year_founded": 2004,
-        "primary_domain": "zenithmotors.in"
+    "ifsc:HDFC0000147": {
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000147",
+      "request": {
+        "ifsc": "HDFC0000147"
       },
-      "headcount": {
-        "total": 310,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 300
-          },
-          {
-            "date": "2026-11-01",
-            "value": 310
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "HDFC Bank",
+        "BRANCH": "BARODA -  KARELIBAUG",
+        "CITY": "VADODARA",
+        "STATE": "GUJARAT",
+        "IFSC": "HDFC0000147"
       }
     },
-    "2000002": {
-      "crustdata_company_id": 2000002,
-      "basic_info": {
-        "name": "Horizon Retail Pvt Ltd",
-        "year_founded": 2004,
-        "primary_domain": "horizonretail.in"
+    "ifsc:KKBK0000261": {
+      "endpoint": "GET https://ifsc.razorpay.com/KKBK0000261",
+      "request": {
+        "ifsc": "KKBK0000261"
       },
-      "headcount": {
-        "total": 560,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 900
-          },
-          {
-            "date": "2026-11-01",
-            "value": 560
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "Kotak Mahindra Bank",
+        "BRANCH": "GURGAON",
+        "CITY": "GURGAON",
+        "STATE": "HARYANA",
+        "IFSC": "KKBK0000261"
       }
     },
-    "2000003": {
-      "crustdata_company_id": 2000003,
-      "basic_info": {
-        "name": "Apex Engineering Works",
-        "year_founded": 2004,
-        "primary_domain": "apexengg.in"
+    "ifsc:HDFC0000521": {
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000521",
+      "request": {
+        "ifsc": "HDFC0000521"
       },
-      "headcount": {
-        "total": 310,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 300
-          },
-          {
-            "date": "2026-11-01",
-            "value": 310
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "HDFC Bank",
+        "BRANCH": "BANJARA HILLS",
+        "CITY": "HYDERABAD",
+        "STATE": "ANDHRA PRADESH",
+        "IFSC": "HDFC0000521"
       }
     },
-    "2000004": {
-      "crustdata_company_id": 2000004,
-      "basic_info": {
-        "name": "Lotus Foods Pvt Ltd",
-        "year_founded": 2004,
-        "primary_domain": "lotusfoods.in"
+    "ifsc:SBIN0021745": {
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0021745",
+      "request": {
+        "ifsc": "SBIN0021745"
       },
-      "headcount": {
-        "total": 310,
-        "timeseries": [
-          {
-            "date": "2025-11-01",
-            "value": 300
-          },
-          {
-            "date": "2026-11-01",
-            "value": 310
-          }
-        ]
+      "status": 200,
+      "response": {
+        "BANK": "State Bank of India",
+        "BRANCH": "BOMMASANDRA",
+        "CITY": "BANGALORE URBAN",
+        "STATE": "KARNATAKA",
+        "IFSC": "SBIN0021745"
       }
-    }
-  },
-  "people": {
-    "1000102": [
-      {
-        "name": "Priya Shah",
-        "title": "Finance Controller",
-        "current_employer_id": 1000102
+    },
+    "ifsc:SBIN0000001": {
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0000001",
+      "request": {
+        "ifsc": "SBIN0000001"
       },
-      {
-        "name": "Nikhil Desai",
-        "title": "Accounts Executive",
-        "current_employer_id": 1000102
+      "status": 200,
+      "response": {
+        "BANK": "State Bank of India",
+        "BRANCH": "KOLKATA MAIN",
+        "CITY": "KOLKATA",
+        "STATE": "WEST BENGAL",
+        "IFSC": "SBIN0000001"
       }
-    ],
-    "1000104": [
-      {
-        "name": "Sunil Kulkarni",
-        "title": "Head of Accounts",
-        "current_employer_id": 1000104
+    },
+    "ifsc:SBIN0001062": {
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0001062",
+      "request": {
+        "ifsc": "SBIN0001062"
+      },
+      "status": 200,
+      "response": {
+        "BANK": "State Bank of India",
+        "BRANCH": "LATEHAR",
+        "CITY": "LATEHAR",
+        "STATE": "JHARKHAND",
+        "IFSC": "SBIN0001062"
       }
-    ]
-  },
-  "news": {
-    "infra logistics pvt ltd": [
-      {
-        "title": "NCLT admits insolvency petition filed by lessor against Infra Logistics",
-        "url": "https://example-news.in/2026/10/05/infra-logistics-nclt",
-        "date": "2026-10-05"
-      }
-    ],
-    "horizon retail pvt ltd": [
-      {
-        "title": "Horizon Retail delays salaries, shuts 12 stores",
-        "url": "https://example-news.in/2026/11/02/horizon-retail",
-        "date": "2026-11-02"
-      }
-    ]
-  },
-  "ifsc": {
-    "SBIN0000454": {
-      "BANK": "State Bank of India",
-      "BRANCH": "PUNE",
-      "CITY": "PUNE",
-      "STATE": "MAHARASHTRA",
-      "IFSC": "SBIN0000454"
-    },
-    "SBIN0000301": {
-      "BANK": "State Bank of India",
-      "BRANCH": "AHMEDABAD MAIN",
-      "CITY": "AHMEDABAD",
-      "STATE": "GUJARAT",
-      "IFSC": "SBIN0000301"
-    },
-    "SBIN0000813": {
-      "BANK": "State Bank of India",
-      "BRANCH": "BANGALORE",
-      "CITY": "BANGALORE URBAN",
-      "STATE": "KARNATAKA",
-      "IFSC": "SBIN0000813"
-    },
-    "HDFC0000007": {
-      "BANK": "HDFC Bank",
-      "BRANCH": "PUNE - LAW COLLEGE ROAD",
-      "CITY": "PUNE",
-      "STATE": "MAHARASHTRA",
-      "IFSC": "HDFC0000007"
-    },
-    "HDFC0000001": {
-      "BANK": "HDFC Bank",
-      "BRANCH": "TULSIANI CHMBRS - NARIMAN PT",
-      "CITY": "GREATER MUMBAI",
-      "STATE": "MAHARASHTRA",
-      "IFSC": "HDFC0000001"
-    },
-    "HDFC0000147": {
-      "BANK": "HDFC Bank",
-      "BRANCH": "BARODA -  KARELIBAUG",
-      "CITY": "VADODARA",
-      "STATE": "GUJARAT",
-      "IFSC": "HDFC0000147"
-    },
-    "SBIN0000691": {
-      "BANK": "State Bank of India",
-      "BRANCH": "NEW DELHI MAIN BRANCH",
-      "CITY": "NEW DELHI",
-      "STATE": "DELHI",
-      "IFSC": "SBIN0000691"
-    },
-    "HDFC0000014": {
-      "BANK": "HDFC Bank",
-      "BRANCH": "KOLKATA - CENTRAL PLAZA",
-      "CITY": "KOLKATA",
-      "STATE": "WEST BENGAL",
-      "IFSC": "HDFC0000014"
-    },
-    "SBIN0000001": {
-      "BANK": "State Bank of India",
-      "BRANCH": "KOLKATA MAIN",
-      "CITY": "KOLKATA",
-      "STATE": "WEST BENGAL",
-      "IFSC": "SBIN0000001"
-    },
-    "KKBK0000261": {
-      "BANK": "Kotak Mahindra Bank",
-      "BRANCH": "GURGAON",
-      "CITY": "GURGAON",
-      "STATE": "HARYANA",
-      "IFSC": "KKBK0000261"
-    },
-    "SBIN0001062": {
-      "BANK": "State Bank of India",
-      "BRANCH": "LATEHAR",
-      "CITY": "LATEHAR",
-      "STATE": "JHARKHAND",
-      "IFSC": "SBIN0001062"
     }
   }
 }

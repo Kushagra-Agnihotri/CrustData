@@ -55,6 +55,14 @@ CREATE TABLE IF NOT EXISTS vendor_bank_accounts(
   proposed_by TEXT, approved_by TEXT, verification_note TEXT,
   source_doc_id TEXT,
   evidence_fact_ids TEXT NOT NULL DEFAULT '[]',
+  -- genuine bank-change verification (Part B): a request is never proof
+  docs_received INTEGER NOT NULL DEFAULT 0,          -- cancelled cheque / bank letter on letterhead
+  callback_done INTEGER NOT NULL DEFAULT 0, callback_by TEXT, callback_note TEXT,   -- call-back on phone_on_file
+  second_contact_note TEXT,                          -- someone else at the vendor confirmed
+  penny_drop_status TEXT NOT NULL DEFAULT 'not_run'
+    CHECK (penny_drop_status IN ('not_run','name_match','name_mismatch','failed')),
+  penny_drop_name TEXT, penny_drop_ref TEXT,
+  old_contact_notified_at TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
   CHECK (approved_by IS NULL OR proposed_by IS NULL OR approved_by <> proposed_by)  -- maker-checker
 );
@@ -178,6 +186,7 @@ CREATE TABLE IF NOT EXISTS raw_responses(
 CREATE TABLE IF NOT EXISTS facts(
   id TEXT PRIMARY KEY, entity_type TEXT, entity_id TEXT, key TEXT, value TEXT,
   source_type TEXT, source_ref TEXT, source_field TEXT, retrieved_at TEXT, raw_response_id TEXT,
+  recorded INTEGER NOT NULL DEFAULT 0,   -- 1 = real response replayed from data/live_recordings.json
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 CREATE TABLE IF NOT EXISTS events(
@@ -219,8 +228,24 @@ def connect(path=None) -> sqlite3.Connection:
     return conn
 
 
+MIGRATIONS = [  # for databases created before a column existed (CREATE TABLE IF NOT EXISTS won't add it)
+    ("vendor_bank_accounts", "docs_received", "INTEGER NOT NULL DEFAULT 0"),
+    ("vendor_bank_accounts", "callback_done", "INTEGER NOT NULL DEFAULT 0"),
+    ("vendor_bank_accounts", "callback_by", "TEXT"), ("vendor_bank_accounts", "callback_note", "TEXT"),
+    ("vendor_bank_accounts", "second_contact_note", "TEXT"),
+    ("vendor_bank_accounts", "penny_drop_status", "TEXT NOT NULL DEFAULT 'not_run'"),
+    ("vendor_bank_accounts", "penny_drop_name", "TEXT"), ("vendor_bank_accounts", "penny_drop_ref", "TEXT"),
+    ("vendor_bank_accounts", "old_contact_notified_at", "TEXT"),
+    ("facts", "recorded", "INTEGER NOT NULL DEFAULT 0"),
+]
+
+
 def init_schema(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA)
+    for table, col, decl in MIGRATIONS:
+        cols = {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}
+        if col not in cols:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {decl}")
 
 
 @contextmanager

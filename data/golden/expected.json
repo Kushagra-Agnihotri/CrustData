@@ -24,6 +24,7 @@
     "must_include": [
       "DUPLICATE_INVOICE"
     ],
+    "first_reason": "DUPLICATE_INVOICE",
     "label": "Re-issue of #2 as INV/42 vs INV-0042"
   },
   "case06": {
@@ -68,36 +69,37 @@
     "must_include": [
       "UNVERIFIABLE_VENDOR"
     ],
-    "label": "Sharma Traders: no GSTIN, no PO \u2192 I can't verify"
+    "label": "Sharma Traders: no GSTIN, no PO → I can't verify"
   },
   "case12": {
     "decision": "HOLD",
     "must_include": [
       "SOURCE_UNAVAILABLE"
     ],
+    "only": true,
     "inject_fault": [
       "crustdata",
       "ifsc"
     ],
-    "label": "Crustdata + IFSC timeout injected"
+    "label": "Crustdata + IFSC timeout injected (untouched vendor)"
   },
   "case13": {
     "decision": "PAY_ELIGIBLE",
     "tier": 0,
     "paid_in_full": true,
-    "label": "MSME micro, accepted 40 days ago \u2192 Tier 0"
+    "label": "MSME micro, accepted 40 days ago → Tier 0"
   },
   "case14": {
     "decision": "PAY_ELIGIBLE",
     "tier": 1,
     "paid_in_full": true,
-    "label": "2/10 net 30 within discount window \u2192 Tier 1"
+    "label": "2/10 net 30 within discount window → Tier 1"
   },
   "case15": {
     "decision": "PAY_ELIGIBLE",
     "tier": 2,
     "split": true,
-    "label": "Large invoice, cash short \u2192 instalments"
+    "label": "Large invoice, cash short → instalments"
   },
   "case16": {
     "decision_same_as": "case01",
@@ -106,6 +108,43 @@
   },
   "case17": {
     "crash_test": true,
-    "label": "kill -9 mid-payment, restart \u2192 each instalment paid once"
+    "label": "kill -9 mid-payment, restart → each instalment paid once"
+  },
+  "case18": {
+    "decision": "HOLD",
+    "must_include": [
+      "ADVERSE_NEWS"
+    ],
+    "only": true,
+    "live_source": true,
+    "label": "Clean invoice; vendor in insolvency per live news"
+  },
+  "case19": {
+    "decision": "HOLD",
+    "must_include": [
+      "BANK_CHANGE_REQUEST"
+    ],
+    "must_exclude": [
+      "BANK_CHANGE_FRAUD",
+      "SENDER_DOMAIN_MISMATCH",
+      "REPLY_TO_MISMATCH",
+      "PRESSURE_LANGUAGE"
+    ],
+    "pending_account": true,
+    "label": "Genuine bank-change email (vendor's own domain)"
+  },
+  "case20": {
+    "followup": true,
+    "decision": "PAY_ELIGIBLE",
+    "must_pass": [
+      "BANK_MATCHES_MASTER"
+    ],
+    "label": "After call-back + penny drop + 2nd approver → pays new account"
+  },
+  "case20b": {
+    "followup": true,
+    "isolated": true,
+    "approval_refused": "name_mismatch",
+    "label": "Penny drop returns another name → approval refused"
   }
 }

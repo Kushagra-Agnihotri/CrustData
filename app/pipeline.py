@@ -15,9 +15,9 @@ import time
 from app import config, scoring, sources
 from app.db import j, new_id, now_iso, q, q1, tx, unj
 from app.extract import extract
-from app.ledger import add_event, add_fact, record_call
+from app.ledger import add_event, add_fact, add_src_fact, record_call
 from app.money import inr
-from app.reasons import BLOCK, HOLD, OK, passed, reason
+from app.reasons import BLOCK, HOLD, OK, passed, reason, sort_reasons
 from app.validators import (content_hash, domain_core, domain_of, edit_distance, gstin_check_char,
                             gstin_checksum_ok, gstin_format_ok, ifsc_format_ok, norm_invoice_no,
                             normalize_name, pressure_terms, similarity, skeleton)
@@ -236,10 +236,12 @@ def s_resolve(conn, inv, ctx):
                     missing.append("PO")
                 try:
                     res = sources.company_identify(conn, ctx, name=inv["vendor_name_raw"])
-                    fid_reg = add_fact(conn, "invoice", inv["id"], "registry_lookup", res.data and res.data["company_data"],
-                                       sources.source_type("crustdata", res), res.source_ref, "[0].matches", res.retrieved_at, res.raw_response_id)
+                    fid_reg = add_src_fact(conn, "invoice", inv["id"], "registry_lookup", res.data and res.data["company_data"],
+                                           "crustdata", res, "[0].matches[0].company_data")
                     if not res.data:
                         missing.append("registry record")
+                    else:
+                        missing.append("anything tying this invoice to the same-named company Crustdata found (a name-only match is not proof)")
                 except sources.SourceUnavailable as e:
                     out.append(_src_reason(e, stage, "the company registry"))
                     missing.append("registry record (source unavailable)")
@@ -262,6 +264,18 @@ def s_resolve(conn, inv, ctx):
             ident = next((r for r in tb if r["signal"] == "identity"), None)
             if ident:
                 out.append(passed("LIVE_IDENTITY", f"Crustdata company identify: {ident['note']}", ident["fact_ids"], stage))
+            # Live-data rule: dated insolvency news about this vendor holds the invoice on its own,
+            # even when every internal check is clean (no_adverse_news is only 15% of trust).
+            news = next((r for r in tb if r["signal"] == "no_adverse_news"), None)
+            arts = (news or {}).get("articles") or []
+            if arts:
+                a = next((x for x in arts if x.get("published")), arts[0])
+                when = f"published {a['published'][:10]}" if a.get("published") else "publish date: can't verify"
+                out.append(reason("ADVERSE_NEWS", f"Live news search: \"{a['title']}\" ({when}; matched '{a.get('matched_term')}'). "
+                                  f"{vendor['legal_name']} appears to be in insolvency proceedings — held so a person reviews the "
+                                  "counterparty risk before any payment.", [x["fact_id"] for x in arts], stage, url=a.get("url")))
+            elif news and news.get("verified"):
+                out.append(passed("NO_ADVERSE_NEWS", f"Live news search: {news['note']}", news["fact_ids"], stage))
     return upd, out
 
 
@@ -337,10 +351,14 @@ def _bank_checks(conn, inv, ctx, vendor, stage, acct, ifsc, ben, f) -> list[dict
             out.append(reason("IFSC_NOT_FOUND", f"IFSC {ifsc} does not exist (live IFSC lookup returned 404)", [f.get("ifsc")], stage))
         else:
             b = res.data
-            fid = add_fact(conn, "invoice", inv["id"], "ifsc_branch", {k: b.get(k) for k in ("BANK", "BRANCH", "CITY", "STATE")},
-                           sources.source_type("ifsc_api", res), res.source_ref, "BANK,BRANCH,CITY,STATE", res.retrieved_at, res.raw_response_id)
-            out.append(passed("IFSC_OK", f"IFSC {ifsc} = {b.get('BANK')}, {b.get('BRANCH')}, {b.get('CITY')} ({b.get('STATE')})", [fid], stage))
-            if vendor and vendor["state"] and (b.get("STATE") or "").upper() != vendor["state"].upper():
+            fid = add_src_fact(conn, "invoice", inv["id"], "ifsc_branch", {k: b.get(k) for k in ("BANK", "BRANCH", "CITY", "STATE")},
+                               "ifsc_api", res, "BANK,BRANCH,CITY,STATE")
+            bstate, vstate = (b.get("STATE") or "").upper(), ((vendor or {}).get("state") or "").upper()
+            legacy = bool(vstate) and bstate != vstate and bstate in STATE_EQUIV.get(vstate, set())
+            out.append(passed("IFSC_OK", f"IFSC {ifsc} = {b.get('BANK')}, {b.get('BRANCH')}, {b.get('CITY')} ({b.get('STATE')})"
+                              + (f" — the IFSC dataset still lists this branch under {b.get('STATE')}, the pre-2014 state for "
+                                 f"{vstate.title()}" if legacy else ""), [fid], stage))
+            if vstate and bstate != vstate and not legacy:
                 out.append(reason("IFSC_LOCATION_MISMATCH", f"Bank branch is in {b.get('CITY')}, {b.get('STATE')}; "
                                   f"{vendor['legal_name']} is based in {vendor['city']}, {vendor['state']}", [fid], stage))
     except sources.SourceUnavailable as e:
@@ -349,6 +367,11 @@ def _bank_checks(conn, inv, ctx, vendor, stage, acct, ifsc, ben, f) -> list[dict
             normalize_name(ben) not in [normalize_name(a) for a in unj(vendor["aliases"], [])]:
         out.append(reason("BENEFICIARY_NAME_MISMATCH", f"Beneficiary '{ben}' ≠ vendor legal name '{vendor['legal_name']}'", [f.get("beneficiary_name")], stage))
     return out
+
+
+# Telangana was carved out of Andhra Pradesh in 2014; the Razorpay IFSC dataset still lists
+# Hyderabad branches under ANDHRA PRADESH (seen live on 22 Nov 2026, see NOTES.md).
+STATE_EQUIV = {"TELANGANA": {"ANDHRA PRADESH"}}
 
 
 def _sender_checks(conn, inv, ctx, vendor, stage, f) -> tuple[list[dict], bool]:
@@ -363,8 +386,8 @@ def _sender_checks(conn, inv, ctx, vendor, stage, f) -> tuple[list[dict], bool]:
         domain_bad = True
         try:
             res = sources.company_identify(conn, ctx, domain=sd)
-            fids.append(add_fact(conn, "invoice", inv["id"], "sender_domain_identify", res.data and res.data["company_data"],
-                                 sources.source_type("crustdata", res), res.source_ref, "[0].matches", res.retrieved_at, res.raw_response_id))
+            fids.append(add_src_fact(conn, "invoice", inv["id"], "sender_domain_identify", res.data and res.data["company_data"],
+                                     "crustdata", res, "[0].matches[0].company_data"))
             who = "no company in Crustdata" if not res.data else f"belongs to {res.data['company_data']['basic_info']['name']}"
         except sources.SourceUnavailable:
             who = "Crustdata unavailable"
@@ -441,9 +464,10 @@ def _check_bank_change(conn, inv, ctx, vendor, f):
         else:
             try:
                 res = sources.person_search(conn, ctx, cid, inv["signatory"])
-                hits = (res.data or {}).get("profiles", [])
-                fid = add_fact(conn, "invoice", inv["id"], "signatory_search", hits, sources.source_type("crustdata", res),
-                               res.source_ref, "profiles", res.retrieved_at, res.raw_response_id)
+                hits = (res.data or {}).get("matches", [])
+                fid = add_src_fact(conn, "invoice", inv["id"], "signatory_search",
+                                   {"count": len(hits), "titles": [h.get("title") for h in hits]}, "crustdata", res,
+                                   "profiles[].basic_profile.current_title")
                 if not hits:
                     out.append(reason("SENDER_NOT_VERIFIED_AT_VENDOR", f"I can't verify that '{inv['signatory']}, {inv['signatory_title']}' works at "
                                       f"{vendor['legal_name']} (Crustdata people search: 0 current employees by that name)", [fid, f.get("signatory")], stage))
@@ -566,7 +590,7 @@ def step(conn, inv_id, ctx, actor="worker") -> str:
             inv = q1(conn, "SELECT * FROM invoices WHERE id=?", (inv_id,))
             upd, new_reasons = fn(conn, inv, ctx)
             tag = STAGE_TAG[state]
-            reasons = [r for r in unj(inv["reasons"], []) if r.get("stage") != tag] + new_reasons
+            reasons = sort_reasons([r for r in unj(inv["reasons"], []) if r.get("stage") != tag] + new_reasons)
             nxt = upd.pop("_state", NEXT[state])
             explain = upd.pop("_explain", False)
             if explain:

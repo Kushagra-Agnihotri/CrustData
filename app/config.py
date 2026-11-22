@@ -38,9 +38,11 @@ COST_OF_CASH = float(_get("COST_OF_CASH", "0.12"))  # annual
 RUN_TIME_LIMIT_S = int(_get("RUN_TIME_LIMIT_S", "900"))
 RUN_CREDIT_LIMIT = float(_get("RUN_CREDIT_LIMIT", "200"))
 
-# Sources: "mock" (offline fixtures in data/mock_sources.json) or "live"
-CRUSTDATA_MODE = _get("CRUSTDATA_MODE", "mock")
-IFSC_MODE = _get("IFSC_MODE", "mock")
+# Sources: "replay" (real responses recorded in data/live_recordings.json — default, no key needed),
+# "live" (call the API and append to the recordings), or "mock" (offline synthetic fixtures).
+CRUSTDATA_MODE = _get("CRUSTDATA_MODE", "replay")
+IFSC_MODE = _get("IFSC_MODE", "replay")
+RECORD_LIVE = _get("RECORD_LIVE", "1") == "1"   # in live mode, append responses to data/live_recordings.json
 CRUSTDATA_API_KEY = _get("CRUSTDATA_API_KEY", "")
 CRUSTDATA_BASE = _get("CRUSTDATA_BASE", "https://api.crustdata.com")
 CRUSTDATA_API_VERSION = _get("CRUSTDATA_API_VERSION", "2025-11-01")
@@ -65,3 +67,4 @@ RECEIPT_CONFIDENCE_MIN = 0.7
 MAX_INVOICE_AGE_DAYS = 180
 
 BUYER_NAME = "Orbit Manufacturing Pvt Ltd"
+BUYER_PHONE = "+91 20 6700 1400"   # synthetic: the number our notices tell vendors to call

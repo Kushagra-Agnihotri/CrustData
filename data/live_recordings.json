@@ -1,0 +1,2925 @@
+{
+  "_note": "REAL responses, recorded live on 22 Nov 2026. Replayed when CRUSTDATA_MODE/IFSC_MODE=replay; facts keep the original retrieved_at and are labelled live (recorded). Person-search entries are reduced to titles only (no names, no profile URLs). Long text fields are trimmed as noted per entry.",
+  "recorded_via": "Crustdata REST API (api-version 2025-11-01) through the Crustdata MCP server; IFSC via https://ifsc.razorpay.com",
+  "credits": {
+    "balance_before": 199.8,
+    "balance_after": 146.47,
+    "note": "balance_after includes ~10 credits of candidate search, probing and two 429/timeout retries"
+  },
+  "entries": {
+    "crust:identify:domain:cppackers.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "cppackers.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "cppackers.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 67543780,
+                "basic_info": {
+                  "name": "Chander Prabhu Packers",
+                  "crustdata_company_id": 67543780,
+                  "primary_domain": "cppackers.com",
+                  "all_domains": [
+                    "cppackers.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/chander-prabhu-packers",
+                  "company_type": "Sole Proprietorship",
+                  "year_founded": 2007,
+                  "employee_count_range": "11-50"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:astralpipes.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "astralpipes.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "astralpipes.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 433,
+                "basic_info": {
+                  "name": "Astral Pipes",
+                  "crustdata_company_id": 433,
+                  "primary_domain": "astralpipes.com",
+                  "all_domains": [
+                    "astralltd.com",
+                    "astralpipes.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/astralpipesofficial",
+                  "company_type": "Public Company",
+                  "year_founded": 1996,
+                  "employee_count_range": "1001-5000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:pankajsteels.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "pankajsteels.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "pankajsteels.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 14111936,
+                "basic_info": {
+                  "name": "Pankaj Steels",
+                  "crustdata_company_id": 14111936,
+                  "primary_domain": "pankajsteels.com",
+                  "all_domains": [
+                    "pankajsteels.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/pankajsteels",
+                  "company_type": "Partnership",
+                  "year_founded": 1972,
+                  "employee_count_range": "11-50"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:kirloskarferrous.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "kirloskarferrous.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "kirloskarferrous.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1139506,
+                "basic_info": {
+                  "name": "Kirloskar Ferrous",
+                  "crustdata_company_id": 1139506,
+                  "primary_domain": "kirloskarferrous.com",
+                  "all_domains": [
+                    "kirloskarferrous.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/kirloskarferrous",
+                  "company_type": "Public Company",
+                  "year_founded": 1991,
+                  "employee_count_range": "1001-5000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:tatacommunications.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "tatacommunications.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "tatacommunications.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6183393,
+                "basic_info": {
+                  "name": "Tata Communications",
+                  "crustdata_company_id": 6183393,
+                  "primary_domain": "tatacommunications.com",
+                  "all_domains": [
+                    "kaleyra.com",
+                    "oasis-smartsim.com",
+                    "tatacommunications.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/tata-communication",
+                  "company_type": "Public Company",
+                  "year_founded": 1972,
+                  "employee_count_range": "5001-10000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:gacl.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "gacl.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "gacl.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1268066,
+                "basic_info": {
+                  "name": "Gujarat Alkalies and Chemicals Limited",
+                  "crustdata_company_id": 1268066,
+                  "primary_domain": "gacl.com",
+                  "all_domains": [
+                    "gacl.co.in",
+                    "gacl.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/gujarat-alkalies-and-chemicals-limited",
+                  "company_type": "Public Company",
+                  "year_founded": 1973,
+                  "employee_count_range": "1001-5000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:tcifreight.in": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "tcifreight.in"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "tcifreight.in",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1131959,
+                "basic_info": {
+                  "name": "TCI Group (Transport Corporation of India Limited)",
+                  "crustdata_company_id": 1131959,
+                  "primary_domain": "tcifreight.in",
+                  "all_domains": [
+                    "tciscs.com",
+                    "tcifreight.in",
+                    "tciconcor.com",
+                    "tciseaways.com",
+                    "tcil.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/tci.transportcorporationofindia",
+                  "company_type": "Public Company",
+                  "year_founded": 1958,
+                  "employee_count_range": "5001-10000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:i-luxer.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "i-luxer.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "i-luxer.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2748814,
+                "basic_info": {
+                  "name": "iLuxer Technologies Pvt Ltd",
+                  "crustdata_company_id": 2748814,
+                  "primary_domain": "i-luxer.com",
+                  "all_domains": [
+                    "i-luxer.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/iluxer-technologies",
+                  "company_type": "Privately Held",
+                  "year_founded": 2013,
+                  "employee_count_range": "11-50"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:byjus.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "byjus.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "byjus.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5705,
+                "basic_info": {
+                  "name": "BYJU'S",
+                  "crustdata_company_id": 5705,
+                  "primary_domain": "byjus.com",
+                  "all_domains": [
+                    "byjus.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/byjus",
+                  "company_type": "Privately Held",
+                  "year_founded": 2011,
+                  "employee_count_range": "10001+"
+                },
+                "social_profiles": null
+              }
+            },
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6459390,
+                "basic_info": {
+                  "name": "BYJU'S Support",
+                  "crustdata_company_id": 6459390,
+                  "primary_domain": "byjus.com",
+                  "all_domains": [
+                    "byjus.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/byju-s-support",
+                  "company_type": "Privately Held",
+                  "year_founded": null,
+                  "employee_count_range": "1001-5000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:marutisuzuki.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "marutisuzuki.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "marutisuzuki.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2957,
+                "basic_info": {
+                  "name": "Maruti Suzuki India Limited",
+                  "crustdata_company_id": 2957,
+                  "primary_domain": "marutisuzuki.com",
+                  "all_domains": [
+                    "marutisuzuki.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/maruti-udyog-limited",
+                  "company_type": "Public Company",
+                  "year_founded": 1982,
+                  "employee_count_range": "10001+"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:futureretail.in": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "futureretail.in"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "futureretail.in",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6842965,
+                "basic_info": {
+                  "name": "FUTURE RETAIL LIMITED",
+                  "crustdata_company_id": 6842965,
+                  "primary_domain": "futureretail.in",
+                  "all_domains": [
+                    "futureretail.in"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/future-retail-limited",
+                  "company_type": null,
+                  "year_founded": null,
+                  "employee_count_range": null
+                },
+                "social_profiles": null
+              }
+            },
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1078443,
+                "basic_info": {
+                  "name": "Future Retail Ltd., Mumbai",
+                  "crustdata_company_id": 1078443,
+                  "primary_domain": "futureretail.in",
+                  "all_domains": [
+                    "futureretail.in"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/future-retail-ltd-mumbai",
+                  "company_type": "Public Company",
+                  "year_founded": 1987,
+                  "employee_count_range": "10001+"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:thermaxglobal.com": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "thermaxglobal.com"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "thermaxglobal.com",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5110,
+                "basic_info": {
+                  "name": "Thermax Limited",
+                  "crustdata_company_id": 5110,
+                  "primary_domain": "thermaxglobal.com",
+                  "all_domains": [
+                    "thermaxglobal.com"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/thermaxlimited",
+                  "company_type": "Public Company",
+                  "year_founded": 1966,
+                  "employee_count_range": "10001+"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:britannia.co.in": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "britannia.co.in"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "britannia.co.in",
+          "match_type": "domain",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 787,
+                "basic_info": {
+                  "name": "Britannia Industries Limited",
+                  "crustdata_company_id": 787,
+                  "primary_domain": "britannia.co.in",
+                  "all_domains": [
+                    "britannia.co.in"
+                  ],
+                  "professional_network_url": "https://www.linkedin.com/company/britannia-industries-limited",
+                  "company_type": "Public Company",
+                  "year_founded": 1892,
+                  "employee_count_range": "1001-5000"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.2,
+      "trimmed": "split from one batched identify call; basic_info.description/logo/markets/website dropped"
+    },
+    "crust:identify:domain:astral-pipes.co": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "domains": [
+          "astral-pipes.co"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "astral-pipes.co",
+          "match_type": "domain",
+          "matches": []
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:50:15.614Z",
+      "credits": 0.0,
+      "trimmed": "split from one batched identify call"
+    },
+    "crust:identify:name:sharma traders": {
+      "source": "crustdata",
+      "endpoint": "POST /company/identify",
+      "request": {
+        "names": [
+          "Sharma Traders"
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "Sharma Traders",
+          "match_type": "name",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 797168,
+                "basic_info": {
+                  "name": "Sharma Traders",
+                  "crustdata_company_id": 797168,
+                  "primary_domain": "sharmatraders.co",
+                  "all_domains": [
+                    "sharmatraders.co"
+                  ],
+                  "company_type": null,
+                  "year_founded": null,
+                  "employee_count_range": "11-50"
+                },
+                "social_profiles": null
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:44:46.323Z",
+      "credits": 0.2,
+      "trimmed": "first match only"
+    },
+    "crust:enrich:67543780": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          67543780
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "67543780",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 67543780,
+                "basic_info": {
+                  "name": "Chander Prabhu Packers",
+                  "crustdata_company_id": 67543780,
+                  "primary_domain": "cppackers.com",
+                  "all_domains": [
+                    "cppackers.com"
+                  ],
+                  "company_type": "Sole Proprietorship",
+                  "status": "active",
+                  "year_founded": 2007,
+                  "employee_count_range": "11-50"
+                },
+                "headcount": {
+                  "total": 2,
+                  "timeseries": [
+                    {
+                      "date": "2025-09-01",
+                      "employee_count": 2
+                    },
+                    {
+                      "date": "2026-08-31",
+                      "employee_count": 2
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0,
+                    "qoq": 0,
+                    "six_months": 0,
+                    "two_years": 0,
+                    "yoy": 0
+                  },
+                  "_timeseries_points_total": 25
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Mohan Nagar (Ghaziabad), Uttar Pradesh, India",
+                  "state": "Uttar Pradesh"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:42:11.066Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:433": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          433
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "433",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 433,
+                "basic_info": {
+                  "name": "Astral Pipes",
+                  "crustdata_company_id": 433,
+                  "primary_domain": "astralpipes.com",
+                  "all_domains": [
+                    "astralltd.com",
+                    "astralpipes.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1996,
+                  "employee_count_range": "1001-5000"
+                },
+                "headcount": {
+                  "total": 1342,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 1306
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 1342
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 1.206636500754148,
+                    "qoq": 2.364607170099161,
+                    "six_months": 3.9504260263361735,
+                    "two_years": 11.000827129859388,
+                    "yoy": 6.25494853523357
+                  },
+                  "_timeseries_points_total": 355
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Shilaj, Thaltej, Gujarat, India",
+                  "state": "Gujarat"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:42:11.071Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:14111936": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          14111936
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "14111936",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 14111936,
+                "basic_info": {
+                  "name": "Pankaj Steels",
+                  "crustdata_company_id": 14111936,
+                  "primary_domain": "pankajsteels.com",
+                  "all_domains": [
+                    "pankajsteels.com"
+                  ],
+                  "company_type": "Partnership",
+                  "status": "active",
+                  "year_founded": 1972,
+                  "employee_count_range": "11-50"
+                },
+                "headcount": {
+                  "total": 10,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-08",
+                      "employee_count": 10
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 10
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0,
+                    "qoq": 0,
+                    "six_months": 11.11111111111111,
+                    "two_years": 25,
+                    "yoy": 11.11111111111111
+                  },
+                  "_timeseries_points_total": 157
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Shanthinagar, Sampangiramnagar, Wilson Garden, Karnātaka, India",
+                  "state": "Karnātaka"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:42:11.081Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:1139506": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          1139506
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "1139506",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1139506,
+                "basic_info": {
+                  "name": "Kirloskar Ferrous",
+                  "crustdata_company_id": 1139506,
+                  "primary_domain": "kirloskarferrous.com",
+                  "all_domains": [
+                    "kirloskarferrous.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1991,
+                  "employee_count_range": "1001-5000"
+                },
+                "headcount": {
+                  "total": 1513,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 1437
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 1513
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 1.2717536813922357,
+                    "qoq": 3.9862542955326457,
+                    "six_months": 5.288796102992345,
+                    "two_years": 41.79943767572634,
+                    "yoy": 26.610878661087867
+                  },
+                  "_timeseries_points_total": 238
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Koppal, Karnataka, India",
+                  "state": "Karnataka"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:42:11.086Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:6183393": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          6183393
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "6183393",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6183393,
+                "basic_info": {
+                  "name": "Tata Communications",
+                  "crustdata_company_id": 6183393,
+                  "primary_domain": "tatacommunications.com",
+                  "all_domains": [
+                    "kaleyra.com",
+                    "oasis-smartsim.com",
+                    "tatacommunications.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1972,
+                  "employee_count_range": "5001-10000"
+                },
+                "headcount": {
+                  "total": 16835,
+                  "timeseries": [
+                    {
+                      "date": "2026-07-06",
+                      "employee_count": 16847
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 16835
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0.005940358797671379,
+                    "qoq": -0.06529739997625549,
+                    "six_months": -0.5082441936055788,
+                    "two_years": -5.991735537190083,
+                    "yoy": -2.6484704793847222
+                  },
+                  "_timeseries_points_total": 184
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Kurla, Netajinagar, Kurla North, Maharashtra, India",
+                  "state": "Maharashtra"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:42:11.144Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:1268066": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          1268066
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "1268066",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1268066,
+                "basic_info": {
+                  "name": "Gujarat Alkalies and Chemicals Limited",
+                  "crustdata_company_id": 1268066,
+                  "primary_domain": "gacl.com",
+                  "all_domains": [
+                    "gacl.co.in",
+                    "gacl.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1973,
+                  "employee_count_range": "1001-5000"
+                },
+                "headcount": {
+                  "total": 549,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 541
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 549
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 2.2346368715083798,
+                    "qoq": 1.478743068391867,
+                    "six_months": 6.395348837209303,
+                    "two_years": 17.558886509635975,
+                    "yoy": 10.02004008016032
+                  },
+                  "_timeseries_points_total": 199
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Sankarda, Ranoli (Vadodara), Padmala, Gujarat, India",
+                  "state": "Gujarat"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:44:45.796Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:1131959": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          1131959
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "1131959",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 1131959,
+                "basic_info": {
+                  "name": "TCI Group (Transport Corporation of India Limited)",
+                  "crustdata_company_id": 1131959,
+                  "primary_domain": "tcifreight.in",
+                  "all_domains": [
+                    "tciscs.com",
+                    "tcifreight.in",
+                    "tciconcor.com",
+                    "tciseaways.com",
+                    "tcil.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1958,
+                  "employee_count_range": "5001-10000"
+                },
+                "headcount": {
+                  "total": 2861,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 2721
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 2861
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 1.5980113636363635,
+                    "qoq": 3.0248469571480014,
+                    "six_months": 7.55639097744361,
+                    "two_years": 30.045454545454547,
+                    "yoy": 11.539961013645224
+                  },
+                  "_timeseries_points_total": 212
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Basai Road, Shivaji Nagar (Gurgaon), Gurgaon Kty., Urban Estate (Gurgaon), Khandsa Road, Gurgaon Sector 17, Mini Sectt., New Colony (Gurgaon), Arjun Nagar, Gurgaon South City I, Gurgaon H.O, Haryana, India",
+                  "state": "Haryana"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:44:45.876Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:2748814": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          2748814
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "2748814",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2748814,
+                "basic_info": {
+                  "name": "iLuxer Technologies Pvt Ltd",
+                  "crustdata_company_id": 2748814,
+                  "primary_domain": "i-luxer.com",
+                  "all_domains": [
+                    "i-luxer.com"
+                  ],
+                  "company_type": "Privately Held",
+                  "status": "active",
+                  "year_founded": 2013,
+                  "employee_count_range": "11-50"
+                },
+                "headcount": {
+                  "total": 2,
+                  "timeseries": [
+                    {
+                      "date": "2026-05-25",
+                      "employee_count": 2
+                    },
+                    {
+                      "date": "2026-11-09",
+                      "employee_count": 2
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0,
+                    "qoq": 0,
+                    "six_months": 0,
+                    "two_years": 0,
+                    "yoy": 0
+                  },
+                  "_timeseries_points_total": 195
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Sainikpuri, Telangana, India",
+                  "state": "Telangana"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:43:11.321Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:5705": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          5705
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "5705",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5705,
+                "basic_info": {
+                  "name": "BYJU'S",
+                  "crustdata_company_id": 5705,
+                  "primary_domain": "byjus.com",
+                  "all_domains": [
+                    "byjus.com"
+                  ],
+                  "company_type": "Privately Held",
+                  "status": "active",
+                  "year_founded": 2011,
+                  "employee_count_range": "10001+"
+                },
+                "headcount": {
+                  "total": 19044,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 19066
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 19044
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": -0.0996695168651314,
+                    "qoq": -0.4235294117647058,
+                    "six_months": 0.48543689320388345,
+                    "two_years": -2.031997530737178,
+                    "yoy": 1.147227533460803
+                  },
+                  "_timeseries_points_total": 186
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Dharmaram College, Tavarekere, Karnātaka, India",
+                  "state": "Karnātaka"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:44:45.990Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:2957": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          2957
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "2957",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 2957,
+                "basic_info": {
+                  "name": "Maruti Suzuki India Limited",
+                  "crustdata_company_id": 2957,
+                  "primary_domain": "marutisuzuki.com",
+                  "all_domains": [
+                    "marutisuzuki.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1982,
+                  "employee_count_range": "10001+"
+                },
+                "headcount": {
+                  "total": 54411,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 52141
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 54411
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 1.679997010016445,
+                    "qoq": 3.421337743057536,
+                    "six_months": 7.34705151222207,
+                    "two_years": 44.66393704136978,
+                    "yoy": 16.40459534047879
+                  },
+                  "_timeseries_points_total": 351
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Masood Pur, Vasant Kunj Pkt-A, Vasant Kunj, National Capital Territory of Delhi, India",
+                  "state": "National Capital Territory of Delhi"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:43:11.335Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:6842965": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          6842965
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "6842965",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 6842965,
+                "basic_info": {
+                  "name": "FUTURE RETAIL LIMITED",
+                  "crustdata_company_id": 6842965,
+                  "primary_domain": "futureretail.in",
+                  "all_domains": [
+                    "futureretail.in"
+                  ],
+                  "company_type": null,
+                  "status": "active",
+                  "year_founded": null,
+                  "employee_count_range": null
+                },
+                "headcount": {
+                  "total": 1579,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-15",
+                      "employee_count": 1561
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 1579
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0.5732484076433121,
+                    "qoq": 1.1531069827033953,
+                    "six_months": 1.6087516087516087,
+                    "two_years": 2.665799739921977,
+                    "yoy": 2.266839378238342
+                  },
+                  "_timeseries_points_total": 172
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Tagore Nagar, Kannamwar Nagar, Maharashtra, India",
+                  "state": "Maharashtra"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:43:11.397Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:5110": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          5110
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "5110",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 5110,
+                "basic_info": {
+                  "name": "Thermax Limited",
+                  "crustdata_company_id": 5110,
+                  "primary_domain": "thermaxglobal.com",
+                  "all_domains": [
+                    "thermaxglobal.com"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1966,
+                  "employee_count_range": "10001+"
+                },
+                "headcount": {
+                  "total": 11608,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 11399
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 11608
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0.6328565236237538,
+                    "qoq": 1.4774018707929015,
+                    "six_months": 2.372343240144634,
+                    "two_years": 9.437164136890733,
+                    "yoy": 4.079619833228728
+                  },
+                  "_timeseries_points_total": 186
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "IN, India",
+                  "state": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:43:11.426Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:enrich:787": {
+      "source": "crustdata",
+      "endpoint": "POST /company/enrich",
+      "request": {
+        "crustdata_company_ids": [
+          787
+        ],
+        "fields": [
+          "crustdata_company_id",
+          "basic_info.name",
+          "basic_info.primary_domain",
+          "basic_info.year_founded",
+          "basic_info.employee_count_range",
+          "basic_info.company_type",
+          "headcount.total",
+          "headcount.timeseries",
+          "headcount.growth_percent",
+          "locations.headquarters",
+          "locations.state",
+          "locations.country"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "matched_on": "787",
+          "match_type": "crustdata_company_id",
+          "matches": [
+            {
+              "confidence_score": 1,
+              "company_data": {
+                "crustdata_company_id": 787,
+                "basic_info": {
+                  "name": "Britannia Industries Limited",
+                  "crustdata_company_id": 787,
+                  "primary_domain": "britannia.co.in",
+                  "all_domains": [
+                    "britannia.co.in"
+                  ],
+                  "company_type": "Public Company",
+                  "status": "active",
+                  "year_founded": 1892,
+                  "employee_count_range": "1001-5000"
+                },
+                "headcount": {
+                  "total": 10602,
+                  "timeseries": [
+                    {
+                      "date": "2026-06-22",
+                      "employee_count": 10411
+                    },
+                    {
+                      "date": "2026-11-02",
+                      "employee_count": 10602
+                    }
+                  ],
+                  "growth_percent": {
+                    "mom": 0.3977272727272727,
+                    "qoq": 1.483679525222552,
+                    "six_months": 4.043179587831207,
+                    "two_years": 19.49954914337241,
+                    "yoy": 8.084412274441839
+                  },
+                  "_timeseries_points_total": 359
+                },
+                "locations": {
+                  "country": "IND",
+                  "headquarters": "Hoodi, Mahadevapura, Karnataka, India",
+                  "state": "Karnataka"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:43:11.470Z",
+      "credits": 2.0,
+      "trimmed": "headcount.timeseries kept first+last of the returned window; basic_info.description/logo/website dropped"
+    },
+    "crust:news:chander prabhu packers": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Chander Prabhu Packers\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Chander Prabhu Packers\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344298817,
+        "metadata": {
+          "total_results": 0,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": []
+      },
+      "retrieved_at": "2026-11-22T10:44:58.891Z",
+      "credits": 0.0,
+      "trimmed": "results cut to first 0 of 0; Google News redirect tokens dropped"
+    },
+    "crust:news:astral pipes": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Astral Pipes\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Astral Pipes\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344337114,
+        "metadata": {
+          "total_results": 7,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "‘Save Every Drop’ campaign launched in association with Astral Pipes at B’luru fest",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The year-long campaign aims to create awareness about the ongoing water crisis and encourage necessary actions to address this issue."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "India PVC Pipes Market Size, Share, Growth, Forecast 2034",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The India PVC pipes market size was valued at 3.08 Million Tons in 2025 and grow at a CAGR of 6.59% to reach 5.62 Million Tons by 2034."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Astral Ltd Share Price Today NSE/BSE Charts",
+            "url": "https://aliceblueonline.com/investment/stocks/astral-ltd",
+            "snippet": "Astral Ltd share price today, NSE/BSE updates, price charts, market cap, PE ratio, financials, news and key stock details on Alice Blue now."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Meet man who left job, failed in business, then built Rs 568000000000 company whose fortune changed after Salman Khan...",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Sandeep Engineer, the billionaire owner of India's largest pipes brand, has experienced a rollercoaster journey. Transitioning from a former..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Meet businessman who failed many times, then collaborated with Salman Khan, now a billionaire with net worth",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Sandeep's company manufactures polymer piping systems for domestic and industrial use. According to Forbes, Sandeep has a net worth of Rs..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:45:37.256Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 7; Google News redirect tokens dropped"
+    },
+    "crust:news:pankaj steels": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Pankaj Steels\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Pankaj Steels\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344308757,
+        "metadata": {
+          "total_results": 9,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "NCLT Ahmedabad Admits CIRP Against JSW Subsidiary, Holds Guarantor Liability Co-extensive With Borrower",
+            "url": "https://www.livelawbiz.com/ibc/nclt-ahmedabad-initiates-cirp-against-jsw-steel-subsidiary-over-default-under-msme-loan-guarantee-538392",
+            "snippet": "The Ahmedabad Bench of the National Company Law Tribunal (NCLT) on 17 June held that insolvency proceedings against a corporate guarantor..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "Bhushan Steel bank 'fraud' case: ED arrests 5 including ex-executives",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The Enforcement Directorate Friday said it has arrested five persons in connection with an alleged Rs 56000 crore bank loan fraud linked..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Arshiya Limited Discloses ₹66,520.44 Crore Admitted Claims Under CIRP",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Arshiya Limited, under CIRP since April 23, 2024, disclosed its creditor list as on February 5, 2026, with Resolution Professional Pankaj..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "LiveLawBiz IBC Monthly Digest: March 2026",
+            "url": "https://www.livelawbiz.com/top-stories/top-stories-ibc-monthly-digest-march-2026-528487",
+            "snippet": "SUPREME COURT Supreme Court Allows Set-Off Defence Against Ujaas Energy Though Counterclaim Extinguished Under IBCCase Title : UJAAS ENERGY..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Incab Jamshedpur workers challenge NCLT order at NCLAT",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Mail News Service. Jamshedpur, Jan 11: The long-running insolvency battle over the ailing Incab Industries took a dramatic turn as the..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:45:08.950Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 9; Google News redirect tokens dropped"
+    },
+    "crust:news:kirloskar ferrous": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Kirloskar Ferrous\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Kirloskar Ferrous\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344315282,
+        "metadata": {
+          "total_results": 10,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "NCLT Mumbai Sanctions Merger Of Oliver Engineering, Adicca Energy Solutions With Kirloskar Ferrous...",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The Mumbai Bench of the National Company Law Tribunal (NCLT) on 2 June sanctioned a Scheme of Amalgamation providing for the merger of..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "Kirloskar Ferrous Industries Limited Annual Report FY2026: Revenue Grows to ₹6,888.57 Crores, PAT at ₹504.74 Crores",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Kirloskar Ferrous Industries Limited reported standalone net sales of ₹6888.57 Crores and profit after tax of ₹504.74 Crores for FY2026,..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Kirloskar Ferrous Industries Resumes Operations at Solapur Plant After LPG Disruption",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Kirloskar Ferrous Industries has successfully restored operations at its Solapur manufacturing plant following a brief LPG supply disruption..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Pioneer Legal assists Kirloskar Ferrous on acquisition of Oliver Engineering",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Kirloskar Ferrous Industries Limited (\"KFIL\") has acquired Oliver Engineering Private Limited for ₹111.8 crore."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Kirloskar Ferrous Industries Limited expands horizons with Oliver Engineering acquisition",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Kirloskar Ferrous Industries Limited (KFIL), a prominent castings and pig iron manufacturer in India, has successfully acquired management..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:45:15.381Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 10; Google News redirect tokens dropped"
+    },
+    "crust:news:tata communications": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Tata Communications\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Tata Communications\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344317703,
+        "metadata": {
+          "total_results": 7,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "Tata Communications Media’s Abhishek Ranade on Virtualized Production, MXL, and AI-Driven Transport",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "At IBC2026, Tata Communications Media AVP & Head of EMEA Abhishek Ranade showcases a fully functional virtualized production control room..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "Tata Communications Launches Self-Healing Network for Data Centre Connectivity",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Tata Communications redefined resilience for the global digital economy with the launch of IZO™ Data Centre* Dynamic Connectivity,..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Rashtriya Raksha University and Tata Communications sign MoU to jointly work on India’s next-gen Digital Security Fabric for Law Enforcement & Defence",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Rashtriya Raksha University (RRU), an Institution of National Importance under the Ministry of Home Affairs, has signed a Memorandum of..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "NCLT gives nod to Tata Communications land demerger into Hemisphere",
+            "url": "https://telecom.economictimes.indiatimes.com/news/nclt-gives-nod-to-tata-communications-land-demerger-into-hemisphere/64966637",
+            "snippet": "The National Company Law Tribunal (NCLT) has approved a scheme to de-merge surplus land of nearly 773 acres from Tata Communications Ltd."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Tata Communications, AWS join hands to establish long-distance data network",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Tata Communications partners with AWS to create a national long-distance network connecting data centre regions in Mumbai, Hyderabad,..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:45:17.898Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 7; Google News redirect tokens dropped"
+    },
+    "crust:news:gujarat alkalies and chemicals": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Gujarat Alkalies and Chemicals\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Gujarat Alkalies and Chemicals\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344303411,
+        "metadata": {
+          "total_results": 10,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "Gujarat Alkalies And Chemicals Ltd. Share Price Today | Gujarat Alkalies Live NSE/BSE",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Gujarat Alkalies And Chemicals Ltd. share price today on NSE & BSE. Get key insights on market cap, P/E ratio, EPS, ROCE, ROE, dividends & shareholding..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "From Constable to Cabinet: C.R. Patil sworn-in as Minister in Modi 3.0",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Ahmedabad, June 10: Chandrakant Raghunath Patil, a seasoned politician from Gujarat whose career trajectory has taken him from being a..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "CCI issues order against Grasim Industries, Aditya Birla Chemicals and Gujarat Alkalies for bid rigging, costs imposed",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Competition Commission of India: The Competition Commission of India (CCI) has found Grasim Industries Limited (GIL), Aditya Birla Chemicals..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Gujarat Alkalies And Chemicals Q2 Results FY27: PAT Rs 82.57 Cr, Revenue Rs 1,357.50 Cr",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Gujarat Alkalies And Chemicals Q2 Results: Revenue ₹1357.50 Cr, PAT ₹82.57 Cr. See YoY growth and results analysis from the 5 November..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Tata Chemicals vs Gujarat Alkalies: Which Chemical Stock to Track",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Tata Chemicals vs Gujarat Alkalies and Chemicals is a comparison specialty chemical investors look up when evaluating two Indian chemical..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:45:03.655Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 10; Google News redirect tokens dropped"
+    },
+    "crust:news:transport corporation of india": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Transport Corporation of India\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Transport Corporation of India\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344380962,
+        "metadata": {
+          "total_results": 7,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "NCLT approves Authum consortium resolution plan for A A Estates",
+            "url": "https://scanx.trade/stock-market-news/companies/nclt-approves-authum-consortium-resolution-plan-estates/54742037",
+            "snippet": "NCLT Mumbai Bench approved the resolution plan for A A Estates Private Limited on October 27, 2026. The plan was submitted by a consortium..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "Transport Corporation of India sets July 20 deadline for dividend TDS",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Transport Corporation of India Ltd has set July 20, 2026, as the deadline for shareholders to submit documents to determine the applicable Tax Deduction at..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Transport Corporation Of India Ltd. (TCI) Share Price Hits Fresh 52-Week Low",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Transport Corporation Of India Ltd. Share Price hit a fresh 52-week low at Rs 847.2. Review price action, valuation, sector benchmarks and..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Pokhara-New Delhi Bus Service to resume from Thursday",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Nepal's trusted English news portal and The New York Times partner, delivering the latest news, analysis, and opinions on politics,..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Transport Corporation Of India Q2 Results FY27: Revenue Up 15.2% to Rs 1,388.00 Cr",
+            "url": "https://univest.in/blogs/transport-corporation-of-india-q2-results-fy27-pat-116-crore",
+            "snippet": "Transport Corporation Of India Q2 Results: Revenue ₹1388.00 Cr, PAT ₹115.80 Cr. Check YoY growth and results analysis from the 27 October..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:46:21.047Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 7; Google News redirect tokens dropped"
+    },
+    "crust:news:iluxer technologies": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"iLuxer Technologies\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"iLuxer Technologies\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344405912,
+        "metadata": {
+          "total_results": 0,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": []
+      },
+      "retrieved_at": "2026-11-22T10:46:45.962Z",
+      "credits": 0.0,
+      "trimmed": "results cut to first 0 of 0; Google News redirect tokens dropped"
+    },
+    "crust:news:byju's": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Byju's\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Byju's\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344408750,
+        "metadata": {
+          "total_results": 10,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "Byju’s Insolvency: NCLAT Chennai Rejects BCCI’s Pre-CoC Settlement Plea",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "NCLAT dismisses BCCI and Riju Ravindran appeals: CIRP withdrawal filed after CoC formation requires 90% creditor approval."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "BYJU’S insolvency: Kerala Police register FIR against GLAS Trust over alleged lender document forgery",
+            "url": "http://education.economictimes.indiatimes.com/news/industry/byjus-insolvency-kerala-police-register-fir-against-glas-trust-over-alleged-lender-document-forgery/135485530",
+            "snippet": "Complaint alleges a disputed authorisation letter was used to support a ₹11432.98 crore claim and 99.41% voting rights in the edtech..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Kerala High court witnesses drama in Byju's insolvency battle",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The Kerala High Court referred a Byju's insolvency review petition to the Chief Justice for a third judge's view on a stay,..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Byju's insolvency: Keralam Police register case over alleged forged lender letter",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Byju's entered insolvency proceedings in July 2024 over unpaid BCCI sponsorship dues of Rs 158.9 crore. The NCLAT later approved a..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "NCLT pauses Byju's insolvency bidding till Aug 31, giving founders relief",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The tribunal stayed the bidding process after Byju Raveendran and Riju Ravindran challenged the admission of a ₹11433 crore claim by US..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:46:48.808Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 10; Google News redirect tokens dropped"
+    },
+    "crust:news:maruti suzuki india": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Maruti Suzuki India\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Maruti Suzuki India\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344438486,
+        "metadata": {
+          "total_results": 10,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "Corporate consolidation: NCLT clears merger of Suzuki Motor Gujarat with Maruti Suzuki India; tribunal fi",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "India Business News: The National Company Law Tribunal (NCLT) has approved the merger of Suzuki Motor Gujarat with its parent company,..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "NCLT Approves Merger Of Suzuki Motor Gujarat With Maruti Suzuki India",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The National Company Law Tribunal (NCLT) Principal Bench has approved the merger of Maruti Suzuki India Limited (MSIL) with its wholly owned..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "NCLT approves merger scheme of Suzuki Motor Gujarat with Maruti Suzuki",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The National Company Law Tribunal (NCLT) has approved the scheme of amalgamation, in which Suzuki Motor Gujarat is being merged with its..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "NCLT clears merger of Suzuki Motor Gujarat with Maruti",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The National Company Law Tribunal (NCLT) has approved the merger of Suzuki Motor Gujarat with its parent entity, Maruti Suzuki India."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "NCLT Okays Suzuki Motor Gujarat Merger with Maruti Suzuki India",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The National Company Law Tribunal (NCLT) has okayed a proposal where Suzuki Motor Gujarat will merge with its parent organisation,..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:47:18.624Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 10; Google News redirect tokens dropped"
+    },
+    "crust:news:future retail": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Future Retail\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Future Retail\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344406216,
+        "metadata": {
+          "total_results": 10,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "India’s NCLT orders liquidation of Future Retail",
+            "url": "https://finance.yahoo.com/news/india-nclt-orders-liquidation-future-101643506.html",
+            "snippet": "India's quasi-judicial body the National Company Law Tribunal (NCLT) has sanctioned the liquidation of Future Retail, a company led by..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "EXCLUSIVE: In fight with Amazon, India's Future Retail sees liquidation if Reliance deal fails",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "India's Future Retail Ltd (FRL) will go into liquidation if its deal to sell assets to Reliance Industries fails, the group told a Singapore..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Bank of India says Future Retail’s insolvency petition “fully and wholly” satisfies parameters",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Bank of India on April 14 filed insolvency proceedings against Future Retail for non-payment of dues. Future Retail owes banks Rs 5322.32..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Supreme Court Allows Future Retail Limited to Seek Continuation of NCLT Proceedings in Arbitration Dispute - Interim Relief Granted Pending High Court Reconsideration. The Court directed the Delhi High Court to consider FRL's application for continuing pr",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The dispute arose from a sale transaction between Future Retail Limited and the Reliance Group, which Amazon challenged through arbitration before the..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Future Retail heads for liquidation as lenders fail to get suitable buyer",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Future Retail, once the crown jewel of Kishore Biyani-led Future Group, is now heading for liquidation as its lenders could not get any..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:46:46.374Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 10; Google News redirect tokens dropped"
+    },
+    "crust:news:thermax": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Thermax\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Thermax\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344416277,
+        "metadata": {
+          "total_results": 10,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "NCLT Approves Merger Of Buildtech Products India With Thermax, Terms Scheme Fair And Reasonable",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "On 2 June, the Mumbai National Company Law Tribunal (NCLT) sanctioned the merger by absorption of Buildtech Products India Private Limited..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "Thermax Limited Announces NCLT Hearing for Buildtech Products Merger on May 8, 2026",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Thermax Limited has announced the final NCLT hearing for its merger with Buildtech Products India Private Limited on May 8, 2026."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Thermax Gains NCLT Approval to Merge Buildtech Following ₹70.29 Cr Acquisition Synergies",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "NCLT Kolkata Bench approves the merger of Buildtech Products India with Thermax. The move streamlines the company's chemicals vertical and..."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Thermax secures NCLT approval to absorb Buildtech Products India",
+            "url": "https://scanx.trade/stock-market-news/companies/thermax-receives-nclt-approval-to-merge-buildtech-products-india-with-itself/42014897",
+            "snippet": "Thermax Limited received NCLT approval on June 2, 2026, to absorb Buildtech Products India Private Limited, effective from April 1, 2025."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "Thermax defaults on dollar loans under export fund: Cenbank",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "State lender Agrani Bank is in trouble to recover a whopping Tk790 crore loans it extended to apparel maker Thermax Group's seven establishments,..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:46:56.419Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 10; Google News redirect tokens dropped"
+    },
+    "crust:news:britannia industries": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/search/live",
+      "request": {
+        "query": "\"Britannia Industries\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "sources": [
+          "news"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "success": true,
+        "query": "\"Britannia Industries\" insolvency OR NCLT OR CIRP OR liquidation OR \"resolution professional\" OR default",
+        "timestamp": 1795344441856,
+        "metadata": {
+          "total_results": 9,
+          "failed_pages": [],
+          "empty_pages": []
+        },
+        "results": [
+          {
+            "source": "news",
+            "position": 1,
+            "title": "In Re Hiveloop Technology Pvt. Ltd. vs Britannia Industries Ltd.: CCI Acknowledges Manufacturer's Right To Select Distributors",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The Competition Commission of India (CCI/ Commission), vide its order dated 16th June 2022, dismissed the allegations of 'refusal to deal'..."
+          },
+          {
+            "source": "news",
+            "position": 2,
+            "title": "Britannia faces notice from Food Safety Authority over product compliance",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "Britannia Industries Limited received a notice from the Food Safety and Standards Authority of India (FSSAI) regarding one of its product..."
+          },
+          {
+            "source": "news",
+            "position": 3,
+            "title": "Kenafric Group, Britannia Industries Buy Kenya’s Britania Foods",
+            "url": "https://khusoko.com/2022/10/04/kenafric-group-britannia-industries-buy-kenyas-britania-foods/",
+            "snippet": "Kenafric Group entered into a joint venture with Britannia Industries and bought Britania Foods Limited, Kenya."
+          },
+          {
+            "source": "news",
+            "position": 4,
+            "title": "Go First's insolvency caps Wadia group's steady decline",
+            "url": "https://www.google.com/goto?url=…",
+            "snippet": "The insolvency filing of Go First is a serious blow to the Wadia group, once one of India's top conglomerates. Go First's woes had been..."
+          },
+          {
+            "source": "news",
+            "position": 5,
+            "title": "All permanent workers of Britannia's Kolkata unit take voluntary retirement",
+            "url": "https://www.business-standard.com/companies/news/all-permanent-workers-of-britannia-s-kolkata-unit-take-voluntary-retirement-124062400656_1.html",
+            "snippet": "FMCG major Britannia Industries Ltd said all permanent workers at its Taratala factory in Kolkata have accepted the voluntary retirement..."
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:47:22.001Z",
+      "credits": 1.0,
+      "trimmed": "results cut to first 5 of 9; Google News redirect tokens dropped"
+    },
+    "crust:fetch:http://education.economictimes.indiatimes.com/news/industry/byjus-insolvency-kerala-police-register-fir-against-glas-trust-over-alleged-lender-document-forgery/135485530": {
+      "source": "crustdata_web",
+      "endpoint": "POST /web/enrich/live",
+      "request": {
+        "urls": [
+          "http://education.economictimes.indiatimes.com/news/industry/byjus-insolvency-kerala-police-register-fir-against-glas-trust-over-alleged-lender-document-forgery/135485530"
+        ]
+      },
+      "status": 200,
+      "response": [
+        {
+          "success": true,
+          "url": "http://education.economictimes.indiatimes.com/news/industry/byjus-insolvency-kerala-police-register-fir-against-glas-trust-over-alleged-lender-document-forgery/135485530",
+          "timestamp": 1795344471,
+          "title": "Kerala Police Investigate GLAS Trust for Alleged Forgery Amid BYJU’S Insolvency Saga, ETEducation",
+          "published": "2026-11-03T23:34:00+05:30",
+          "published_source": "page text: 'Published On Nov 03, 2026 at 11:34 PM IST'"
+        }
+      ],
+      "retrieved_at": "2026-11-22T10:47:51.512Z",
+      "credits": 1.0,
+      "trimmed": "HTML content (171 KB) dropped; publish date read from the page"
+    },
+    "crust:person:433:rahul mehta": {
+      "source": "crustdata",
+      "endpoint": "POST /person/search",
+      "request": {
+        "filters": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "experience.employment_details.current.company_id",
+              "type": "=",
+              "value": 433
+            },
+            {
+              "field": "basic_profile.name",
+              "type": "=",
+              "value": "Rahul Mehta"
+            }
+          ]
+        },
+        "limit": 5,
+        "fields": [
+          "crustdata_person_id",
+          "basic_profile.name",
+          "basic_profile.current_title",
+          "experience.employment_details.current.crustdata_company_id",
+          "experience.employment_details.current.title"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "count": 0,
+        "matches": []
+      },
+      "retrieved_at": "2026-11-22T10:44:46.069Z",
+      "credits": 0.0,
+      "trimmed": "privacy: reduced to {count, matches:[{title, current_company_id}]}"
+    },
+    "crust:person:1268066:nirav joshi": {
+      "source": "crustdata",
+      "endpoint": "POST /person/search",
+      "request": {
+        "filters": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "experience.employment_details.current.company_id",
+              "type": "=",
+              "value": 1268066
+            },
+            {
+              "field": "basic_profile.name",
+              "type": "=",
+              "value": "Nirav Joshi"
+            }
+          ]
+        },
+        "limit": 5,
+        "fields": [
+          "crustdata_person_id",
+          "basic_profile.name",
+          "basic_profile.current_title",
+          "experience.employment_details.current.crustdata_company_id",
+          "experience.employment_details.current.title"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "count": 0,
+        "matches": []
+      },
+      "retrieved_at": "2026-11-22T10:44:46.116Z",
+      "credits": 0.0,
+      "trimmed": "privacy: reduced to {count, matches:[{title, current_company_id}]}"
+    },
+    "crust:finance_contacts:1268066": {
+      "source": "crustdata",
+      "endpoint": "POST /person/search",
+      "request": {
+        "filters": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "experience.employment_details.current.company_id",
+              "type": "=",
+              "value": 1268066
+            },
+            {
+              "op": "or",
+              "conditions": [
+                {
+                  "field": "experience.employment_details.current.title",
+                  "type": "(.)",
+                  "value": "finance"
+                },
+                {
+                  "field": "experience.employment_details.current.title",
+                  "type": "(.)",
+                  "value": "accounts"
+                },
+                {
+                  "field": "experience.employment_details.current.title",
+                  "type": "(.)",
+                  "value": "CFO"
+                }
+              ]
+            }
+          ]
+        },
+        "limit": 3,
+        "fields": [
+          "crustdata_person_id",
+          "basic_profile.name",
+          "basic_profile.current_title",
+          "experience.employment_details.current.crustdata_company_id",
+          "experience.employment_details.current.title"
+        ]
+      },
+      "status": 200,
+      "response": {
+        "count": 1,
+        "matches": [
+          {
+            "title": "Finance Intern",
+            "current_company_id": 1268066
+          }
+        ]
+      },
+      "retrieved_at": "2026-11-22T10:44:46.198Z",
+      "credits": 0.23,
+      "trimmed": "privacy: reduced to {count, matches:[{title, current_company_id}]}"
+    },
+    "ifsc:HDFC0000001": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000001",
+      "request": {
+        "ifsc": "HDFC0000001"
+      },
+      "status": 200,
+      "response": {
+        "CENTRE": "MUMBAI",
+        "NEFT": true,
+        "MICR": "400240003",
+        "ISO3166": "IN-MH",
+        "DISTRICT": "MUMBAI",
+        "BRANCH": "TULSIANI CHMBRS - NARIMAN PT",
+        "STATE": "MAHARASHTRA",
+        "CITY": "GREATER MUMBAI",
+        "UPI": true,
+        "CONTACT": "+919890603333",
+        "IMPS": true,
+        "ADDRESS": "101-104 TULSIANI CHAMBERSFREE PRESS JOURNAL MARGNARIMAN POINTMUMBAI MAHARASHTRA 400 021",
+        "RTGS": true,
+        "SWIFT": "HDFCINBB",
+        "BANK": "HDFC Bank",
+        "BANKCODE": "HDFC",
+        "IFSC": "HDFC0000001"
+      },
+      "retrieved_at": "2026-11-22T11:03:21.909992Z",
+      "credits": 0.0
+    },
+    "ifsc:HDFC0000053": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000053",
+      "request": {
+        "ifsc": "HDFC0000053"
+      },
+      "status": 200,
+      "response": {
+        "ISO3166": "IN-KA",
+        "CENTRE": "BANGALORE",
+        "MICR": "560240004",
+        "DISTRICT": "BANGALORE",
+        "BRANCH": "BANGALORE - KORAMANGALAM",
+        "RTGS": true,
+        "SWIFT": "HDFCINBB",
+        "IMPS": true,
+        "UPI": true,
+        "CONTACT": "+919945863333",
+        "STATE": "KARNATAKA",
+        "CITY": "BANGALORE URBAN",
+        "NEFT": true,
+        "ADDRESS": "NO.9, ETERNAKORAMANGLA INDUSTRIAL LAYOUTKORAMANGLABANGALOREKARNATAKA560095",
+        "BANK": "HDFC Bank",
+        "BANKCODE": "HDFC",
+        "IFSC": "HDFC0000053"
+      },
+      "retrieved_at": "2026-11-22T11:03:22.340368Z",
+      "credits": 0.0
+    },
+    "ifsc:HDFC0000075": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000075",
+      "request": {
+        "ifsc": "HDFC0000075"
+      },
+      "status": 200,
+      "response": {
+        "MICR": "560240005",
+        "BRANCH": "BANGALORE - AIRPORT ROAD",
+        "ADDRESS": "GOLDEN TOWERAIRPORT ROADKODIHALI,BANGALOREKARNATAKA560017",
+        "STATE": "KARNATAKA",
+        "CONTACT": "+919945863333",
+        "UPI": true,
+        "RTGS": true,
+        "CITY": "BANGALORE URBAN",
+        "CENTRE": "BANGALORE",
+        "DISTRICT": "BANGALORE",
+        "NEFT": true,
+        "IMPS": true,
+        "SWIFT": "HDFCINBB",
+        "ISO3166": "IN-KA",
+        "BANK": "HDFC Bank",
+        "BANKCODE": "HDFC",
+        "IFSC": "HDFC0000075"
+      },
+      "retrieved_at": "2026-11-22T11:03:22.809043Z",
+      "credits": 0.0
+    },
+    "ifsc:HDFC0000147": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000147",
+      "request": {
+        "ifsc": "HDFC0000147"
+      },
+      "status": 200,
+      "response": {
+        "CENTRE": "VADODARA",
+        "NEFT": true,
+        "MICR": "390240003",
+        "ISO3166": "IN-GJ",
+        "DISTRICT": "VADODARA",
+        "BRANCH": "BARODA -  KARELIBAUG",
+        "STATE": "GUJARAT",
+        "CITY": "VADODARA",
+        "UPI": true,
+        "CONTACT": "+919898271111",
+        "IMPS": true,
+        "ADDRESS": "SHOP NO 429, VARDHAN COMPLEX1ST ROAD, V.I.P. ROADKARELIBAUGBARODAGUJARAT390018",
+        "RTGS": true,
+        "SWIFT": "HDFCINBB",
+        "BANK": "HDFC Bank",
+        "BANKCODE": "HDFC",
+        "IFSC": "HDFC0000147"
+      },
+      "retrieved_at": "2026-11-22T11:03:23.252092Z",
+      "credits": 0.0
+    },
+    "ifsc:HDFC0000521": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000521",
+      "request": {
+        "ifsc": "HDFC0000521"
+      },
+      "status": 200,
+      "response": {
+        "CITY": "HYDERABAD",
+        "ADDRESS": "6-3-248/1/1A, BHASKAR PLAZA, GROUND FLOOR, ROAD NO 1 , BANJARA HILLS HYDERABAD ANDHRA PRADESH 500034",
+        "STATE": "ANDHRA PRADESH",
+        "ISO3166": "IN-AP",
+        "MICR": "500240002",
+        "BRANCH": "BANJARA HILLS",
+        "CONTACT": "+919949493333",
+        "CENTRE": "HYDERABAD",
+        "RTGS": true,
+        "SWIFT": "HDFCINBB",
+        "IMPS": true,
+        "UPI": true,
+        "DISTRICT": "HYDERABAD",
+        "NEFT": true,
+        "BANK": "HDFC Bank",
+        "BANKCODE": "HDFC",
+        "IFSC": "HDFC0000521"
+      },
+      "retrieved_at": "2026-11-22T11:03:23.723569Z",
+      "credits": 0.0
+    },
+    "ifsc:HDFC0000590": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/HDFC0000590",
+      "request": {
+        "ifsc": "HDFC0000590"
+      },
+      "status": 200,
+      "response": {
+        "SWIFT": "HDFCINBB",
+        "ADDRESS": "HDFC BANK LTD G 2 AND 3 WINDSOR PARK 5 VAIBHAV KHAND , INDIRAPURAM GHAZIABAD UTTAR PRADESH 201014",
+        "BRANCH": "GHAZIABAD - INDIRAPURAM",
+        "IMPS": true,
+        "DISTRICT": "GHAZIABAD",
+        "RTGS": true,
+        "CITY": "GHAZIABAD",
+        "MICR": "110240081",
+        "ISO3166": "IN-UP",
+        "UPI": true,
+        "CONTACT": "+919935903333",
+        "CENTRE": "GHAZIABAD",
+        "STATE": "UTTAR PRADESH",
+        "NEFT": true,
+        "BANK": "HDFC Bank",
+        "BANKCODE": "HDFC",
+        "IFSC": "HDFC0000590"
+      },
+      "retrieved_at": "2026-11-22T11:03:24.175264Z",
+      "credits": 0.0
+    },
+    "ifsc:KKBK0000261": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/KKBK0000261",
+      "request": {
+        "ifsc": "KKBK0000261"
+      },
+      "status": 200,
+      "response": {
+        "ISO3166": "IN-HR",
+        "CENTRE": "GURGAON",
+        "MICR": "110485003",
+        "DISTRICT": "GURGAON",
+        "BRANCH": "GURGAON",
+        "RTGS": true,
+        "SWIFT": null,
+        "IMPS": true,
+        "UPI": true,
+        "CONTACT": "+9118004100",
+        "STATE": "HARYANA",
+        "CITY": "GURGAON",
+        "NEFT": true,
+        "ADDRESS": "KOTAK MAHINDRA BANK LTD. UNIT NO. 8&9, SEWA CORPORATE PARK, MG ROAD, REVENUE STATE OF SARHAUL TEHSIL, DISTT,- GURGAON- 122001",
+        "BANK": "Kotak Mahindra Bank",
+        "BANKCODE": "KKBK",
+        "IFSC": "KKBK0000261"
+      },
+      "retrieved_at": "2026-11-22T11:03:24.673669Z",
+      "credits": 0.0
+    },
+    "ifsc:SBIN0000001": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0000001",
+      "request": {
+        "ifsc": "SBIN0000001"
+      },
+      "status": 200,
+      "response": {
+        "MICR": "700002021",
+        "BRANCH": "KOLKATA MAIN",
+        "ADDRESS": "SAMRIDDHI BHAWAN, 1 STRAND ROAD, KOLKATA 700 001",
+        "STATE": "WEST BENGAL",
+        "CONTACT": "",
+        "UPI": true,
+        "RTGS": true,
+        "CITY": "KOLKATA",
+        "CENTRE": "KOLKATA",
+        "DISTRICT": "KOLKATA",
+        "NEFT": true,
+        "IMPS": true,
+        "SWIFT": null,
+        "ISO3166": "IN-WB",
+        "BANK": "State Bank of India",
+        "BANKCODE": "SBIN",
+        "IFSC": "SBIN0000001"
+      },
+      "retrieved_at": "2026-11-22T11:03:25.137193Z",
+      "credits": 0.0
+    },
+    "ifsc:SBIN0000301": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0000301",
+      "request": {
+        "ifsc": "SBIN0000301"
+      },
+      "status": 200,
+      "response": {
+        "MICR": "380002002",
+        "BRANCH": "AHMEDABAD MAIN",
+        "ADDRESS": "LAL DARWAJA, AHMEDABAD, GUJRAT- 380001",
+        "STATE": "GUJARAT",
+        "CONTACT": "+917925510857",
+        "UPI": true,
+        "RTGS": true,
+        "CITY": "AHMEDABAD",
+        "CENTRE": "AHMEDABAD",
+        "DISTRICT": "AHMEDABAD",
+        "NEFT": true,
+        "IMPS": true,
+        "SWIFT": null,
+        "ISO3166": "IN-GJ",
+        "BANK": "State Bank of India",
+        "BANKCODE": "SBIN",
+        "IFSC": "SBIN0000301"
+      },
+      "retrieved_at": "2026-11-22T11:03:25.592934Z",
+      "credits": 0.0
+    },
+    "ifsc:SBIN0001062": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0001062",
+      "request": {
+        "ifsc": "SBIN0001062"
+      },
+      "status": 200,
+      "response": {
+        "MICR": "829002601",
+        "BRANCH": "LATEHAR",
+        "ADDRESS": "DIST  LATEHAR, JHARKHAND 829206",
+        "STATE": "JHARKHAND",
+        "CONTACT": "",
+        "UPI": true,
+        "RTGS": true,
+        "CITY": "LATEHAR",
+        "CENTRE": "LATEHAR",
+        "DISTRICT": "LATEHAR",
+        "NEFT": true,
+        "IMPS": true,
+        "SWIFT": null,
+        "ISO3166": "IN-JH",
+        "BANK": "State Bank of India",
+        "BANKCODE": "SBIN",
+        "IFSC": "SBIN0001062"
+      },
+      "retrieved_at": "2026-11-22T11:03:26.062960Z",
+      "credits": 0.0
+    },
+    "ifsc:SBIN0021745": {
+      "source": "ifsc",
+      "endpoint": "GET https://ifsc.razorpay.com/SBIN0021745",
+      "request": {
+        "ifsc": "SBIN0021745"
+      },
+      "status": 200,
+      "response": {
+        "MICR": "560002356",
+        "BRANCH": "BOMMASANDRA",
+        "ADDRESS": "3NACADEKSSIDCINDLAEAIISTAGEJIGANILINKDBOMMASANDAINDSBANGALOE",
+        "STATE": "KARNATAKA",
+        "CONTACT": "+918027839267",
+        "UPI": true,
+        "RTGS": true,
+        "CITY": "BANGALORE URBAN",
+        "CENTRE": "BANGALORE URBAN",
+        "DISTRICT": "BANGALORE URBAN",
+        "NEFT": true,
+        "IMPS": true,
+        "SWIFT": null,
+        "ISO3166": "IN-KA",
+        "BANK": "State Bank of India",
+        "BANKCODE": "SBIN",
+        "IFSC": "SBIN0021745"
+      },
+      "retrieved_at": "2026-11-22T11:03:26.512238Z",
+      "credits": 0.0
+    }
+  }
+}

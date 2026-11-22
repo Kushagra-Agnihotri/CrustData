@@ -95,10 +95,10 @@ def load(conn, src: AccountingSource) -> dict:
             vid = new_id()
             ids[v["vendor_code"]] = vid
             conn.execute(
-                "INSERT INTO vendors(id,legal_name,name_normalized,gstin,pan,udyam_no,msme_category,is_trader,has_written_agreement,domain,"
+                "INSERT INTO vendors(id,legal_name,name_normalized,aliases,gstin,pan,udyam_no,msme_category,is_trader,has_written_agreement,domain,"
                 "phone_on_file,city,state,credit_days,discount_pct,discount_days,is_critical,relationship_since,hist_invoices,hist_clean,"
-                "hist_on_time,hist_deliveries,hist_disputes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                (vid, v["legal_name"], normalize_name(v["legal_name"]), v["gstin"], v["pan"], v["udyam_no"] or None, v["msme_category"],
+                "hist_on_time,hist_deliveries,hist_disputes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (vid, v["legal_name"], normalize_name(v["legal_name"]), v.get("aliases") or "[]", v["gstin"], v["pan"], v["udyam_no"] or None, v["msme_category"],
                  int(v["is_trader"]), int(v["has_written_agreement"]), v["domain"], v["phone_on_file"], v["city"], v["state"],
                  int(v["credit_days"]), float(v["discount_pct"]), int(v["discount_days"]), int(v["is_critical"]), v["relationship_since"],
                  int(v["hist_invoices"]), int(v["hist_clean"]), int(v["hist_on_time"]), int(v["hist_deliveries"]), int(v["hist_disputes"])))
