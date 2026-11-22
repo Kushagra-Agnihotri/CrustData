@@ -502,7 +502,7 @@ def _explain(state, reasons):
     blocks = [r for r in holds if r["severity"] == BLOCK]
     lead = "Blocked" if blocks else "Held for your review"
     msgs = [r["message"] for r in (blocks + [h for h in holds if h["severity"] == HOLD])][:3]
-    return f"{lead}: " + " | ".join(msgs) + ". Nothing is paid until a person reviews it."
+    return f"{lead}: " + " | ".join(m.rstrip(". ") for m in msgs) + ". Nothing is paid until a person reviews it."
 
 
 def _msme_deadline(vendor, accepted):
