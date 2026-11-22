@@ -17,7 +17,7 @@ from app.ledger import add_event, add_fact
 from app.validators import normalize_name
 
 PENNY_DROP_FIXTURE = config.DATA / "penny_drop_mock.json"
-FINANCE_TITLE_WORDS = ("cfo", "finance", "accounts", "accountant", "controller", "treasury")
+FINANCE_TITLE_WORDS = ("cfo", "chief financial", "finance", "financial", "accounts", "accountant", "controller", "treasury")
 OUR_PHONE = "+91 22 4000 1234"  # synthetic: Orbit Manufacturing AP desk
 
 
