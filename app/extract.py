@@ -161,8 +161,8 @@ def gemini_extract(text: str) -> tuple[dict, dict]:
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
     for attempt in range(3):
         r = httpx.post(url, headers={"x-goog-api-key": config.GEMINI_API_KEY}, json=body, timeout=60)
-        if r.status_code == 429:
-            time.sleep(5 * (attempt + 1))
+        if r.status_code == 429 or r.status_code >= 500:  # rate-limited / overloaded: back off, then fall back to rules
+            time.sleep(3 * (attempt + 1))
             continue
         r.raise_for_status()
         resp = r.json()
@@ -175,7 +175,7 @@ def gemini_extract(text: str) -> tuple[dict, dict]:
             ln["amount"] = to_paise(ln.get("amount"))
         d["invoice_date"] = parse_date(d.get("invoice_date")) or d.get("invoice_date")
         return d, resp.get("usageMetadata", {})
-    raise RuntimeError("Gemini rate-limited (429) after retries")
+    raise RuntimeError("Gemini unavailable (429/5xx) after retries")
 
 
 def extract(path: Path) -> dict:
@@ -190,11 +190,18 @@ def extract(path: Path) -> dict:
         return {"doc_kind": "bank_change", "kind": src["kind"], "method": "rules", "data": d, "usage": {}}
     if src["doc_kind"] == "other":
         raise ValueError("email is neither an invoice nor a bank-change request")
-    usage, method = {}, "rules"
+    usage, method, d = {}, "rules", None
     if config.GEMINI_API_KEY:
-        d, usage = gemini_extract(src["text"])
-        method = f"llm:{config.LLM_MODEL}"
-    else:
+        # Gemini first; the deterministic parser is the fallback (no key, API down, model retired, bad JSON).
+        try:
+            d, usage = gemini_extract(src["text"])
+            method = f"llm:{config.LLM_MODEL}"
+            if not d.get("total") or not d.get("lines"):
+                raise ValueError("LLM output missing total or line items")
+        except Exception as e:  # noqa: BLE001 — any LLM failure falls back to rules; never blocks ingest
+            d, usage = None, {"llm_error": f"{type(e).__name__}: {str(e)[:160]}"}
+            method = "rules (llm fallback)"
+    if d is None:
         d = parse_invoice_text(src["text"])
     for k, v in base.items():
         if v and not d.get(k):

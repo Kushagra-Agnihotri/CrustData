@@ -55,8 +55,16 @@ CREATE TABLE IF NOT EXISTS vendor_bank_accounts(
   proposed_by TEXT, approved_by TEXT, verification_note TEXT,
   source_doc_id TEXT,
   evidence_fact_ids TEXT NOT NULL DEFAULT '[]',
+  -- genuine bank-change verification (Part B): a request is never proof
+  docs_received INTEGER NOT NULL DEFAULT 0,
+  callback_done INTEGER NOT NULL DEFAULT 0, callback_by TEXT, callback_note TEXT,
+  second_contact_note TEXT,
+  penny_drop_status TEXT NOT NULL DEFAULT 'not_run' CHECK (penny_drop_status IN ('not_run','name_match','name_mismatch','failed')),
+  penny_drop_name TEXT, penny_drop_ref TEXT,
+  old_contact_notified_at TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
-  CHECK (approved_by IS NULL OR proposed_by IS NULL OR approved_by <> proposed_by)  -- maker-checker
+  CHECK (approved_by IS NULL OR proposed_by IS NULL OR approved_by <> proposed_by),  -- maker-checker
+  CHECK (approved_by IS NULL OR callback_by IS NULL OR approved_by <> callback_by)   -- approver did not do the call-back
 );
 CREATE UNIQUE INDEX IF NOT EXISTS one_current_account ON vendor_bank_accounts(vendor_id) WHERE status='current';
 
@@ -219,8 +227,22 @@ def connect(path=None) -> sqlite3.Connection:
     return conn
 
 
+_BANK_COLS = {  # added after the first release: migrate older DBs in place
+    "docs_received": "INTEGER NOT NULL DEFAULT 0",
+    "callback_done": "INTEGER NOT NULL DEFAULT 0", "callback_by": "TEXT", "callback_note": "TEXT",
+    "second_contact_note": "TEXT",
+    "penny_drop_status": "TEXT NOT NULL DEFAULT 'not_run' CHECK (penny_drop_status IN ('not_run','name_match','name_mismatch','failed'))",
+    "penny_drop_name": "TEXT", "penny_drop_ref": "TEXT",
+    "old_contact_notified_at": "TEXT",
+}
+
+
 def init_schema(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA)
+    have = {r[1] for r in conn.execute("PRAGMA table_info(vendor_bank_accounts)")}
+    for col, decl in _BANK_COLS.items():
+        if col not in have:
+            conn.execute(f"ALTER TABLE vendor_bank_accounts ADD COLUMN {col} {decl}")
 
 
 @contextmanager

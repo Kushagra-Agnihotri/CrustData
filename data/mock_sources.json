@@ -548,6 +548,40 @@
           }
         }
       }
+    ],
+    "1000106": [
+      {
+        "basic_profile": {
+          "name": "Meera Iyer",
+          "current_title": "Accounts Manager"
+        },
+        "experience": {
+          "employment_details": {
+            "current": [
+              {
+                "title": "Accounts Manager",
+                "company_id": 1000106
+              }
+            ]
+          }
+        }
+      },
+      {
+        "basic_profile": {
+          "name": "Arvind Rao",
+          "current_title": "Chief Financial Officer"
+        },
+        "experience": {
+          "employment_details": {
+            "current": [
+              {
+                "title": "Chief Financial Officer",
+                "company_id": 1000106
+              }
+            ]
+          }
+        }
+      }
     ]
   },
   "news": {

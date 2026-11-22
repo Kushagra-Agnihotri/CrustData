@@ -49,7 +49,7 @@ CRUSTDATA_INR_PER_CREDIT = float(_get("CRUSTDATA_INR_PER_CREDIT", "1.0"))
 
 # LLM (optional). Without a key, the deterministic parser extracts invoices.
 GEMINI_API_KEY = _get("GEMINI_API_KEY", "")
-LLM_MODEL = _get("LLM_MODEL", "gemini-2.5-flash")
+LLM_MODEL = _get("LLM_MODEL", "gemini-3.8-flash")  # gemini-2.5-flash is retired for new keys (404)
 LLM_INR_PER_1K_INPUT = float(_get("LLM_INR_PER_1K_INPUT", "0.025"))
 LLM_INR_PER_1K_OUTPUT = float(_get("LLM_INR_PER_1K_OUTPUT", "0.21"))
 
