@@ -1,0 +1,6 @@
+BILL | Indus Chemicals Ltd | GSTIN:24AADCI8834H1ZH
+Inv Ref ICL-77840 | Date 2026-11-20 | PO PO-4481
+Items:
+- Soda ash light x 2000 @ 40.00 (18%) = 80,000.00
+Net 80,000.00 | Tax 14,400.00 | Total 94,400.00
+Pay to A/c 39125566780 | IFSC SBIN0000301 | Beneficiary: Indus Chemicals Ltd

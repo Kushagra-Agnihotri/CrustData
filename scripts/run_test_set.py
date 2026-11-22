@@ -52,7 +52,7 @@ def check(conn):
     tiers.update({x["invoice_id"]: dict(x, amount=0) for x in p["deferred"]})
     invs = {i["case_id"]: i for i in q(conn, "SELECT * FROM invoices")}
     for case, e in EXP.items():
-        if e.get("isolated") or e.get("crash_test"):
+        if e.get("isolated") or e.get("crash_test") or e.get("bank_change_flow"):
             continue
         inv = invs.get(case)
         if not inv:
@@ -65,6 +65,11 @@ def check(conn):
         for c in e.get("must_include", []):
             if c not in codes(inv):
                 problems.append(f"missing {c}")
+        for c in e.get("must_not_include", []):
+            if c in codes(inv):
+                problems.append(f"unexpected {c}")
+        if e.get("pending_account") and not q1(conn, "SELECT 1 FROM vendor_bank_accounts WHERE source_doc_id=? AND status='pending_verification'", (inv["id"],)):
+            problems.append("no pending bank-account row")
         alloc = tiers.get(inv["id"])
         if "tier" in e:
             if not alloc:
@@ -81,6 +86,61 @@ def check(conn):
             detail += f" ₹{alloc['amount'] // 100:,} of ₹{alloc['outstanding'] // 100:,}"
         results.append((case, e["label"], "; ".join(problems) or detail, "FAIL" if problems else "PASS"))
     return results, invs
+
+
+def run_bank_change_flow(case, base_db):
+    """Cases 20 / 20b: run every B2 step on case 19's pending account, then approve.
+    20: penny drop name_match → approve → a new invoice carrying the NEW account is PAY_ELIGIBLE.
+    20b: the account is swapped for one whose holder differs → approval refused with name_mismatch."""
+    import shutil
+    from app import vendor_admin
+    e = EXP[case]
+    db = TMP / f"{case}.db"
+    for suf in ("", "-wal", "-shm"):
+        if (TMP / f"{db.name}{suf}").exists():
+            (TMP / f"{db.name}{suf}").unlink()
+    conn0 = connect(base_db)
+    conn0.execute(f"VACUUM INTO '{db.as_posix()}'")
+    conn0.close()
+    conn = connect(db)
+    inv19 = q1(conn, "SELECT id FROM invoices WHERE case_id='case19'")
+    acct = q1(conn, "SELECT * FROM vendor_bank_accounts WHERE source_doc_id=? AND status='pending_verification'", (inv19["id"],)) if inv19 else None
+    if not acct:
+        return (case, e["label"], "no pending account from case 19", "FAIL")
+    aid = acct["id"]
+    if e["bank_change_flow"] == "name_mismatch":
+        conn.execute("UPDATE vendor_bank_accounts SET account_no='39125566799' WHERE id=?", (aid,))
+    problems = []
+    early = vendor_admin.approve_bank_change(conn, aid, "user_b", note="too early")
+    if not early:
+        problems.append("approved before any verification")
+    for err in (vendor_admin.mark_docs_received(conn, aid, "user_a", "cancelled cheque + bank letter"),
+                vendor_admin.record_callback(conn, aid, "user_a", "spoke to accounts, confirmed new SBI account")):
+        if err:
+            problems.append(err)
+    pd = vendor_admin.run_penny_drop(conn, aid, "user_a")
+    vendor_admin.send_old_contact_notice(conn, aid, "user_a")
+    if vendor_admin.approve_bank_change(conn, aid, "user_a", note="self-approve") is None:
+        problems.append("call-back person could approve")
+    err = vendor_admin.approve_bank_change(conn, aid, "user_b", note="checklist complete")
+    if e["bank_change_flow"] == "name_mismatch":
+        ok = bool(err) and "name_mismatch" in err and not problems
+        return (case, e["label"], f"refused: {err}" if ok else "; ".join(problems) or f"approval not refused ({err})", "PASS" if ok else "FAIL")
+    if pd or err:
+        problems.append(f"approval failed: {pd or err}")
+    ctx = pipeline.start_run(conn)
+    pipeline.ingest(conn, inbox=config.DATA / "inbox_after_verification")
+    inv = q1(conn, "SELECT * FROM invoices WHERE case_id=?", (case,))
+    pipeline.process_one(conn, inv["id"], ctx, actor="test")
+    inv = q1(conn, "SELECT * FROM invoices WHERE id=?", (inv["id"],))
+    ok_codes = [r["code"] for r in unj(inv["reasons"], []) if r["severity"] == "OK"]
+    if inv["decision"] != e["decision"]:
+        problems.append(f"decision {inv['decision']} ≠ {e['decision']} [{', '.join(codes(inv)[:3])}]")
+    for c in e.get("must_include_ok", []):
+        if c not in ok_codes:
+            problems.append(f"missing {c}")
+    conn.close()
+    return (case, e["label"], "; ".join(problems) or f"{inv['decision']} [BANK_MATCHES_MASTER] after checklist", "FAIL" if problems else "PASS")
 
 
 def run_isolated(case, base_decision):
@@ -107,6 +167,9 @@ def main():
     conn = run_main_set()
     results, invs = check(conn)
     conn.close()
+    base_db = Path(os.environ["DB_PATH"])
+    for case in [c for c, e in EXP.items() if e.get("bank_change_flow")]:
+        results.append(run_bank_change_flow(case, base_db))
     results.append(run_isolated("case16", invs["case01"]["decision"]))
     from scripts import crash_demo
     ok, summary = crash_demo.run(quiet=True)

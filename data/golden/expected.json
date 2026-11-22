@@ -107,5 +107,31 @@
   "case17": {
     "crash_test": true,
     "label": "kill -9 mid-payment, restart \u2192 each instalment paid once"
+  },
+  "case19": {
+    "decision": "HOLD",
+    "must_include": [
+      "BANK_CHANGE_REQUEST"
+    ],
+    "must_not_include": [
+      "BANK_CHANGE_FRAUD",
+      "SENDER_DOMAIN_MISMATCH",
+      "REPLY_TO_MISMATCH",
+      "PRESSURE_LANGUAGE"
+    ],
+    "pending_account": true,
+    "label": "Genuine bank change from the vendor's own domain \u2192 HOLD, not BLOCK"
+  },
+  "case20": {
+    "decision": "PAY_ELIGIBLE",
+    "must_include_ok": [
+      "BANK_MATCHES_MASTER"
+    ],
+    "bank_change_flow": "name_match",
+    "label": "After docs + call-back + penny drop + 2nd approver: pays to new account"
+  },
+  "case20b": {
+    "bank_change_flow": "name_mismatch",
+    "label": "Penny drop returns a different holder \u2192 approval refused"
   }
 }

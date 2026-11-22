@@ -26,6 +26,7 @@ from app.validators import gstin_check_char, make_gstin  # noqa: E402
 
 DATA = ROOT / "data"
 SEED, INBOX, VARIANTS, GOLDEN = DATA / "seed", DATA / "inbox", DATA / "inbox_variants", DATA / "golden"
+AFTER = DATA / "inbox_after_verification"  # case 20: arrives after the bank change is verified
 BUYER = "Orbit Manufacturing Pvt Ltd, Plot 14, MIDC Chakan, Pune 410501 (GSTIN 27AAFCO1234M1Z5)"
 BUYER_STATE = "27"
 
@@ -95,7 +96,15 @@ POS = [
                                                    ("Managed backup - October", "month", 1, 50000, 18)], None, "csv"),
     ("PO-4479", "V6", "2026-11-01", "2026-11-15", [("Caustic soda flakes", "kg", 6000, 50, 18)], ([6000], "2026-11-15"), "csv"),
     ("PO-4480", "V7", "2026-10-01", "2026-10-29", [("Freight - Pune to Delhi FTL", "trips", 50, 30000, 18)], ([50], "2026-10-29"), "tally_csv"),
+    ("PO-4481", "V6", "2026-11-10", "2026-11-18", [("Soda ash light", "kg", 2000, 40, 18)], ([2000], "2026-11-18"), "csv"),  # case 20
 ]
+
+# Genuine bank change (cases 19/20/20b): Indus Chemicals moves to a new account.
+NEW_ACCT_V6 = ("39125566780", "SBIN0000301")
+PENNY_DROP = {  # mock penny-drop provider: registered account-holder name per account (penny_drop_mock)
+    NEW_ACCT_V6[0]: {"registered_name": "Indus Chemicals Ltd"},
+    "39125566799": {"registered_name": "Indus Trading Company"},  # case 20b: a different holder
+}
 
 CUSTOMERS = [  # (id, name, domain, on_time_rate, crustdata id, healthy?)
     ("C1", "Zenith Motors Ltd", "zenithmotors.in", 0.95, 2000001, True),
@@ -173,6 +182,8 @@ def gen_mock_sources():
     people["1000102"] = [{"name": "Priya Shah", "title": "Finance Controller", "current_employer_id": 1000102},
                          {"name": "Nikhil Desai", "title": "Accounts Executive", "current_employer_id": 1000102}]
     people["1000104"] = [{"name": "Sunil Kulkarni", "title": "Head of Accounts", "current_employer_id": 1000104}]
+    people["1000106"] = [{"name": "Meera Iyer", "title": "Accounts Manager", "current_employer_id": 1000106},
+                         {"name": "Arvind Rao", "title": "Chief Financial Officer", "current_employer_id": 1000106}]
     news["infra logistics pvt ltd"] = [{"title": "NCLT admits insolvency petition filed by lessor against Infra Logistics",
                                         "url": "https://example-news.in/2026/10/05/infra-logistics-nclt", "date": "2026-10-05"}]
     news["horizon retail pvt ltd"] = [{"title": "Horizon Retail delays salaries, shuts 12 stores",
@@ -354,6 +365,24 @@ Acme Supplies Pvt Ltd
 """
 
 
+GENUINE_BANK_CHANGE_BODY = f"""Dear Accounts Team,
+
+We are moving our main collections account from HDFC Bank to State Bank of India from 1 December 2026.
+Please update our banking details in your vendor master. A cancelled cheque and a bank letter on our letterhead
+are attached, and you are welcome to call our office on the number you have on file to confirm.
+
+New bank details:
+Account Name: Indus Chemicals Ltd
+Account Number: {NEW_ACCT_V6[0]}
+IFSC: {NEW_ACCT_V6[1]}
+
+Regards,
+Meera Iyer
+Accounts Manager
+Indus Chemicals Ltd
+"""
+
+
 def write_eml(path: Path, frm, reply_to, subject, body, date):
     m = EmailMessage()
     m["From"] = frm
@@ -386,6 +415,12 @@ EXPECTED = {
     "case15": {"decision": "PAY_ELIGIBLE", "tier": 2, "split": True, "label": "Large invoice, cash short → instalments"},
     "case16": {"decision_same_as": "case01", "isolated": True, "label": "Case 1 re-worded + re-laid-out"},
     "case17": {"crash_test": True, "label": "kill -9 mid-payment, restart → each instalment paid once"},
+    "case19": {"decision": "HOLD", "must_include": ["BANK_CHANGE_REQUEST"],
+               "must_not_include": ["BANK_CHANGE_FRAUD", "SENDER_DOMAIN_MISMATCH", "REPLY_TO_MISMATCH", "PRESSURE_LANGUAGE"],
+               "pending_account": True, "label": "Genuine bank change from the vendor's own domain → HOLD, not BLOCK"},
+    "case20": {"decision": "PAY_ELIGIBLE", "must_include_ok": ["BANK_MATCHES_MASTER"], "bank_change_flow": "name_match",
+               "label": "After docs + call-back + penny drop + 2nd approver: pays to new account"},
+    "case20b": {"bank_change_flow": "name_mismatch", "label": "Penny drop returns a different holder → approval refused"},
 }
 
 
@@ -407,6 +442,20 @@ def gen_inbox():
     (INBOX / "case11_sharma_traders.txt").write_text(SHARMA, encoding="utf-8")
     write_eml(INBOX / "case07_acme_bank_change.eml", '"Rahul Mehta" <rahul.mehta@acme-supplies.co>', "acme.accounts.desk@gmail.com",
               "Update of our bank details - Acme Supplies", BANK_CHANGE_BODY, "2026-11-18")
+    v6 = VB["V6"]
+    write_eml(INBOX / "case19_indus_bank_change.eml", f'"Meera Iyer" <accounts@{v6["domain"]}>', None,
+              "Change of bank account - Indus Chemicals Ltd", GENUINE_BANK_CHANGE_BODY, "2026-11-19")
+    # case 20: a later invoice that carries the NEW account (ingested only after the verification flow)
+    AFTER.mkdir(parents=True, exist_ok=True)
+    for f in AFTER.iterdir():
+        if f.is_file():
+            f.unlink()
+    c20 = inv("case20", "V6", "C", "ICL-77840", "2026-11-20", "PO-4481", po_lines("PO-4481"),
+              acct=NEW_ACCT_V6[0], ifsc=NEW_ACCT_V6[1])
+    (AFTER / "case20_indus_new_account.txt").write_text(layout_c(c20), encoding="utf-8")
+    (DATA / "penny_drop_mock.json").write_text(json.dumps(
+        {"_note": "Mock penny-drop provider (penny_drop_mock). Razorpay Account Validation is not available in test mode.",
+         "accounts": PENNY_DROP}, indent=2), encoding="utf-8")
     # case 16: case 1 re-worded (layout B, dd/mm/yyyy, lines in reverse order)
     c1 = build_cases()[0]
     c16 = dict(c1, layout="B", lines=list(reversed(c1["lines"])))

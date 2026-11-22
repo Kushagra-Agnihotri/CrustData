@@ -1,0 +1,11 @@
+{
+  "_note": "Mock penny-drop provider (penny_drop_mock). Razorpay Account Validation is not available in test mode.",
+  "accounts": {
+    "39125566780": {
+      "registered_name": "Indus Chemicals Ltd"
+    },
+    "39125566799": {
+      "registered_name": "Indus Trading Company"
+    }
+  }
+}

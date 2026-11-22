@@ -551,6 +551,18 @@
         "title": "Head of Accounts",
         "current_employer_id": 1000104
       }
+    ],
+    "1000106": [
+      {
+        "name": "Meera Iyer",
+        "title": "Accounts Manager",
+        "current_employer_id": 1000106
+      },
+      {
+        "name": "Arvind Rao",
+        "title": "Chief Financial Officer",
+        "current_employer_id": 1000106
+      }
     ]
   },
   "news": {
