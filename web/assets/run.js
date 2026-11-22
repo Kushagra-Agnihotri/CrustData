@@ -32,10 +32,10 @@
         ${capped ? raw(`<span class="capcut" style="width:${pct(capcut)}"></span>`) : ""}
       </div>
       <div class="bar-legend">
-        <span><i style="background:#d9d4c7"></i>Safety buffer ${inr(c.safety_buffer)}</span>
+        <span><i style="background:#cfd6e1"></i>Safety buffer ${inr(c.safety_buffer)}</span>
         <span><i style="background:var(--accent)"></i>Allocated now ${inr(alloc)}</span>
         <span><i style="background:#c4d0e4"></i>Spendable, not allocated ${inr(free)}</span>
-        ${capped ? h`<span><i style="background:#ece8de;border:1px solid var(--rule-strong)"></i>Held back by your cap ${inr(capcut)}</span>` : ""}
+        ${capped ? h`<span><i style="background:#e6eaf0;border:1px solid var(--rule-strong)"></i>Held back by your cap ${inr(capcut)}</span>` : ""}
         ${run.paid ? h`<span><strong>${inr(run.paid)}</strong> paid so far</span>` : ""}
       </div>
     </div>`;
