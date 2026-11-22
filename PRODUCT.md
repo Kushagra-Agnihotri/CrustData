@@ -1,5 +1,11 @@
 # PRODUCT.md: Payables Desk
 
+<!-- impeccable:product-schema 1 -->
+
+## Platform
+
+web
+
 ## What it is
 
 Payables Desk is an agent a company hands its accounts-payable work to. You give it this week's invoices from the accounts inbox. It reads each one, checks it against the company's own records and live public data, decides what is safe to pay, plans payments around the cash the company actually has, and waits for a person to approve before any money moves.
@@ -10,6 +16,18 @@ Payables Desk is an agent a company hands its accounts-payable work to. You give
 > "Here are this week's invoices from our accounts inbox. Match each one to its purchase order, check the vendor and its bank account, pay each one once, according to the cash we have, and hold anything unusual for my approval with the reason."
 
 It replaces a service, not a tool: the AP clerk or outsourced accountant who does this by hand every week.
+
+## Positioning
+
+It is the only option that both **verifies** and **plans cash**. Every invoice is checked against the company's own records (PO, goods receipt, vendor master) and against live public data (Crustdata company facts, the IFSC registry). Payments are then planned around the cash the company actually has, in instalments where needed. Every rupee carries a written reason and a dated source, and each payment goes out exactly once. Tally records what happened; AP automation tools route approvals; an outsourced clerk does it by hand without a traceable source for each claim.
+
+## Operating Context
+
+- The weekly AP run: invoices arrive in an accounts inbox (PDF, text, email), the finance head says what they want this week ("don't spend more than ₹15 lakh"), reviews what the desk held or blocked, and approves the payment run by name.
+- Company records come from the books (Tally/Busy exports): vendor master, purchase orders, goods receipts (GRNs), receivables, bank balance and safety buffer.
+- Bank-detail changes are verified out of band: call the phone number already on file, maker-checker approval by a second person.
+- The auditor replays decisions later from the event ledger, the call log and the CSV export.
+- Demo setting: a laptop or projector, offline-capable, two minutes, no voice-over.
 
 ## Who uses it
 
@@ -80,6 +98,27 @@ Every vendor name links to Vendor 360; every PO number links to Company Books; e
 - Not a chatbot. The request box takes a request; the product answers with work, not conversation.
 - Not playful or gamified. No confetti on approval.
 - Not a marketing site. There's no landing page; the first screen is the work.
+
+## Evidence on Hand
+
+- **Synthetic:** all company records (vendors, POs, GRNs, invoices in `data/inbox/`, receivables, bank position in `data/seed/`) are generated test data. Label them "our records (synthetic test data)".
+- **Real:** Crustdata and IFSC lookups, live or recorded with their retrieval time. Shown with source and date; mock fixtures are always labelled as mock.
+- **Golden test set:** `data/golden/expected.json` and `tests/` define the scenarios the product must handle (fraud email, duplicates, over-billing, cash crisis, crash recovery).
+- **Absent, never fabricate:** real customers, testimonials, pilot results, usage metrics, pricing, savings claims.
+
+## Product Principles
+
+1. **Every claim has a source and a date.** If no record settles a question, the answer is "I can't verify", with the missing items named.
+2. **Rules decide; the AI reads and explains.** A request can tighten the rules (spend cap, fewer vendors), never loosen them.
+3. **Nothing irreversible without a named person.** Payments, bank-detail changes and releases all wait for an approver, and the approver's name is logged.
+4. **Exactly once.** Each instalment is paid once, even through a crash, and the reconciliation proves it.
+5. **Cash decides how much, trust decides whether.** Priority and trust stay separate; priority never makes an unsafe payment safe.
+
+## Accessibility & Inclusion
+
+- Target WCAG 2.1 AA: text contrast, full keyboard operation, visible focus, labelled controls on every screen.
+- Decisions always use the word (Eligible, Held, Blocked) plus an icon, never colour alone. This also keeps printed audit reports readable.
+- Readable when projected: 1280–1920 px desktop first, real information density, tabular figures.
 
 ## Technical context
 
