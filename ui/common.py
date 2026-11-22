@@ -19,21 +19,48 @@ SEV_ICON = {"BLOCK": "🔴", "HOLD": "🟠", "OK": "✅"}
 TIER_BADGE = {0: "🟥 Tier 0 · must pay", 1: "🟨 Tier 1 · discount", 2: "🟦 Tier 2 · priority"}
 
 
-def page(title: str, icon: str = "📒"):
-    st.set_page_config(page_title=f"Payables Desk · {title}", page_icon=icon, layout="wide")
+def page(title: str = "Payables Desk", icon: str = "📒"):
+    st.set_page_config(page_title=title, page_icon=icon, layout="wide", initial_sidebar_state="collapsed")
     st.markdown("""<style>
-      .block-container {padding-top: 2rem;}
+      [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="collapsedControl"],
+      [data-testid="stSidebarNav"] {display: none !important;}
+      .block-container {padding-top: 1.6rem; max-width: 1080px;}
+      div[role="dialog"] {width: 50vw !important; min-width: 640px; max-width: 1100px !important;}
       .small {font-size: 0.85rem; color: #6b7280;}
       .fact {font-size: 0.82rem; font-family: ui-monospace, monospace; background: rgba(127,127,127,.08);
              padding: .35rem .5rem; border-radius: .35rem; margin: .15rem 0;}
+      .hero {text-align: center; margin: 6vh 0 1.2rem;}
+      .hero h1 {font-size: 2.1rem; margin-bottom: .2rem;}
+      .hero p {color: #6b7280; font-size: 1rem; max-width: 620px; margin: 0 auto;}
+      .verdict {padding: .8rem 1rem; border-radius: .5rem; font-weight: 600; margin: .4rem 0 .6rem;}
+      .verdict.genuine {background: rgba(22,163,74,.12); border-left: 4px solid #16a34a;}
+      .verdict.unverified {background: rgba(202,138,4,.14); border-left: 4px solid #ca8a04;}
+      .verdict.fraud {background: rgba(220,38,38,.12); border-left: 4px solid #dc2626;}
+      .mock {background: repeating-linear-gradient(45deg, rgba(202,138,4,.16), rgba(202,138,4,.16) 10px,
+             rgba(202,138,4,.08) 10px, rgba(202,138,4,.08) 20px); padding: .5rem 1rem; border-radius: .4rem;
+             font-weight: 700; text-align: center; letter-spacing: .04em;}
     </style>""", unsafe_allow_html=True)
-    st.sidebar.caption(f"Run date **{config.RUN_DATE}** · Crustdata **{config.CRUSTDATA_MODE}** · IFSC **{config.IFSC_MODE}** · "
-                       f"payments **{config.PAYMENT_PROVIDER} (test)**")
+
+
+def mode_caption() -> str:
+    return (f"Run date {config.RUN_DATE} · Crustdata {config.CRUSTDATA_MODE} · IFSC {config.IFSC_MODE} · "
+            f"payments {config.PAYMENT_PROVIDER} (test)")
+
+
+def mask(acct) -> str:
+    return f"****{acct[-4:]}" if acct else "—"
 
 
 def db():
     conn = connect()
     init_schema(conn)
+    if not conn.execute("SELECT 1 FROM vendors LIMIT 1").fetchone():
+        # Fresh host (e.g. a cloud deploy, where data/*.db is not in git): build the mock DB from data/seed.
+        import scripts.setup_demo as sd
+        conn.close()
+        sd.reset(run=False, regenerate=False)
+        conn = connect()
+        init_schema(conn)
     return conn
 
 
@@ -91,4 +118,4 @@ def render_reasons(conn, reasons: list[dict], key_prefix: str):
 
 
 __all__ = ["st", "page", "db", "q", "unj", "inr", "config", "render_reasons", "render_fact", "facts_by_ids", "ist",
-           "DECISION_BADGE", "TIER_BADGE", "SEV_ICON"]
+           "mask", "mode_caption", "DECISION_BADGE", "TIER_BADGE", "SEV_ICON"]

@@ -43,11 +43,15 @@ def _src_reason(e: sources.SourceUnavailable, stage, what: str):
 
 
 # --------------------------------------------------------------------------- ingest
-def ingest(conn, inbox=None, actor="ingest") -> list[str]:
+def ingest(conn, inbox=None, actor="ingest", only=None) -> list[str]:
+    """`only(path) -> bool` limits which inbox files are taken in (the chat prompt's scope).
+    Files left out stay in the inbox un-ingested, so a later run can still pick them up."""
     inbox = inbox or config.INBOX
     ids = []
     for path in sorted(inbox.iterdir()):
         if path.suffix.lower() not in (".txt", ".eml", ".pdf"):
+            continue
+        if only is not None and not only(path):
             continue
         sha = hashlib.sha256(path.read_bytes()).hexdigest()
         rel = str(path.relative_to(config.ROOT)).replace("\\", "/") if path.is_relative_to(config.ROOT) else str(path)
@@ -651,14 +655,14 @@ def pending_count(conn) -> int:
     return q1(conn, "SELECT COUNT(*) n FROM invoices WHERE state NOT IN ('HELD','BLOCKED','ELIGIBLE','SCHEDULED','PARTIALLY_PAID','PAID')")["n"]
 
 
-def iter_pipeline(conn, actor="worker", ctx=None):
+def iter_pipeline(conn, actor="worker", ctx=None, only=None):
     """Same work as run_pipeline, but yields an event after every stage so a UI can show it live.
 
     Events: invoice_start{invoice, index, total} · stage{invoice_id, stage, state, reasons} ·
     invoice_done{invoice} · run_done{run_id, processed}
     """
     ctx = ctx or start_run(conn)
-    ingest(conn)
+    ingest(conn, only=only)
     total = pending_count(conn)
     done = 0
     while True:

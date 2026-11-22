@@ -14,9 +14,24 @@ ContextCon 05 · Theme 6.1 (Buying and Paying) · team Aditya, Kushagra, Rajat. 
 ```bash
 python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt        # macOS/Linux: .venv/bin/pip
-.venv/Scripts/python scripts/setup_demo.py --run      # builds the DB, runs the pipeline, proposes a payment run
+.venv/Scripts/python scripts/setup_demo.py            # builds the DB (add --run to also evaluate the inbox up front)
 .venv/Scripts/streamlit run ui/Home.py                # UI at http://localhost:8501
 ```
+
+**Using the app.** One guided flow, no sidebar:
+1. **Chat.** `🗂 View database` shows the inbox and the records the checks run against; `➕ Add invoices` drops files into the inbox.
+   Type what you want, e.g. *"Here are this week's invoices from our accounts inbox. Match each one to its purchase order,
+   check the vendor and its bank account, pay each one once, and hold anything unusual for my approval with the reason."*
+   The prompt picks the scope ("this week's inbox", "the past two months", "October", "last 30 days", a vendor name).
+   Off-topic prompts are refused, and a prompt can never switch a check off ("skip the bank check" is noted and ignored).
+2. **Live evaluation** streams in the chat, then the app moves to **Results**: what's ready to pay, what's held or
+   blocked and why, duplicates caught.
+3. **Explore each invoice** opens an overlay with the reasons and evidence, the vendor's trust score, and a **Bank details**
+   tab: paste a bank-change email and/or SMS and it is checked live (sender domain and lookalikes, the requester on
+   Crustdata people search, IFSC branch vs the vendor's state, beneficiary name, email/SMS agreement, pressure language).
+   The verdict is 🟢 looks genuine / 🟡 couldn't verify / 🔴 fraud indicators — and in every case the call-back checklist
+   still has to be completed and approved by a second person.
+4. **Pay now** → a mock paywall (real approval + payout code path against the mock bank) → a receipt with bank refs.
 
 ```bash
 .venv/Scripts/python scripts/run_test_set.py    # golden test set, pass/fail table
@@ -44,7 +59,7 @@ An email can never change the vendor master; it only creates a *pending* account
 **The genuine change (cases 19 → 20).** Gujarat Alkalies and Chemicals writes from `gacl.com`, Reply-To = From, no
 pressure, documents attached. Result: **HOLD** `BANK_CHANGE_REQUEST`, not BLOCK. A request is never proof — a real vendor
 and a fraudster send the same email — so the change is verified through channels the requester doesn't control
-(Vendor 360 checklist, every step in the Audit Ledger):
+(the checklist in the invoice overlay's Bank details tab, every step in the audit trail):
 
 1. documents received (cancelled cheque / bank letter)
 2. **call-back on the number already on file** (the UI only ever shows that number)
