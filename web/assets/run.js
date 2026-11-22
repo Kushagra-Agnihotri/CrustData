@@ -115,7 +115,7 @@
         </table></div></section>` : ""}
 
       ${editable ? h`<form class="panel approve" id="approveForm">
-          <button type="button" class="btn" id="recompute" ${nEdits ? "" : "disabled"}>${icon("refresh")}Recompute with my changes${nEdits ? ` (${nEdits})` : ""}</button>
+          <button type="button" class="btn" id="recompute">${icon("refresh")}${nEdits ? `Recompute with my changes (${nEdits})` : "Re-plan"}</button>
           <span class="spacer"></span>
           <label class="field"><span class="sr" style="position:absolute;left:-9999px">Approver name</span><input type="text" id="approver" placeholder="Your name (approver)" autocomplete="name"></label>
           <label class="check"><input type="checkbox" id="reviewed"> I have reviewed every line</label>
@@ -139,7 +139,7 @@
     function markDirty() {
       const n = Object.keys(edits).filter((k) => run.instalments.some((x) => x.invoice_id === k && x.amount !== edits[k])).length;
       const b = document.getElementById("recompute");
-      if (b) { b.disabled = !n; b.innerHTML = String(icon("refresh")) + "Recompute with my changes" + (n ? ` (${n})` : ""); }
+      if (b) { b.innerHTML = String(icon("refresh")) + (n ? `Recompute with my changes (${n})` : "Re-plan"); }
     }
     const rc = document.getElementById("recompute");
     if (rc) rc.onclick = async () => {
@@ -147,7 +147,7 @@
       for (const [k, v] of Object.entries(edits)) if (run.instalments.some((x) => x.invoice_id === k && x.amount !== v)) overrides[k] = v;
       await App.busy(rc, () => post("/runs/propose", { overrides, actor: "approver-edit" }));
       for (const k of Object.keys(edits)) delete edits[k];
-      App.toast("Plan recomputed with your amounts."); App.routes.run();
+      App.toast(Object.keys(overrides).length ? "Plan recomputed with your amounts." : "Plan recomputed."); App.routes.run();
     };
     const form = document.getElementById("approveForm");
     if (form) form.addEventListener("submit", async (e) => {
