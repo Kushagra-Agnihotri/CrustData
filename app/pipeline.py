@@ -84,7 +84,7 @@ def s_extract(conn, inv, ctx):
                 record_call(conn, tool="llm" if res["method"].startswith("llm") else "extract",
                             endpoint=res["method"], run_id=ctx.run_id, invoice_id=inv["id"], input_tokens=it,
                             output_tokens=ot, est_cost_inr=round(cost, 4),
-                            latency_ms=int((time.monotonic() - t0) * 1000), mode=res["method"])
+                            latency_ms=int((time.monotonic() - t0) * 1000), mode=res["method"], error=u.get("llm_error"))
                 break
             except Exception as e:
                 err = f"{type(e).__name__}: {e}"
